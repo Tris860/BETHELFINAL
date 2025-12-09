@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bethel Family Choir | About Us</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <!-- Google Fonts: Playfair Display for headings, Inter for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+         <link rel="shortcut icon" href="../media/icons/IMG-20240712-WA0019.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body >
+
+    <!-- 1. Header and Hero Slider Section -->
+    <section class="relative" id="header">
+        
+        <!-- Background Image Slider -->
+         <div class="slider-area" id="image">
+            <div class="slider active">
+                <img class="w-full h-full object-cover" src="../media/placeholders/2100914c-293b-42ad-9824-7773055685e9.png" alt="Bethel Choir in performance">
+            </div>
+            <div class="slider">
+                <img class="w-full h-full object-cover" src="../media/placeholders/2024_2025.jpeg" alt="Worship moment in the church" >
+            </div>
+            <div class="slider">
+                <img class="w-full h-full object-cover" src="../media/placeholders/14d40086-59fc-4512-b057-2da8a873a4de.png" alt="Group photo of Bethel members" >
+            </div>
+            <div class="slider">
+                <img class="w-full h-full object-cover" src="../media/placeholders/IMG-20240409-WA0004.jpg" alt="Group photo of Bethel members" >
+            </div>
+        </div>
+        
+        <!-- Semi-Transparent Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Navbar (Fixed and Aligned) -->
+        <div id="navbar">
+            <div class="nav-container">
+                
+                <!-- Logo -->
+                <div class="logo-area">
+                    <img src="https://placehold.co/50x50/FFD700/000?text=BFC" alt="Bethel Logo">
+                    <h2><span class="goldenSpan">BETHEL</span> FAMILY <span class="goldenSpan">CHIOR</span></h2>
+                </div>
+
+                <!-- Navigation Links (Desktop) -->
+                <nav id="navigation-desktop">
+                    <a href="../index.html" class="nav-link">Home</a>
+                    <a href="service.html" class="nav-link">Service</a>
+                    <a href="gallery.html" class="nav-link">Gallery</a>
+                    <a href="history.html" class="nav-link">History</a>
+                    <a href="about.html" class="nav-button">About us</a>
+                </nav>
+
+                <!-- Nav Trigger (Mobile) -->
+                <div class="nav-trigger">
+                    <button id="nav-open-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <nav id="navigation" class="close">
+            <div>
+                <div class="mobile-nav-header">
+                    <span>Menubar</span>
+                    <button id="nav-close-btn">&times;</button>
+                </div>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="service.html">Service</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="history.html">History</a></li>
+                    <li id="mobile-active" ><a href="about.html">About us</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Hero Content -->
+         <div class="hero-content">
+            <div>
+                <h1>
+                    OUR <span style="color: var(--color-accent-olive-light);">STORY</span>, OUR <span style="color: var(--color-accent-olive-light);">MISSION</span>
+                </h1>
+                <p>
+                    A Foundation Built on Faith, Harmony, and Community.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- 2. Main Content Section (Dark Background with Light Cards) -->
+    <section id="content" class="content">
+        
+
+            <!-- ABOUT INFO: What is Bethel Family Choir? -->
+            <div >
+                <h2>What is Bethel Family Choir?</h2>
+                <div >
+                    <p>
+                        <span class="goldenSpan">Bethel Family Choir</span> is a dynamic Christian choir founded in <span>2005</span>
+                        at <span>Groupe Scolaire Officiel de Butare</span> (Indatwa n' Inkesha School) in Huye, Rwanda. We are composed of youth students from GSOB. Our spiritual home is the <span>Groupe Protestant</span> 
+                        church, where our activities primarily focus on passionate **praise and worship**.
+                    </p>
+                    <p>
+                        To explore our founding and journey, <a class="goldenSpan" href="#">view our full History</a>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- BETHEL PILLARS: Truth, Love, Unity -->
+            <div style="text-align: center;">
+                <h2>Our Core Values</h2>
+               <!--  <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="height: 2px; width: 4rem; background-color: var(--color-secondary-gold); border-radius: 9999px;"></div>
+                    <h3>Truth · <span class="goldenSpan">Love</span> · Unity</h3>
+                    <div style="height: 2px; width: 4rem; background-color: var(--color-secondary-gold); border-radius: 9999px;"></div>
+                </div> -->
+                
+                <div>
+                    <div class="pillarNav">
+                        <button id="pillar-truth" onclick="showPillar(0)" class="pillars active-pillar">Truth</button>
+                        <button id="pillar-love" onclick="showPillar(1)" class="pillars">Love</button>
+                        <button id="pillar-unity" onclick="showPillar(2)" class="pillars">Unity</button>
+                    </div>
+
+                    <div id="pillar_meaning">
+                        <div class="pillar-meaning active" id="meaning-0">
+                            <i class="fas fa-scroll pillarIcon" ></i>
+                            <h3> <span>Truth</span></h3>
+                            <p>
+                                Our commitment to truth is unwavering, rooted in the Gospel. It guides our conduct, music, and relationships, ensuring integrity in all we do.
+                            </p>
+                        </div>
+                        <div class="pillar-meaning" id="meaning-1">
+                            <i class="fas fa-heart pillarIcon" ></i>
+                            <h3><span>Love</span></h3>
+                            <p>
+                                We foster a family environment where Christ's love is lived out, extending unconditional support and acceptance to every member and the wider community.
+                            </p>
+                        </div>
+                        <div class="pillar-meaning" id="meaning-2">
+                            <i class="fas fa-hands-clapping pillarIcon" ></i>
+                            <h3><span >Unity</span></h3>
+                            <p>
+                                Unity is the backbone of our harmony, ensuring that all voices and efforts are aligned toward the common goal of glorious worship and service.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DEPARTMENTS & ACTIVITIES (Clean Grid Layout) -->
+        <div id="B_logo" class="B_logo">
+            <h2>Bethel logo</h2>
+            <div class="logoContent">
+                <div class="logoBethel">
+                <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="" srcset="">
+            </div>
+            <div class="logoDetails">
+                <p><span>Unity, Truth, and Love:</span> epresent the pillars on which Bethel is founded.</p>
+            <p>
+                <span>The Vine Cluster :</span> 
+                Once someone arrives at Bethel, they are expected to share the Good News and bear fruit among their peers, as our message says: <span><i>BICIYE MURI TWE IMANA YIGARAGARIZE ABANDI</i></span>
+            </p>
+            <p>
+                <span>The Lampstand :</span>
+                ased on the Gospel as written in <span><i>Matthew 5:14  </span> :"You are the light of the world"</i> Bethel chose to include this in our logo to remind us that we must shine light upon the world.
+            </p>
+            <p>
+                <span>The Gate in the Clouds:</span>
+                As previously explained, the Bible tells us that Bethel is the gate of heaven. We desired to be a gateway that leads to heaven, in line with our mission.
+            </p>
+            <p>
+                <span>The Bible :</span> 
+                The Bible represents the message we sing about — a message drawn directly from the Word of God.
+            </p>
+            <p>
+                <span>Light from the Cross:</span>
+                 This symbolizes that God reveals Himself through us, and that we too have a source like <span> “Bethel” </span> 
+                  the light we received when Jesus gave Himself for us
+            </p>
+            <p>
+                <span>Musical Notes:</span> 
+                After doing all else, we must never forget the calling to worship and glorify God through music.
+            </p>
+            <p>
+                <span>The Circle (Fence):</span> 
+                TWe chose to encircle Bethel’s core values with a unified ring to represent the unity and love within Bethel as one family.
+                <span>"Bethel niferme".</span>
+            </p>
+            </div>
+            </div>
+        </div>
+                <div>
+                    <h2><i class="fas fa-family"></i> Bethel <span>Families</span></h2>
+                    <p>Our annual activities and powerful events:</p>
+                    <hr>
+                    <div class="Families">
+                       <div class="Family">
+                          <h3>Levi</h3>
+                       </div>
+                       <div class="Family">
+                          <h3>Judas</h3>
+                       </div>
+                       <div class="Family">
+                          <h3>Levi</h3>
+                       </div>
+                       <div class="Family">
+                          <h3>Judas</h3>
+                       </div>
+                       <div class="Family">
+                          <h3>Judas</h3>
+                       </div>
+                       <div class="Family">
+                          <h3>Levi</h3>
+                       </div>
+                    </div>
+                </div>
+                <!-- Departments -->
+                <div>
+                    <h2><i class="fas fa-cubes"></i> Core Departments</h2>
+                    
+                    <div class="departments">
+                        <div class="department">
+                            <h3 >Bethel Army (B-Army)</h3>
+                            <p>
+                               <span>B-Army:</span> The discipline and mobilization arm, responsible for internal order and external mission outreach.
+                            </p>
+                        </div>
+
+                        <div class="department">
+                           <h3 >Lounge Ministries</h3>
+                            <p>
+                                <span>Lounge Ministries:</span> Dedicated to fostering fellowship, mentorship, and the spiritual welfare of members through small groups.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities & Events -->
+                <div class="activities">
+                    <h2><i class="fas fa-calendar-alt" style="color: var(--color-secondary-gold); margin-right: 0.75rem;"></i> Signature Events</h2>
+                    <p>Our annual activities and powerful events:</p>
+                    <hr>
+
+                    <ul >
+                        <li><i class="fas fa-mountain "></i> <span>B-Mounts:</span> An intensive, annual spiritual retreat focused on deep prayer, fasting, and spiritual revival.</li>
+                        <li><i class="fas fa-users "></i> <span>B-Generations:</span> A powerful gathering connecting current members with Bethel alumni for networking, wisdom, and continuity.</li>
+                        <li><i class="fas fa-medal "></i> <span>B-Sports:</span> Organized sporting activities designed to promote teamwork, healthy bodies, and friendly competition among members.</li>
+                        <li><i class="fas fa-graduation-cap "></i> <span>B-Bye Bye:</span> A celebrated send-off event honoring graduating members, welcoming them into the alumni network.</li>
+                        <li><i class="fas fa-birthday-cake "></i> <span>B-Anniversary:</span> A grand celebration marking the founding and continued legacy of the choir.</li>
+                    </ul>
+                </div>
+            
+            <div>
+            <h2>Meet Bethel's Committes</h2>
+            <h2>B-<span>Committe</span> members <span>(2024/2025)</span></h2>
+             <div class="Committe">
+                <div class="committeImg">
+                    <img src="../media/placeholders/2024_2025.jpeg" alt="" srcset="">
+                </div>
+                  <div class="description">
+                    <ul>
+                               <li><span>President:</span> Turikumwenayo Moise</li>
+                               <li><span>Vice President:</span> Munezero Isaac</li>
+                               <li><span>Secretary:</span> Isimbi Eunice</li>
+                               <li><span>Disciplinary:</span> Niyonkuru Cyubahiro</li>
+                               <li><span>Disciplinary:</span> Mukamwezi Judith</li>
+                               <li><span>Song Leader:</span> Niyoyera Esperance</li>
+                               <li><span>Song Leader:</span> Nishimwe Emilliene</li>
+                               <li><span>Song Leader:</span> Itanganeza Deborah</li>
+                               <li><span>Song Leader:</span> Tambineza Jacques</li>
+                               <li><span>Song Leader:</span> Irumva Onesme</li>
+                               <li><span>Song Leader:</span> Fred Regis</li>
+                               <li><span>Mama Bethel:</span> Ihirwe Fabiolla</li>
+                               <li><span>Papa Bethel(Pere):</span> Mugisha Prince</li>
+                               <li><span>Mama Bethel(Mere):</span> Ihirwe Fabiolla</li>
+                               <li><span>Intercessor:</span> Uwimana Alice</li>
+                               <li><span>IT:</span> Shimo Adelin</li>
+                            </ul>
+                  </div>
+
+            </div>
+         </div>
+            <!-- MISSION & VISION (Interactive Display) -->
+            <!-- MISSION & VISION (Interactive Display) -->
+            <div id="mission_version">
+                <h2>Bethel's <span class="vm">Mission</span> & <span class="vm">Vision</span></h2>
+                
+                <div class="missionVision" > 
+                    <!-- Mission Card -->
+                    <div class="mission_aboutus" >
+                        <h3>Bethel's Mission</h3>
+                        <p>
+                            To glorify God through the art of singing and music, spreading the message of salvation, and encouraging believers in their faith through powerful and heartfelt performances.
+                        </p>
+                    </div>
+                    
+                    <!-- Vision Card -->
+                    <div class="mission_aboutus  " >
+                        <h3>Bethel's Vision</h3>
+                        <p>
+                            To be a leading voice in Christian worship across Rwanda and beyond, known for excellence, unity, and deep spiritual impact, fostering a generation of worshippers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+    </section>
+
+    <!-- 3. Footer Section (Dark Theme) -->
+    <section class="footer">
+        <div class="container">
+            
+            <!-- Sections Nav -->
+            <div class="nav_2">
+                <h3>Sections</h3>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="service.html">Service</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="updates.html">Updates</a></li>
+                    <li><a href="history.html">History</a></li>
+                    <li><a href="about.html">About us</a></li>
+                </ul>
+            </div> 
+        
+            <!-- Contacts -->
+            <div class="contacts">
+                <h3>Contact us</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i>EmailBethelfamilychoir</li>
+                    <li><i class="fab fa-instagram"></i>IG: @Bethelfamilychoir</li>
+                    <li><i class="fab fa-facebook-f"></i>Facebook: Bethelfamilychoir</li>
+                    <li><i class="fab fa-threads"></i>Threads: @Bethelfamilychoir</li>
+                    <li><i class="fab fa-twitter"></i>X: @Bethelfamilychoir</li>
+                    <li><i class="fas fa-phone-alt"></i>tel: +250 780 000 0000</li>
+                </ul>
+            </div> 
+            
+            <!-- Placeholder for social links/etc. -->
+            <div>
+                 <h3>Follow Us</h3>
+                 <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                    <a href="#" style="color: var(--color-secondary-gold);"><i class="fab fa-youtube"></i></a>
+                    <a href="#" style="color: var(--color-secondary-gold);"><i class="fab fa-spotify"></i></a>
+                    <a href="#" style="color: var(--color-secondary-gold);"><i class="fab fa-tiktok"></i></a>
+                 </div>
+                 <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--color-accent-olive-light);">Click the links above to stream our latest music and videos!</p>
+            </div>
+
+            <!-- Copyrights (placed using grid column span) -->
+            <div class="copyrights">
+                <center>
+                    <p class="copy"> &copy;copyrighted by <a href="admin/login.html" class="title3">Bethel Family Choir</a> Indatwa n' Inkesha @2024</p>
+                </center>
+                <center>
+                    <p>Developed by <a href="https://TrisTechhub.wuaze.com"><span class="company" >Tris Tech Hub</span></a></p>
+                </center>
+            </div>
+        </div>    
+    </section>
+    
+    <!-- -------------------------------------- -->
+    <!-- JAVASCRIPT FOR DYNAMIC FUNCTIONALITY -->
+    <!-- -------------------------------------- -->
+<script src="../javascript/main.js"></script>
+<script src="../javascript/about.js"></script>
+</body>
+</html>

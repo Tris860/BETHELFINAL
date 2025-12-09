@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bethel Studio</title>
+    <!-- Load custom fonts from Google Fonts for better typography -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons (Hamburger/Logout) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="navbar" id="navbar">
+            <div class="logo-container" id="logo">
+                <!-- Using a placeholder image for robustness -->
+                <img src="https://placehold.co/50x50/1A1A1A/fff?text=B" alt="Bethel Logo" class="logo-image">
+                <h2 class="logo-text">B<span class="gold-accent">E</span>TH<span class="gold-accent">E</span>L Studio</h2>
+            </div>
+            
+            <!-- Mobile Navigation Trigger -->
+            <button class="nav-trigger" onclick="openNav()">
+                <i class="fa-solid fa-bars fa-lg" style="color: var(--color-secondary-gold);"></i>
+            </button>
+
+            <!-- Main Navigation (Desktop) - Kept simple/clean -->
+            <nav id="navigation" class="main-nav-desktop">
+                <ul>
+                    <li><a onclick="show_div('service', 0)">Service</a></li>
+                    <li><a onclick="show_div('Gallery', 1)">Gallery</a></li>
+                    <li><a onclick="show_div2('updates', 2)">Updates</a></li>
+                    <li><a onclick="show_div('History', 3)">History</a></li>
+                    <li><a id="logoutButton" class="logout-link"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-layout-container">
+        <!-- === Sidebar Navigation === -->
+        <aside class="sidebar-nav" id="sidebar-nav">
+             <div class="sidebar-menu-group" id="service-menu">
+                 <h3 class="group-heading">Home</h3>
+                 <button class="nav-button" data-target="HomeCTA">Hero CTA</button>
+                 <button class="nav-button" data-target="scriptureOfDay">Scripture of the Day</button>
+                 <button class="nav-button" data-target="presidentMessage">El President's message</button> <!-- Renamed to avoid ID conflict with content panel -->
+             </div>
+
+             <div class="sidebar-menu-group" id="service-menu-group">
+                 <h3 class="group-heading">Service</h3>
+                 <button class="nav-button" data-target="servicesbody">Bethel Service</button>
+                 <button class="nav-button" data-target="bethel_songs">Bethel Songs</button>
+             </div>
+             
+             <div class="sidebar-menu-group" id="Gallery-menu">
+                 <h3 class="group-heading">Gallery</h3>
+                 <button class="nav-button" data-target="memories">Memories</button>
+                 <button class="nav-button" data-target="picture">Picture Post</button>
+             </div>
+             
+             <div class="sidebar-menu-group" id="History-menu">
+                 <h3 class="group-heading">History</h3>
+                 <button class="nav-button" data-target="B_commit">Bethel Committee</button>
+                 <button class="nav-button" data-target="remarkable">Remarkable Event</button>
+                 <button class="nav-button" data-target="annual_achivements">Annual Achievements</button>
+             </div>
+
+            <div class="sidebar-menu-group" id="About us-menu">
+                 <h3 class="group-heading">About us</h3>
+                 <button class="nav-button" data-target="">Mission & Vision</button>
+                 <button class="nav-button" data-target="remarkable">Remarkable Event</button>
+                 <button class="nav-button" data-target="annual_achivements">Annual Achievements</button>
+             </div>
+             
+             <button id="add_songs" onclick="addInput()" class="primary-action-button" style="margin-top: 2rem;">
+                 <i class="fa-solid fa-circle-plus"></i> Add Item
+             </button>
+
+             <div id="error" class="error-message hidden mt-4 p-3 bg-red-800/50 rounded-lg text-sm border border-red-600">
+                 <P class="error-icon font-bold">&times; Error</p>
+                 <p>Error submitting data to the database</p>
+             </div>
+
+             <!-- Preview Container (Adjusted for better styling) -->
+             <div id="image-preview-container" class="image-preview-box mt-4 p-4 rounded-lg bg-gray-700/50 hidden">
+                 <p class="text-sm font-semibold mb-2" style="color: var(--color-text-mid);">Image Preview</p>
+                 <img id="image-preview" src="https://placehold.co/150x100/303030/FFFFFF?text=Preview" alt="Image Preview" class="w-full h-auto rounded-md">
+             </div>
+        </aside>
+
+        <!-- === Main Workspace (Dynamic Forms) === -->
+        <section class="workspace">
+            <div class="content-panel" id="intro" style="display: block;">
+                <div class="intro-card">
+                    <h2>Welcome to Bethel Studio</h2>
+                    <!-- Placeholder image -->
+                    <div class="overview">
+                        <h2>Website Overview</h2>
+                        <div class="statistics">
+                          <div class="statDiv" id="Songs">
+                              <h3>Songs</h3>
+                              <p>0</p>
+                          </div>
+                          <div class="statDiv" id="Pictures">
+                               <h3>Pictures</h3>
+                               <p>0</p>
+                          </div>
+                          <div class="statDiv" id="Committes">
+                              <h3>Committes</h3>
+                              <p>0</p>
+                          </div>
+                          <div class="statDiv" id="Years Recorded">
+                              <h3>Years</h3>
+                              <p>0</p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <p style="font-size: 1.1rem; color: var(--color-text-light);">
+                            This Studio is your administrative platform to manage all Bethel content.
+                        </p>
+                        <h3 style="color: var(--color-accent-olive);">Key Activities:</h3>
+                        <ul class="activities">
+                            <li>Register a new Committee</li>
+                            <li>Create a story for Updates</li>
+                            <li>Post a picture to the Gallery</li>
+                            <li>Create a Memory for the Gallery</li>
+                            <li>Post Annual Achievements to the History</li>
+                            <li>etc.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-panel hidden" id="HomeCTA">
+                <h2>Edit Call to Action</h2>
+                <div class="pageSelector" id="pageSelector">
+                    <button class="page-button" data-target="Home">Home</button>
+                    <button class="page-button" data-target="Service">Service</button>
+                    <button class="page-button" data-target="Gallery">Gallery</button>
+                    <button class="page-button" data-target="History">History</button>
+                    <button class="page-button" data-target="About">About us</button>
+                </div>
+               
+                <form action="" method="post" id="CTAform">
+                    <label for="headingCTA">Heading</label>
+                    <input type="text" name="headingCTA" id="headingCTA" required>
+                    
+                    <label for="Caption">Caption</label>
+                    <input type="text" name="caption" id="caption" required>
+
+                    <input type="text"  class="hidden" name="pageselected" id="pageselected" >
+                    
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+            <!-- 1. B_commit Form -->
+            <div class="content-panel hidden" id="B_commit">
+                <h2>Register a new Bethel Committee</h2>
+                <form id="staff-form" method="post" enctype="multipart/form-data">
+                    <table id="staff-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Post Held</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="names[]" placeholder="Enter name" required></td>
+                                <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
+                                <td><button type="button" class="delete-btn">Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <label for="pictureCommitte">Picture of the Committe</label>
+                    <input type="file" name="pictureCommitte" accept="image/*" class="image-input">
+                    <input type="text" name="ecree" placeholder="Choir's Decree" required>
+                    <input type="text" name="period" placeholder="The era of the committee (e.g., 2023-2024)" required>
+                    <div style="display: flex; gap: 1rem;">
+                        <button type="button" id="add-row-btn" style="flex: 1;">Add Row</button>
+                        <button type="submit" id="submit-btn" name="B_commit_save" style="flex: 1;">Save Committee</button>
+                    </div>
+                </form>
+            </div>
+            <!-- Scripture of the Day -->
+            <div class="content-panel hidden" id="scriptureOfDay">
+                <h2>Update Scripture of the day</h2>
+                <form action="" method="post" id="ScriptureForm">
+                    <label for="titleSong">Scripture's Index (e.g., 2 John 3:2-4)</label>
+                    <input type="text" name="ScriptureTitle" id="ScriptureTitle" required>
+                    
+                    <label for="ScriptureMeaning">Content</label>
+                    <textarea type="textarea" name="ScriptureMeaning" id="ScriptureMeaning" required></textarea>
+
+                    
+                    <button type="submit">Update Scripture</button>
+                </form>
+            </div>
+
+
+            <div class="content-panel hidden" id="presidentMessage">
+                <h2>A word from El Presidente</h2>
+                <form action="" method="post" id="presidentWordForm">
+                    <img class="profilePic" src="https://placehold.co/300x200/282828/fff?text=New+Post+Image" alt="Profile Pic" id="Pic">
+                    
+                    <label for="uploadPic" style="margin-top: 1rem;">Upload Picture</label>
+                    <input type="file" name="Mypost" accept="image/*" id="uploadPic" required>
+
+                    <label for="name">Name</label>
+                    <input type="text" name="presidentName" id="presidentName" required>
+                
+                    <label for="message">Message</label>
+                    <textarea type="textarea" name="message" id="message" required></textarea>
+
+                    
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+
+            <!-- 2. Remarkable Event Form -->
+            <div class="content-panel hidden" id="remarkable">
+                <h2>Post a Remarkable Event</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <label for="titleEvent">Title</label>
+                    <input type="text" name="titleEvent" id="titleEvent" required>
+                    
+                    <label for="dateEvent">Date</label>
+                    <input type="date" name="dateEvent" id="dateEvent" required>
+                    
+                    <label for="pictureEvent">Picture</label>
+                    <input type="file" name="pictureEvent" accept="image/*" class="image-input" id="pictureEvent" required>
+                    
+                    <textarea name="describeEvent" placeholder="Give some description..." required></textarea>
+                    
+                    <button type="submit" name="submitRemark">Save Event</button>
+                </form>
+            </div>
+
+            <!-- 3. Annual Achievements Form -->
+            <div class="content-panel hidden" id="annual_achivements">
+                <h2>Annual Achievements</h2>
+                <form action="" method="post" id="yearForm" enctype="multipart/form-data">
+                    <div>
+                        <label for="year">Summarize the year (e.g., 2024)</label>
+                        <input type="text" name="year" id="year" required>
+                        <textarea name="yearContext" placeholder="Summary of the year's achievements..." required></textarea>
+                    </div>
+                    
+                    <div class="uploaded">
+                        <h3>Slideshow Pictures</h3>
+                        <table id="slide-images">
+                            <thead>
+                                <tr>
+                                    <th>Image File</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="file" name="pictureyear[]" accept="image/*" class="image-input" required></td>
+                                    <td><button type="button" class="delete-btn">Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" id="add-row-btn2">Add another image</button>
+                    </div>
+                    
+                    <button type="submit" name="submitAnnual">Save Annual Report</button>
+                </form>
+            </div>
+
+            <!-- 4. Picture Post Form -->
+            <div class="content-panel hidden" id="picture">
+                <div class="imageTable">
+                    <h2>List of Songs and Performance</h2>
+                    <table id="image-list">
+                        <thead>
+                            <tr>
+                                <th>Image Caption</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pictureTableBody">
+                            <tr>
+                                <td>shimo sezerano second adelin</td>
+                                <td>
+                                    <button type="button" class="edit-btn">Edit</button>
+                                    <button type="button" class="delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" id="add-row-btn4" class="primary-action-button">Post another Image</button>
+                </div>
+                
+                <form action="" method="" enctype="multipart/form-data" id="imagePostForm"  >
+                    <h2 id="pictureFormTitle">Post to the Gallery</h2>
+                    <!-- Placeholder image -->
+                    <img src="https://placehold.co/300x200/282828/fff?text=New+Post+Image" alt="Post Preview" id="Mypost2">
+                    
+                    <label for="imagePost" style="margin-top: 1rem;">Upload Picture</label>
+                    <input type="file" name="Mypost" accept="image/*" id="imagePost">
+
+                    <label for="ImageCaption">Image's Caption</label>
+                    <input type="text" name="ImageCaption" id="ImageCaption" required>
+                    <input type="number" name="pictureId" id="pictureId" class="hidden" >
+                    <input type="text" name="url" id="url" >
+                    
+                    <button type="submit" name="submitPost"  style="margin-top: 1.5rem;">Post to Gallery</button>
+                </form>
+            </div>
+
+            <!-- 5. Memories Form -->
+            <div class="content-panel hidden" id="memories">
+                <h2>Create a Memory Album</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <input type="text" name="memory_id" placeholder="The name of the memory (e.g., 'Mission Trip 2024')" required>
+                    <div class="uploaded">
+                        <h3>Memory Pictures</h3>
+                        <table id="memory-images">
+                            <thead>
+                                <tr>
+                                    <th>Image File</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="file" name="memories[]" accept="image/*" class="image-input" required></td>
+                                    <td><button type="button" class="delete-btn">Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="button" id="add-row-btn">Add another image</button>
+                    </div>
+                    
+                    <button type="submit" name="submitMemory">Post Memory Album</button>
+                </form>
+            </div>
+
+            <!-- 6. Updates/Story Form -->
+            <div class="content-panel hidden" id="updates">
+                <h2>Create a Story for Updates</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <label for="headline">Story Headline</label>
+                    <input type="text" name="headline" id="headline" required>
+                    
+                    <div style="text-align: center;">
+                        <!-- Placeholder image -->
+                        <img src="https://placehold.co/300x150/282828/fff?text=Update+Image" alt="Update Preview" id="Myupdate">
+                        <label for="updateImage" style="margin-top: 1rem;">Upload Cover Image</label>
+                        <input type="file" name="updateImage" accept="image/*" id="updateImage" required>
+                    </div>
+                    
+                    <div class="textarea">
+                        <label for="storyContext">Story Content</label>
+                        <textarea name="storyContext" id="storyContext" required></textarea>
+                    </div>
+                    
+                    <button type="submit" name="submitupdate">Post Update Story</button>
+                </form>
+            </div>
+
+            <!-- 7. Bethel Songs Form -->
+            <div class="content-panel hidden" id="bethel_songs">
+                <div class="songTable">
+                    <h2>List of Songs and Performance</h2>
+                    <table id="song-list">
+                        <thead>
+                            <tr>
+                                <th>Song Title</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>shimo sezerano second adelin</td>
+                                <td>
+                                    <button type="button" class="edit-btn">Edit</button>
+                                    <button type="button" class="delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" id="add-row-btn3">Add another Song</button>
+                </div>
+               
+                <form action="" method="post" id="SongForm">
+                    <h2 id="SongFormTitle"></h2>
+                    <label for="titleSong">Song Title</label>
+                    <input type="text" name="titleSong" id="titleSong" required>
+                    
+                    <label for="linkSong">Video/Audio Link (e.g., YouTube URL)</label>
+                    <input type="text" name="linkSong" id="linkSong" required>
+                    <input type="number" id="songId" class="hidden">
+                    <button type="submit" name="submitSong">Post Song</button>
+                </form>
+            </div>
+
+
+
+            <!-- 8. Service Body Form -->
+            <div class="content-panel hidden" id="servicesbody">
+                <h2>Post Sunday Service Details</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div style="text-align: center;">
+                        <!-- Placeholder image -->
+                        <img src="https://placehold.co/300x400/282828/fff?text=Service+Flyer" alt="Service Flyer Preview" id="Myupdate2">
+                        <label for="updateImage2" style="margin-top: 1rem;">Upload Service Flyer</label>
+                        <input type="file" name="flyer" accept="image/*" id="updateImage2" required>
+                    </div>
+                    
+                    <div class="service_form">
+                        <div>
+                            <label for="titleService">Title</label>
+                            <input type="text" name="titleService" id="titleService" required>
+                        </div>
+                        <div>
+                            <label for="themeService">Theme</label>
+                            <input type="text" name="themeService" id="themeService" required>
+                        </div>
+                        <div>
+                            <label for="BibleService">Bible Verse</label>
+                            <input type="text" name="BibleService" id="BibleService" placeholder="e.g., John 3:16" required>
+                        </div>
+                        <div>
+                            <label for="servicePresident">President</label>
+                            <input type="text" name="servicePresident" id="servicePresident" required>
+                        </div>
+                    </div>
+                    
+                    <div class="service_songs" id="service_songs">
+                        <label for="">Service Songs (To be dynamically added/managed)</label>
+                        <textarea placeholder="List songs here..."></textarea>
+                    </div>
+                    
+                    <button type="submit" name="servicePost">Post Service Details</button>
+                </form> 
+            </div>
+            
+            <div class="message-box-overlay" id="messageBoxOverlay"></div>
+            <div class="message-box" id="messageBox">
+              <h4 id="messageBoxTitle"></h4>
+              <p id="messageBoxContent"></p>
+              <div class="message-box-buttons">
+                   <button class="form-button" id="messageBoxConfirmBtn">OK</button>
+                   <button class="form-button" id="messageBoxCancelBtn" style="display: none;">Cancel</button>
+               </div>
+            </div>
+            <div id="image-viewer" class="hidden">
+                <img id="viewer-image" src="" alt="Viewer Image" class="rounded-md">
+            </div>
+        </section>
+    </div>
+
+<script type="module" src="javascript/dashboard.js"></script>
+
+</body>
+</html>

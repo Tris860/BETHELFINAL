@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bethel Family Choir | Home</title>
+    <link rel="stylesheet" href="css/index.css">
+    <!-- Google Fonts: Playfair Display for headings, Inter for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght=300;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+         <link rel="shortcut icon" href="media/icons/IMG-20240712-WA0019.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+</head>
+<body>
+    
+    
+    <!-- 1. Header and Hero Slider Section -->
+    <section class="relative" id="header">
+        
+        <!-- Background Image Slider -->
+        <div class="slider-area" id="image">
+            <div class="slider active">
+                <img class="w-full h-full object-cover" src="media/placeholders/2100914c-293b-42ad-9824-7773055685e9.png" alt="Bethel Choir in performance">
+            </div>
+            <div class="slider">
+                <img class="w-full h-full object-cover" src="media/placeholders/2024_2025.jpeg" alt="Worship moment in the church" >
+            </div>
+            <div class="slider">
+                <img class="w-full h-full object-cover" src="media/placeholders/14d40086-59fc-4512-b057-2da8a873a4de.png" alt="Group photo of Bethel members" >
+            </div>
+            <div class="slider">
+                <img class="w-full h-full object-cover" src="media/placeholders/IMG-20240409-WA0004.jpg" alt="Group photo of Bethel members" >
+            </div>
+        </div>
+        
+        <!-- Semi-Transparent Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Navbar (Fixed and Aligned) -->
+        <div id="navbar">
+            <div class="nav-container">
+                
+                <!-- Logo -->
+                <div class="logo-area">
+                    <img src="media/icons/IMG-20240712-WA0019.jpg" alt="Bethel Logo">
+                    <h2><span class="goldenSpan">BETHEL</span> FAMILY <span class="goldenSpan">CHIOR</span></h2>
+                </div>
+
+                <!-- Navigation Links (Desktop) -->
+                <nav id="navigation-desktop">
+                    <a href="index.html" class="nav-button">Home</a>
+                    <a href="websections/service.html" class="nav-link">Service</a>
+                    <a href="websections/gallery.html" class="nav-link">Gallery</a>
+                    <a href="websections/history.html" class="nav-link">History</a>
+                    <a href="websections/about.html" class="nav-link">About us</a>
+                </nav>
+
+                <!-- Nav Trigger (Mobile) -->
+                <div class="nav-trigger">
+                    <button id="nav-open-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <nav id="navigation" class="close">
+            <div>
+                <div class="mobile-nav-header">
+                    <span>Menubar</span>
+                    <button id="nav-close-btn">&times;</button>
+                </div>
+                <ul>
+                    <li id="mobile-active"><a href="index.html">Home</a></li>
+                    <li><a href="websections/service.html">Service</a></li>
+                    <li><a href="websections/gallery.html">Gallery</a></li>
+                    <li><a href="websections/history.html">History</a></li>
+                    <li><a href="websections/about.html">About us</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Hero Content -->
+        <div class="hero-content" >
+            <div>
+                <h1>
+                    BETHEL <span>FAMILY CHOIR</span>, THE HOLY  <span>GATES OF HEAVEN</span>
+                </h1>
+                <p>
+                    A Foundation Built on Truth, Love, and Unity.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Main Content Sections -->
+    <section class="content">
+        
+        <!-- Bible Verse -->
+        <div class="bible-verse">
+            <h2>Scripture of the Day</h2>
+            <div class="bible_cont">
+              <h3><i class="fas fa-bible goldenSpan"></i> 2 John 3:2-4</h3>
+              <p>Grace be with you, mercy, and peace, from God the Father, and from the Lord Jesus Christ,
+                 the Son of the Father, in truth and love. 4 I rejoiced greatly
+                 that I found of thy children walking in truth, as we have received a commandment from the Father.</p>
+            </div>
+        </div>
+        
+        <!-- Gallery -->
+        <div class="gallery" id="gallery">
+            <h2>Bethel Gallery Highlights</h2>
+            <div id="gallery_holder">
+                <!-- Mock Gallery Items -->
+                <div class="gallery_item"><img src="media/placeholders/IMG-20250410-WA0028.jpg" alt="Choir Performance"></div>
+                <div class="gallery_item"><img src="media/placeholders/IMG-20250403-WA0006.jpg" alt="Worship Night"></div>
+                <div class="gallery_item"><img src="media/placeholders/0ddf7e55-3c13-457e-82bb-9763d652839a.png" alt="Group Photo"></div>
+                <div class="gallery_item"><img src="media//placeholders/2100914c-293b-42ad-9824-7773055685e9.png" alt="Rehearsal Session"></div>
+            </div>
+        </div>
+        
+        <!-- Services -->
+        <div class="services">
+            <h2>Sunday Service</h2>
+            <div class="service_cont" id="service_cont">
+                <!-- Mock Service Cards -->
+                <div class="service_card">
+                    <i class="fas fa-church"></i>
+                    <h3>Main Worship</h3>
+                    <p>Join us every Sunday morning for our main service and musical ministry.</p>
+                </div>
+                <div class="service_card">
+                    <i class="fas fa-cross"></i>
+                    <h3>Communion</h3>
+                    <p>First Sunday of the month, we gather for the holy communion service.</p>
+                </div>
+                <div class="service_card">
+                    <i class="fas fa-hands-praying"></i>
+                    <h3>Prayer Watch</h3>
+                    <p>Mid-week virtual and in-person prayer session for all members and friends.</p>
+                </div>
+            </div>
+        </div>
+        <div class="Message">
+            <h2>A word from El Presidente</h2>
+            <div class="msg">
+                <div class="profilePic">
+                   <img src="media/placeholders/IMG-20240411-WA0004.jpg" alt="The president">
+                </div>
+                <div class="msg_cont">
+                  <h3>El Presidente <span>KWIZERA Clever</span></h3>
+                  <p>
+                    Welcome to the Bethel Choir family,
+                     a ministry rooted in worship and service to our Lord Jesus Christ. As the Psalmist declares,
+                      “Sing to the Lord a new song; sing to the Lord, all the earth” (Psalm 96:1),
+                       we are committed to lifting our voices in praise, spreading the gospel through music,
+                        and nurturing spiritual growth among our members and community. Guided by Colossians 3:16,
+                         which reminds us to let the message of Christ dwell richly among us through psalms, hymns, and songs
+                          from the Spirit, our mission is to glorify God, inspire hearts, and build a fellowship where faith and music unite. May this platform be a place of encouragement, joy,
+                     and a reminder that “Let everything that has breath praise the Lord” (Psalm 150:6).
+                  </p>
+                </div>
+            </div>
+        </div>
+        <!-- Mission & Vision -->
+        <div class="about_us">
+            <div class="mission">
+                <h3><i class="fas fa-bullseye oliveSpan" ></i> Mission</h3>
+                <p>To glorify God through the art of singing and music, spreading the message of salvation, and encouraging believers in their faith through powerful and heartfelt performances.</p>
+            </div>
+            <div class="vision ">
+                <h3><i class="fas fa-lightbulb oliveSpan"></i> Vision</h3>
+                <p>To be a leading voice in Christian worship across Rwanda and beyond, known for excellence, unity, and deep spiritual impact, fostering a generation of worshippers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Footer Section -->
+    <section class="footer">
+        <div class="container">
+            
+            <!-- Sections Nav -->
+            <div class="nav_2">
+                <h3>Sections</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="websections/service.html">Service</a></li>
+                    <li><a href="websections/gallery.html">Gallery</a></li>
+                    <li><a href="websections/updates.html">Updates</a></li>
+                    <li><a href="websections/history.html">History</a></li>
+                    <li><a href="websections/about.html">About us</a></li>
+                </ul>
+            </div> 
+        
+            <!-- Contacts -->
+            <div class="contacts">
+                <h3>Contact us</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i>EmailBethelfamilychoir</li>
+                    <li><i class="fab fa-instagram"></i>IG: @Bethelfamilychoir</li>
+                    <li><i class="fab fa-facebook-f"></i>Facebook: Bethelfamilychoir</li>
+                    <li><i class="fab fa-threads"></i>Threads: @Bethelfamilychoir</li>
+                    <li><i class="fab fa-twitter"></i>X: @Bethelfamilychoir</li>
+                    <li><i class="fas fa-phone-alt"></i>tel: +250 780 000 0000</li>
+                </ul>
+            </div> 
+            
+            <!-- Placeholder for social links/etc. -->
+            <div>
+                 <h3>Follow Us</h3>
+                 <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                    <a href="#"><i class="fab fa-youtube goldenSpan"></i></a>
+                    <a href="#"><i class="fab fa-spotify goldenSpan"></i></a>
+                    <a href="#"><i class="fab fa-tiktok goldenSpan"></i></a>
+                 </div>
+                 <p class="oliveSpan">Click the links above to stream our latest music and videos!</p>
+            </div>
+
+            <!-- Copyrights (placed using grid column span) -->
+            <div class="copyrights">
+                <center>
+                    <p class="copy"> &copy;copyrighted by <a href="admin/login.html" class="title3">Bethel Family Choir</a> Indatwa n' Inkesha @2024</p>
+                </center>
+                <center>
+                    <p>Developed by <a href="tristechhub.org.rw"><span class="company" >Tris Tech Hub</span></a></p>
+                </center>
+            </div>
+        </div>    
+    </section>
+    <script src="javascript/main.js"></script>
+    <script src="javascript/home.js"></script>
+</body>
+</html>

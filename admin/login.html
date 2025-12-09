@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  <link rel="icon" type="image/icon" href="../media/icons/icon.png">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bethel Login page</title>
+	<link rel="stylesheet" type="text/css" href="login.css">
+</head>
+<body>
+<div class="wrapper">
+   <div class="login_head">
+      <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="" sizes="" srcset="">
+      <div class="title">
+        <h1>Bethel </h1>
+      </div>
+   </div>
+    <section class="form signup"> 
+      <header>Log in B-Studio</header>
+      <form  id="adminLoginForm" autocomplete="off">
+        <div class="error-text"></div>
+        <div class="field input">
+          <label>Email Address</label>
+          <input type="email" name="email" id="modalEmail" placeholder="Enter your email" required>
+        </div>
+        <div class="field input">
+          <div class="password-field">
+          <label>Password</label>
+          <input type="password" name="password" id="modalPassword" placeholder="Enter new password" required>
+          <i id="toggler" class="fas fa-eye"></i>
+        </div>
+        </div>
+        <div id="error">
+          <p id="errMsg">Enable to login</p>
+        </div>
+        <div class="field button">
+          <input type="submit" value="Log in">
+  
+        </div>
+      </form>
+    
+      <div class="copyrights">
+        <center><p class="copy"> &copy;copyrighted by <a href="../index.html" style="text-decoration:none;"><span class="title3">Bethel Family Choir</span></a> Indatwa n' Inkesha @2024</p></center>
+        <center><p>Developed by <span class="company">Tris</span> Incorportions</p></center>
+     </div> 
+    </section>
+  </div>
+  <script src="javascript/login.js"></script>
+</body>
+</html>
