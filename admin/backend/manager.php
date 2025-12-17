@@ -590,11 +590,619 @@ class Manager {
         }
     }
 
-    
+    public  function getSlideshowImages($id): array {
+        $sql = "SELECT * FROM pictures WHERE slideshow = ? ORDER BY id DESC LIMIT 5";
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt === false) {
+            throw new mysqli_sql_exception("Failed to prepare statement for fetching slideshow images: " . $this->conn->error);
+        } else {
+            $stmt->bind_param("i", $id);
+            if (!$stmt->execute()) {
+                throw new mysqli_sql_exception("Failed to execute statement for fetching slideshow images: " . $stmt->error);
+            }
+            $result = $stmt->get_result();
+            $images = [];
+            while ($row = $result->fetch_assoc()) {
+                $images[] = $row;
+            }
+            $result->free();
+            $stmt->close();
+            return $images;
+        }      
+    }
+    public function updateSlideshowImage(int $id, int $status) {
+    // Convert boolean to integer (true → 1, false → 0)
+    $slideshowValue = $status ;
 
+    // Prepare query
+    $update_query = "UPDATE pictures SET slideshow = ? WHERE id = ?";
+    $stmt = $this->conn->prepare($update_query);
 
+    if (!$stmt) {
+        return [
+            "success" => false,
+            "message" => "Failed to prepare statement: " . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("ii", $slideshowValue, $id);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Query execution failed: " . $stmt->error
+        ];
+    }
+
+    // Check if any row was actually updated
+    if ($stmt->affected_rows === 0) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "No rows updated. Possibly invalid ID."
+        ];
+    }
+
+    $stmt->close();
+
+    return [
+        "success" => true,
+        "message" => "Slideshow image status updated successfully."
+    ];
 }
 
 
+    public function addCommittee(array $data) {
+       $this->conn->begin_transaction();
 
+        try {
+          // Step 1: Insert into bethelcommitte
+           $stmt = $this->conn->prepare("INSERT INTO bethelcommitte (era, ecree, picture) VALUES (?, ?, ?)");
+           $stmt->bind_param("sss", $data['period'], $data['ecree'], $data['picture_url']);
+           if (!$stmt->execute()) {
+              throw new Exception("Failed to add committee: " . $stmt->error);
+           }
+           $commit_id = $this->conn->insert_id;
+           $stmt->close();
+ 
+           // Step 2: Insert members
+           $memberStmt = $this->conn->prepare("INSERT INTO bethelcommittemember (commit_id, names, post) VALUES (?, ?, ?)");
+           foreach ($data['members'] as $member) {
+               $memberStmt->bind_param("iss", $commit_id, $member['name'], $member['post']);
+               if (!$memberStmt->execute()) {
+                  throw new Exception("Failed to add member: " . $memberStmt->error);
+                }
+            }
+           $memberStmt->close();
+
+           // All good — commit
+           $this->conn->commit();
+           return [
+              "success" => true,
+              "message" => "Committee and members added successfully!",
+              "commit_id" => $commit_id
+            ];
+        } catch (Exception $e) {
+           // Something went wrong — rollback
+           $this->conn->rollback();
+           error_log($e->getMessage());
+           return [
+              "success" => false,
+              "message" => $e->getMessage()
+            ];
+        }
+    }
+    public function getCommittee(int $id): ?array {
+      // Step 1: Fetch committee details
+      $sql = "SELECT * FROM bethelcommitte WHERE commit_id = ?";
+      $stmt = $this->conn->prepare($sql);
+      if ($stmt === false) {
+          throw new mysqli_sql_exception("Failed to prepare statement for fetching committee: " . $this->conn->error);
+      }
+      $stmt->bind_param("i", $id);
+      if (!$stmt->execute()) {
+          throw new mysqli_sql_exception("Failed to execute statement for fetching committee: " . $stmt->error);
+       }
+      $result = $stmt->get_result();
+      $committee = $result->fetch_assoc();
+      $stmt->close();
+
+      if (!$committee) {
+          return null; // No committee found
+      }
+
+      // Step 2: Fetch members linked to this committee
+      $sqlMembers = "SELECT * FROM bethelcommittemember WHERE commit_id = ?";
+      $stmtMembers = $this->conn->prepare($sqlMembers);
+      if ($stmtMembers === false) {
+          throw new mysqli_sql_exception("Failed to prepare statement for fetching members: " . $this->conn->error);
+      }
+      $stmtMembers->bind_param("i", $id);
+      if (!$stmtMembers->execute()) {
+          throw new mysqli_sql_exception("Failed to execute statement for fetching members: " . $stmtMembers->error);
+      }
+      $resultMembers = $stmtMembers->get_result();
+      $members = [];
+      while ($row = $resultMembers->fetch_assoc()) {
+          $members[] = $row;
+      }
+      $stmtMembers->close();
+
+      // Step 3: Combine committee + members
+      $committee['members'] = $members;
+
+      return $committee;
+   }
+   public function getCommittEra(){
+        $sql = "SELECT DISTINCT * FROM bethelcommitte ORDER BY era DESC";
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt === false) {
+            throw new mysqli_sql_exception("Failed to prepare statement for fetching committee eras: " . $this->conn->error);
+        }
+        if (!$stmt->execute()) {
+            throw new mysqli_sql_exception("Failed to execute statement for fetching committee eras: " . $stmt->error);
+        }
+        $result = $stmt->get_result();
+        $eras =[];
+        while ($row = $result->fetch_assoc()) {
+            $eras[] = $row;
+        }
+        $result->free();
+        $stmt->close();
+        return $eras;
+   }
+   public function deleteCommittee(int $id) {
+      $this->conn->begin_transaction();
+
+      try {
+          // Step 1: Delete members
+          $stmtMembers = $this->conn->prepare("DELETE FROM bethelcommittemember WHERE commit_id = ?");
+          $stmtMembers->bind_param("i", $id);
+          if (!$stmtMembers->execute()) {
+              throw new Exception("Failed to delete members: " . $stmtMembers->error);
+          }
+          $stmtMembers->close();
+
+          // Step 2: Delete committee
+          $stmtCommittee = $this->conn->prepare("DELETE FROM bethelcommitte WHERE commit_id = ?");
+          $stmtCommittee->bind_param("i", $id);
+          if (!$stmtCommittee->execute()) {
+              throw new Exception("Failed to delete committee: " . $stmtCommittee->error);
+          }
+          $stmtCommittee->close();
+
+          // All good — commit
+          $this->conn->commit();
+          return [
+              "success" => true,
+              "message" => "Committee and its members deleted successfully!"
+          ];
+      } catch (Exception $e) {
+          // Something went wrong — rollback
+          $this->conn->rollback();
+          error_log($e->getMessage());
+          return [
+              "success" => false,
+              "message" => $e->getMessage()
+          ];
+      } 
+    }
+
+    public function updateCommittee(int $id, array $data) {
+        if(isset($data['picture_url'])==false){
+            $data['picture_url']=$data['url'];
+        }
+    try {
+        $this->conn->begin_transaction();
+
+        // Step 1: Update committee details
+        $update_query = "UPDATE bethelcommitte SET era = ?, ecree = ?, picture = ? WHERE commit_id = ?";
+        $stmt = $this->conn->prepare($update_query);
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->conn->error);
+        }
+        $stmt->bind_param("sssi", $data['period'], $data['ecree'], $data['picture_url'], $id);
+        if (!$stmt->execute()) {
+            throw new Exception("Committee update failed: " . $stmt->error);
+        }
+        $stmt->close();
+
+        // Step 2: Delete existing members
+        $delete_query = "DELETE FROM bethelcommittemember WHERE commit_id = ?";
+        $deleteStmt = $this->conn->prepare($delete_query);
+        if (!$deleteStmt) {
+            throw new Exception("Prepare failed for member deletion: " . $this->conn->error);
+        }
+        $deleteStmt->bind_param("i", $id);
+        if (!$deleteStmt->execute()) {
+            throw new Exception("Member deletion failed: " . $deleteStmt->error);
+        }
+        $deleteStmt->close();
+
+        // Step 3: Insert new members
+        $insert_query = "INSERT INTO bethelcommittemember (commit_id, names, post) VALUES (?, ?, ?)";
+        $insertStmt = $this->conn->prepare($insert_query);
+        if (!$insertStmt) {
+            throw new Exception("Prepare failed for member insertion: " . $this->conn->error);
+        }
+
+        foreach ($data['members'] as $member) {
+            $insertStmt->bind_param("iss", $id, $member['name'], $member['post']);
+            if (!$insertStmt->execute()) {
+                throw new Exception("Member insert failed: " . $insertStmt->error);
+            }
+        }
+        $insertStmt->close();
+
+        $this->conn->commit();
+        return ['success' => true, 'message' => 'Committee and members updated successfully.'];
+    } catch (Exception $e) {
+        $this->conn->rollback();
+        error_log("Update Committee error for {$id}: " . $e->getMessage());
+        return ['success' => false, 'message' => $e->getMessage()." **** ".'An error occurred while updating the committee and its members'];
+    }
+}
+  public function getAnnualAchievements(int $id = null): ?array {
+    if ($id === null) {
+        // Fetch all achievements
+        $sql = "SELECT * FROM annualachievements";
+        $stmt = $this->conn->prepare($sql);
+
+        if ($stmt === false) {
+            return [
+                "success" => false,
+                "message" => "Failed to prepare statement: " . $this->conn->error,
+                "data"    => null
+            ];
+        }
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            return [
+                "success" => false,
+                "message" => "Query execution failed: " . $stmt->error,
+                "data"    => null
+            ];
+        }
+
+        $result = $stmt->get_result();
+        $achievements = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        if (empty($achievements)) {
+            return [
+                "success" => false,
+                "message" => "No achievements found.",
+                "data"    => null
+            ];
+        }
+
+        return [
+            "success" => true,
+            "message" => "Achievements retrieved successfully.",
+            "data"    => $achievements
+        ];
+    } else {
+        // Fetch single achievement by ID
+        $sql = "SELECT * FROM annualachievements WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if ($stmt === false) {
+            return [
+                "success" => false,
+                "message" => "Failed to prepare statement: " . $this->conn->error,
+                "data"    => null
+            ];
+        }
+
+        $stmt->bind_param("i", $id);
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            return [
+                "success" => false,
+                "message" => "Query execution failed: " . $stmt->error,
+                "data"    => null
+            ];
+        }
+
+        $result = $stmt->get_result();
+        $achievement = $result->fetch_assoc();
+
+        $stmt->close();
+
+        if (!$achievement) {
+            return [
+                "success" => false,
+                "message" => "No achievement found for ID: $id",
+                "data"    => null
+            ];
+        }
+
+        return [
+            "success" => true,
+            "message" => "Achievement retrieved successfully.",
+            "data"    => $achievement
+        ];
+    }
+}
+public function addAnnualAchievement(array $data): array {
+    // Validate required fields
+    if (!isset($data['year']) || !isset($data['context'])) {
+        return [
+            "success" => false,
+            "message" => "Missing required fields: year and summary."
+        ];
+    }
+
+    $year = trim($data['year']);
+    $summary = $data['context'];
+
+    // Check for duplicate year
+    $check_query = "SELECT id FROM annualachievements WHERE year = ?";
+    $stmt = $this->conn->prepare($check_query);
+
+    if ($stmt === false) {
+        return [
+            "success" => false,
+            "message" => "Failed to prepare duplicate check: " . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("s", $year);
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Failed to execute duplicate check: " . $stmt->error
+        ];
+    }
+
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "An achievement for year '$year' already exists."
+        ];
+    }
+    $stmt->close();
+
+    // Insert new achievement
+    $insert_query = "INSERT INTO annualachievements (year, summary) VALUES (?, ?)";
+    $stmt = $this->conn->prepare($insert_query);
+
+    if ($stmt === false) {
+        return [
+            "success" => false,
+            "message" => "Failed to prepare insert statement: " . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("ss", $year, $summary);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Failed to insert achievement: " . $stmt->error
+        ];
+    }
+
+    $stmt->close();
+
+    return [
+        "success" => true,
+        "message" => "Achievement for year '$year' added successfully."
+    ];
+}
+
+public function updateAnnualAchievement(array $data): array {
+    // Validate required fields
+    if (!isset($data['yearId']) || !isset($data['year']) || !isset($data['context'])) {
+        return [
+            "success" => false,
+            "message" => "Missing required Data"
+        ];
+    }
+
+    $id = (int)$data['yearId'];
+    $year = trim($data['year']);
+    $summary = $data['context'];
+
+    // Check if the new year already exists for a different ID
+    $check_query = "SELECT id FROM annualachievements WHERE year = ? AND id != ?";
+    $stmt = $this->conn->prepare($check_query);
+
+    if ($stmt === false) {
+        return [
+            "success" => false,
+            "message" => "Failed to prepare duplicate check: " . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("si", $year, $id);
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Failed to execute duplicate check: " . $stmt->error
+        ];
+    }
+
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        // Another record (different ID) already has this year
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Another achievement already uses the year '$year'."
+        ];
+    }
+    $stmt->close();
+
+    // Proceed with update (same year allowed if it's the same ID)
+    $update_query = "UPDATE annualachievements SET year = ?, summary = ? WHERE id = ?";
+    $stmt = $this->conn->prepare($update_query);
+
+    if ($stmt === false) {
+        return [
+            "success" => false,
+            "message" => "Failed to prepare update statement: " . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("ssi", $year, $summary, $id);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Failed to update achievement: " . $stmt->error
+        ];
+    }
+
+    if ($stmt->affected_rows === 0) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "No changes made. Either ID not found or data is identical."
+        ];
+    }
+
+    $stmt->close();
+
+    return [
+        "success" => true,
+        "message" => "Achievement updated successfully for ID $id."
+    ];
+}
+
+public function deleteAnnualAchievement(int $id): array {
+    // First check if the achievement exists
+    $check_query = "SELECT id FROM annualachievements WHERE id = ?";
+    $stmt = $this->conn->prepare($check_query);
+
+    if ($stmt === false) {
+        return [
+            "success" => false,
+            "message" => "Failed to prepare existence check: " . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("i", $id);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Failed to execute existence check: " . $stmt->error
+        ];
+    }
+
+    $result = $stmt->get_result();
+    if ($result->num_rows === 0) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "No achievement found with ID $id."
+        ];
+    }
+    $stmt->close();
+
+    // Proceed with deletion
+    $delete_query = "DELETE FROM annualachievements WHERE id = ?";
+    $stmt = $this->conn->prepare($delete_query);
+
+    if ($stmt === false) {
+        return [
+            "success" => false,
+            "message" => "Failed to prepare delete statement: " . $this->conn->error
+        ];
+    }
+
+    $stmt->bind_param("i", $id);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "Failed to delete achievement: " . $stmt->error
+        ];
+    }
+
+    if ($stmt->affected_rows === 0) {
+        $stmt->close();
+        return [
+            "success" => false,
+            "message" => "No rows deleted. Possibly invalid ID."
+        ];
+    }
+
+    $stmt->close();
+
+    return [
+        "success" => true,
+        "message" => "Achievement with ID $id deleted successfully."
+    ];
+}
+    public function getFlyer(){
+        $sql = "SELECT * FROM flyer";
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt === false) {
+            throw new mysqli_sql_exception("Failed to prepare statement for fetching flyer: " . $this->conn->error);
+        }
+        if (!$stmt->execute()) {
+            throw new mysqli_sql_exception("Failed to execute statement for fetching flyer: " . $stmt->error);
+        }
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $result->free();
+        $stmt->close();
+        return $row;
+   }
+   public function updateFlyer(array $data){
+    //    $data["status"] = $data["status"] === '0' ?;
+        try {
+            if(isset($data['featured_image_url'])){
+              $update_query = "UPDATE flyer SET link = ? ,status = ?  WHERE id = 1";
+              $stmt = $this->conn->prepare($update_query);
+              if (!$stmt) {
+                  throw new Exception("Prepare failed: " . $this->conn->error);
+               }
+               $stmt->bind_param("si",$data['featured_image_url'],$data["status"]);
+               $stmt->execute();
+               if ($stmt->affected_rows === 1) {
+                    return ['success' => true, 'message' => 'Flyer updated successfully.'];
+                } else {
+                   // This might happen if the user doesn't exist or no change was made
+                  return ['success' => false, 'message' => $data['message'].'Failed to update the flyer'];
+                }
+            }
+            else{
+                $update_query = "UPDATE flyer SET status = ?  WHERE id = 1";
+                $stmt = $this->conn->prepare($update_query);
+                if (!$stmt) {
+                    throw new Exception("Prepare failed: " . $this->conn->error);
+                 }
+                $stmt->bind_param("i", $data['status']);
+                $stmt->execute();
+
+                if ($stmt->affected_rows === 1) {
+                    return ['success' => true, 'message' => 'Flyer updated successfully.'];
+                } else {
+                   // This might happen if the user doesn't exist or no change was made
+                  return ['success' => false, 'message' => $data['message'].'Failed to update the flyer'];
+                }
+            }
+            
+            
+        } catch (Exception $e) {
+            error_log("Update  error : " . $e->getMessage());
+            return ['success' => false, 'message' => 'An error occurred while updating the word from the President'];
+        }
+    }
+}
 ?>

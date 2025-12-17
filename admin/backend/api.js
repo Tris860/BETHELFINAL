@@ -60,7 +60,7 @@ function showMessageBox(title, message, isConfirm = false) {
             }
         } catch (error) {
             console.error(`Error fetching ${resource}:`, error);
-            showMessageBox('Error', `Failed to load ${resource}: ${error.message}. Please ensure your PHP server is running and the Endpoint.php file is accessible at ${API_BASE_URL}.`);
+            showMessageBox('Error', `Failed to load ${resource}: ${error.message}. Please ensure your PHP server is running and the main.php file is accessible at ${API_BASE_URL}.`);
             return []; // Return empty array on error for lists
         }
     }
@@ -70,8 +70,9 @@ function showMessageBox(title, message, isConfirm = false) {
                 method: 'POST',
                 body: payload,
             });
-          /*   const rawText = await response.text();
-         let data;
+            /* const rawText = await response.text();
+            let data;
+            console.log('Raw response text:', rawText);
         try {
              data = JSON.parse(rawText);
          } catch (jsonError) {

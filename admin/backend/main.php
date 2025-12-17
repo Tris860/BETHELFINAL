@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\type;
+
 session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -40,6 +43,15 @@ function uploadImage($files) {
     }
 }
 
+function hasUploadedFile(string $key): bool {
+    return isset($_FILES[$key])
+        && !empty($_FILES[$key]['name'])
+        && $_FILES[$key]['error'] === UPLOAD_ERR_OK
+        && !empty($_FILES[$key]['tmp_name'])
+        && is_uploaded_file($_FILES[$key]['tmp_name'])
+        && ($_FILES[$key]['size'] ?? 0) > 0;
+}
+
 
 // Handle preflight OPTIONS request (important for CORS)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -53,7 +65,7 @@ require_once 'manager.php'; // Make sure this path is correct
 // Database connection details
 $servername = "localhost";
 $username = "root";
-$password = "shimo@123flex"; // Your actual password
+$password = ""; // Your actual password
 $dbname = "bethelfinal"; // Your actual database name
 
 $conn = null; // Initialize connection variable
@@ -191,12 +203,162 @@ try {
                     $data['caption']=$_POST['caption'];
                     $data['url']=$_POST['url'];
                     $file_uploaded = isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK;
-                                     ljikjio             
+                    $response = ["success" => false, "message" => "Successfully ".$data['caption']." ".$data['url']." ".$file_uploaded];
+                    if( isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
+                        // Handle image upload
+                        $uploadResult = uploadImage($_FILES);
+                        if (!$uploadResult['success']) {
+                            http_response_code(400); // Bad Request
+                            $response = $uploadResult; // Return the error message from uploadImage
+                            break;
+                         }
+                        // Add the image URL to the form data
+                        $data['featured_image_url']= $uploadResult['image_url'];
+                    }
+                    // $response = ["success" => false, "message" => "Successfully ".$data['caption']." ".$data['url']." ".$file_uploaded." "];
+                    if(isset($_POST['pictureId']) && !empty($_POST['pictureId'])) {
+                        // Update existing picture
+                        $pictureId = intval($_POST['pictureId']);
+                        $response = $actionManager->updatePicture($pictureId, $data);
+                    } else {
+                        // Add new picture
+                        $response = $actionManager->addPicture($data);
+                    }
                     
                 }
                 elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
                     // Handle DELETE request for deleting an event
                     $response = $actionManager->deletePicture(intval($_GET['id']));
+                }
+            break;
+            case 'Slideshow':
+                if($_SERVER["REQUEST_METHOD"] === "GET") {
+                    //$response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getSlideshowImages()];
+                } 
+                else if($_SERVER["REQUEST_METHOD"] === "POST") {
+                    $id=$_POST["imageId"] ?? null;
+                    $status=$_POST["status"] ?? null;
+                    if($status == "false")
+                       $status = 0;
+                    else
+                       $status =1;
+                    //$response = ["success" => false, "message" => "Successfully retrieved"." ".gettype($id)." ".gettype($status)];
+                    $response = $actionManager->updateSlideshowImage($id, $status);
+                }
+            break;
+            case 'Committee':
+               if ($_SERVER["REQUEST_METHOD"] === "GET") {
+                //  $response = ["success" => true, "message" => "Successfully retrieved", "data" => ["shimo" => $actionManager->getCommittEra()]];
+
+                  // Example retrieval
+                  if(isset($_GET['id']) && !empty($_GET['id'])){
+                    $committeeId = intval($_GET['id']);
+                    $response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getCommittee($committeeId)];
+                
+                  }else{
+                    $response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getCommittEra()];
+                   
+                  }
+                
+                 } 
+                else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                  $data = [];
+
+                  // Build members array from names[] and posts[]
+                  $members = [];
+                  if (isset($_POST['names']) && isset($_POST['posts'])) {
+                      $names = $_POST['names'];
+                      $posts = $_POST['posts'];
+
+                      for ($i = 0; $i < count($names); $i++) {
+                          $members[] = [
+                             "name" => $names[$i],
+                             "post" => $posts[$i]
+                          ];
+                        }
+                     }
+                   $data['members'] = $members;
+
+                   // Other fields
+                  $data['ecree'] = $_POST['ecree'] ?? '';
+                  $data['period'] = $_POST['period'] ?? '';
+                  $data['url'] = $_POST['url'] ?? '';
+
+                  // Handle image upload
+                 if (hasUploadedFile('featured_image')) {
+                     $uploadResult = uploadImage($_FILES);
+                     if (!$uploadResult['success']) {
+                         http_response_code(400); // Bad Request
+                         $response = $uploadResult; // Return the error message from uploadImage
+                        break;
+                     }
+                   $data['picture_url'] = $uploadResult['image_url'];
+                 }
+                if (isset($_POST['commit_id']) && !empty($_POST['commit_id'])) {
+                    // Update existing committee
+                    $committeeId = intval($_POST['commit_id']);
+                    $response = $actionManager->updateCommittee($committeeId, $data);
+                } else {
+                 // Save/update committee
+                $response = $actionManager->addCommittee($data);
+                }
+               }
+              else if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
+                // Handle DELETE request for deleting a committee
+                $response = $actionManager->deleteCommittee(intval($_GET['id']));
+              }
+            break;
+            case 'AnnualAchievement':
+                 if ($_SERVER["REQUEST_METHOD"] === "GET") {
+                    // Example retrieval
+                    if(isset($_GET['id']) && !empty($_GET['id'])){
+                      $yearId = intval($_GET['id']);
+                      $response =  $actionManager->getAnnualAchievements($yearId);
+                  
+                    }else{
+                      $response =  $actionManager->getAnnualAchievements();
+                    }
+                   } 
+                  else if ($_SERVER["REQUEST_METHOD"] === "POST") {
+                    $data = [];
+                    $data['year'] = $_POST['year'] ?? '';
+                    $data['context'] = $_POST['yearContext'] ?? '';
+
+                    if (isset($_POST['yearId']) && !empty($_POST['yearId'])) {
+                        // Update existing achievement
+                        $data["yearId"] = intval($_POST['yearId']);
+                        //$response =["success" => false, "message" => "Update Annual Achievement ".$data["yearId"]." ".$data['year']." ".$data['context']];
+                        $response = $actionManager->updateAnnualAchievement($data);
+                    } else {
+                       $response = $actionManager->addAnnualAchievement($data);
+                    }
+                   }
+                  else if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
+                    // Handle DELETE request for deleting an achievement
+                    $response = $actionManager->deleteAnnualAchievement(intval($_GET['id']));
+                  }
+            break;
+            case 'flyer':
+            
+               if($_SERVER["REQUEST_METHOD"] === "POST"){
+                $data =[];
+                $data["status"]=intval($_POST["status"]) ?? "";
+                    if(hasUploadedFile('featured_image')) {
+                        // Handle image upload
+                        $uploadResult = uploadImage($_FILES);
+                        if (!$uploadResult['success']) {
+                            http_response_code(400); // Bad Request
+                            $response = $uploadResult; // Return the error message from uploadImage
+                            break;
+                         }
+                        // Add the image URL to the form data
+                        $data['featured_image_url']= $uploadResult['image_url'];
+                    }
+                    $response=$actionManager->updateFlyer($data);
+                   // $response =["success" => false ,"message" => " ".$data["status"]." ".gettype(($data["status"]))];
+                }
+                elseif($_SERVER["REQUEST_METHOD"] === "GET"){
+                    $response =["success"=>true , "data" => $actionManager->getFlyer()];
                 }
             break;
             default:

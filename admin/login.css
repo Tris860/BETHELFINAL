@@ -3,6 +3,7 @@
     margin:0;
   }
 */
+  
   @media screen and (max-width:480px){
     body{
         background-color:black;
@@ -11,7 +12,7 @@
         justify-content: center;
         flex-direction: column;
         align-content: center; 
-        background: url("../media/IMG-20250403-WA0030.jpg");       
+        background: url("../media/placeholders/2024_2025.jpeg");       
       }
       .b_logo{
         display: none;
@@ -163,7 +164,7 @@
         min-height: 100vh;
         background: #000000;
         padding: 0 10px;
-        background: url("../media/IMG-20250403-WA0030.jpg");
+        background: url("../media/placeholders/2024_2025.jpeg");     
         background-repeat: no-repeat;
         background-size: cover;
         padding-top: 10%;
@@ -321,7 +322,7 @@
         min-height: 100vh;
         background: #000000;
         padding: 0 10px;
-        background: url("../media/IMG-20250403-WA0030.jpg");
+        background: url("../media/placeholders/2024_2025.jpeg");     
         background-repeat: no-repeat;
         background-size: cover;
         padding-top: 10%;
@@ -479,6 +480,7 @@
       }
     
   }
+  
   #error{
     background-color: rgba(128, 128, 128, 0.169);
     text-align: center;
