@@ -590,26 +590,7 @@ class Manager {
         }
     }
 
-    public  function getSlideshowImages($id): array {
-        $sql = "SELECT * FROM pictures WHERE slideshow = ? ORDER BY id DESC LIMIT 5";
-        $stmt = $this->conn->prepare($sql);
-        if ($stmt === false) {
-            throw new mysqli_sql_exception("Failed to prepare statement for fetching slideshow images: " . $this->conn->error);
-        } else {
-            $stmt->bind_param("i", $id);
-            if (!$stmt->execute()) {
-                throw new mysqli_sql_exception("Failed to execute statement for fetching slideshow images: " . $stmt->error);
-            }
-            $result = $stmt->get_result();
-            $images = [];
-            while ($row = $result->fetch_assoc()) {
-                $images[] = $row;
-            }
-            $result->free();
-            $stmt->close();
-            return $images;
-        }      
-    }
+    
     public function updateSlideshowImage(int $id, int $status) {
     // Convert boolean to integer (true → 1, false → 0)
     $slideshowValue = $status ;
@@ -693,25 +674,73 @@ class Manager {
             ];
         }
     }
-    public function getCommittee(int $id): ?array {
+    public function getAllCommittees(): array {
+    $committees = [];
+
+    // Step 1: Fetch all committees
+    $sql = "SELECT * FROM bethelcommitte ORDER BY era DESC";
+    $stmt = $this->conn->prepare($sql);
+    if ($stmt === false) {
+        throw new mysqli_sql_exception("Failed to prepare statement for fetching committees: " . $this->conn->error);
+    }
+    if (!$stmt->execute()) {
+        throw new mysqli_sql_exception("Failed to execute statement for fetching committees: " . $stmt->error);
+    }
+    $result = $stmt->get_result();
+    $allCommittees = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    // Step 2: For each committee, fetch its members
+    foreach ($allCommittees as $committee) {
+        $commitId = $committee['commit_id'];
+
+        $sqlMembers = "SELECT * FROM bethelcommittemember WHERE commit_id = ?";
+        $stmtMembers = $this->conn->prepare($sqlMembers);
+        if ($stmtMembers === false) {
+            throw new mysqli_sql_exception("Failed to prepare statement for fetching members: " . $this->conn->error);
+        }
+        $stmtMembers->bind_param("i", $commitId);
+        if (!$stmtMembers->execute()) {
+            throw new mysqli_sql_exception("Failed to execute statement for fetching members: " . $stmtMembers->error);
+        }
+        $resultMembers = $stmtMembers->get_result();
+        $members = [];
+        while ($row = $resultMembers->fetch_assoc()) {
+            $members[] = $row;
+        }
+        $stmtMembers->close();
+
+        // Step 3: Attach members to committee
+        $committee['members'] = $members;
+
+        $committees[] = $committee;
+    }
+
+    return $committees;
+}
+
+    
+    public function getCommittee(string $id): ?array {
       // Step 1: Fetch committee details
-      $sql = "SELECT * FROM bethelcommitte WHERE commit_id = ?";
+      $committee=[];
+      $sql = "SELECT * FROM bethelcommitte WHERE era = ?";
       $stmt = $this->conn->prepare($sql);
       if ($stmt === false) {
           throw new mysqli_sql_exception("Failed to prepare statement for fetching committee: " . $this->conn->error);
       }
-      $stmt->bind_param("i", $id);
+      $stmt->bind_param("s", $id);
       if (!$stmt->execute()) {
           throw new mysqli_sql_exception("Failed to execute statement for fetching committee: " . $stmt->error);
        }
       $result = $stmt->get_result();
       $committee = $result->fetch_assoc();
       $stmt->close();
-
+      
       if (!$committee) {
           return null; // No committee found
       }
-
+      $id = $committee['commit_id'];
+      
       // Step 2: Fetch members linked to this committee
       $sqlMembers = "SELECT * FROM bethelcommittemember WHERE commit_id = ?";
       $stmtMembers = $this->conn->prepare($sqlMembers);
@@ -846,7 +875,7 @@ class Manager {
   public function getAnnualAchievements(int $id = null): ?array {
     if ($id === null) {
         // Fetch all achievements
-        $sql = "SELECT * FROM annualachievements";
+        $sql = "SELECT * FROM annualachievements ORDER BY year ASC";
         $stmt = $this->conn->prepare($sql);
 
         if ($stmt === false) {
@@ -1204,5 +1233,24 @@ public function deleteAnnualAchievement(int $id): array {
             return ['success' => false, 'message' => 'An error occurred while updating the word from the President'];
         }
     }
+     public function getSlideshowImages() {
+    $sql = "SELECT * FROM pictures WHERE slideshow = 1 ORDER BY id DESC LIMIT 5";
+    $stmt = $this->conn->prepare($sql); 
+    if ($stmt === false) {
+        throw new mysqli_sql_exception("Failed to prepare statement for fetching slideshow images: " . $this->conn->error);
+     }
+    if (!$stmt->execute()) {
+        throw new mysqli_sql_exception("Failed to execute statement for fetching slideshow images: " . $stmt->error);
+     }
+    $result = $stmt->get_result();
+    $images = [];       
+    while ($row = $result->fetch_assoc()) {
+        $images[] = $row;
+    }       
+    $result->free();                        
+
+    $stmt->close();
+    return $images;
+}
 }
 ?>

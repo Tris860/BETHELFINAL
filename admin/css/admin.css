@@ -124,10 +124,27 @@
             color: var(--color-text-light);
         }
 
-        .logo-text .gold-accent {
+        .gold-accent {
             color: var(--color-secondary-gold);
         }
+        .olive-accent{
+            color:var(--color-accent-olive)
+        }
+       .alert{
+        margin:2% 0%;
+        text-align: center;
+        justify-content: center;
+        display: flex;
+        padding:1%;
+        border:1px solid var(--color-accent-olive);
+        box-shadow: 0 0 5px var(--color-accent-olive-light);
+        border-radius:10px;
+        background-color: var(--color-background-form);
+       }
+       .alert ul{
+        text-align: left;
 
+       }
         /* Desktop Main Navigation (Hidden on mobile, only logout visible) */
         .main-nav-desktop ul {
             display: flex;

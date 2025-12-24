@@ -233,7 +233,7 @@ try {
             break;
             case 'Slideshow':
                 if($_SERVER["REQUEST_METHOD"] === "GET") {
-                    //$response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getSlideshowImages()];
+                    $response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getSlideshowImages()];
                 } 
                 else if($_SERVER["REQUEST_METHOD"] === "POST") {
                     $id=$_POST["imageId"] ?? null;
@@ -248,15 +248,14 @@ try {
             break;
             case 'Committee':
                if ($_SERVER["REQUEST_METHOD"] === "GET") {
-                //  $response = ["success" => true, "message" => "Successfully retrieved", "data" => ["shimo" => $actionManager->getCommittEra()]];
-
                   // Example retrieval
                   if(isset($_GET['id']) && !empty($_GET['id'])){
-                    $committeeId = intval($_GET['id']);
-                    $response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getCommittee($committeeId)];
-                
-                  }else{
-                    $response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getCommittEra()];
+                    $committeeId = $_GET['id'];
+                    //$response = ["success" => false, "message" => "Successfully retrieved ","data" => $actionManager->getCommittee($committeeId)];
+                     $response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getCommittee($committeeId)];
+                  }
+                  else{
+                    $response = ["success" => true, "message" => "Successfully retrieved", "data" => $actionManager->getAllCommittees()];
                    
                   }
                 
@@ -339,8 +338,7 @@ try {
                   }
             break;
             case 'flyer':
-            
-               if($_SERVER["REQUEST_METHOD"] === "POST"){
+             if($_SERVER["REQUEST_METHOD"] === "POST"){
                 $data =[];
                 $data["status"]=intval($_POST["status"]) ?? "";
                     if(hasUploadedFile('featured_image')) {
@@ -357,7 +355,7 @@ try {
                     $response=$actionManager->updateFlyer($data);
                    // $response =["success" => false ,"message" => " ".$data["status"]." ".gettype(($data["status"]))];
                 }
-                elseif($_SERVER["REQUEST_METHOD"] === "GET"){
+             elseif($_SERVER["REQUEST_METHOD"] === "GET"){
                     $response =["success"=>true , "data" => $actionManager->getFlyer()];
                 }
             break;

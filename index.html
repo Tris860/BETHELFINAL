@@ -19,20 +19,7 @@
     <section class="relative" id="header">
         
         <!-- Background Image Slider -->
-        <div class="slider-area" id="image">
-            <div class="slider active">
-                <img class="w-full h-full object-cover" src="media/placeholders/2100914c-293b-42ad-9824-7773055685e9.png" alt="Bethel Choir in performance">
-            </div>
-            <div class="slider">
-                <img class="w-full h-full object-cover" src="media/placeholders/2024_2025.jpeg" alt="Worship moment in the church" >
-            </div>
-            <div class="slider">
-                <img class="w-full h-full object-cover" src="media/placeholders/14d40086-59fc-4512-b057-2da8a873a4de.png" alt="Group photo of Bethel members" >
-            </div>
-            <div class="slider">
-                <img class="w-full h-full object-cover" src="media/placeholders/IMG-20240409-WA0004.jpg" alt="Group photo of Bethel members" >
-            </div>
-        </div>
+        <div class="slider-area" id="image"></div>
         
         <!-- Semi-Transparent Overlay -->
         <div class="hero-overlay"></div>
@@ -84,16 +71,7 @@
         </nav>
         
         <!-- Hero Content -->
-        <div class="hero-content" >
-            <div>
-                <h1>
-                    BETHEL <span>FAMILY CHOIR</span>, THE HOLY  <span>GATES OF HEAVEN</span>
-                </h1>
-                <p>
-                    A Foundation Built on Truth, Love, and Unity.
-                </p>
-            </div>
-        </div>
+        <div class="hero-content" id="heroContent"></div>
     </section>
 
     <!-- 2. Main Content Sections -->
@@ -101,25 +79,14 @@
         
         <!-- Bible Verse -->
         <div class="bible-verse">
-            <h2>Scripture of the Day</h2>
-            <div class="bible_cont">
-              <h3><i class="fas fa-bible goldenSpan"></i> 2 John 3:2-4</h3>
-              <p>Grace be with you, mercy, and peace, from God the Father, and from the Lord Jesus Christ,
-                 the Son of the Father, in truth and love. 4 I rejoiced greatly
-                 that I found of thy children walking in truth, as we have received a commandment from the Father.</p>
-            </div>
+            <h2>Scripture of the week</h2>
+            <div class="bible_cont" id="bibleVerse"></div>
         </div>
         
         <!-- Gallery -->
         <div class="gallery" id="gallery">
             <h2>Bethel Gallery Highlights</h2>
-            <div id="gallery_holder">
-                <!-- Mock Gallery Items -->
-                <div class="gallery_item"><img src="media/placeholders/IMG-20250410-WA0028.jpg" alt="Choir Performance"></div>
-                <div class="gallery_item"><img src="media/placeholders/IMG-20250403-WA0006.jpg" alt="Worship Night"></div>
-                <div class="gallery_item"><img src="media/placeholders/0ddf7e55-3c13-457e-82bb-9763d652839a.png" alt="Group Photo"></div>
-                <div class="gallery_item"><img src="media//placeholders/2100914c-293b-42ad-9824-7773055685e9.png" alt="Rehearsal Session"></div>
-            </div>
+            <div id="gallery_holder"></div>
         </div>
         
         <!-- Services -->
@@ -146,24 +113,7 @@
         </div>
         <div class="Message">
             <h2>A word from El Presidente</h2>
-            <div class="msg">
-                <div class="profilePic">
-                   <img src="media/placeholders/IMG-20240411-WA0004.jpg" alt="The president">
-                </div>
-                <div class="msg_cont">
-                  <h3>El Presidente <span>KWIZERA Clever</span></h3>
-                  <p>
-                    Welcome to the Bethel Choir family,
-                     a ministry rooted in worship and service to our Lord Jesus Christ. As the Psalmist declares,
-                      “Sing to the Lord a new song; sing to the Lord, all the earth” (Psalm 96:1),
-                       we are committed to lifting our voices in praise, spreading the gospel through music,
-                        and nurturing spiritual growth among our members and community. Guided by Colossians 3:16,
-                         which reminds us to let the message of Christ dwell richly among us through psalms, hymns, and songs
-                          from the Spirit, our mission is to glorify God, inspire hearts, and build a fellowship where faith and music unite. May this platform be a place of encouragement, joy,
-                     and a reminder that “Let everything that has breath praise the Lord” (Psalm 150:6).
-                  </p>
-                </div>
-            </div>
+            <div class="msg" id="presidentMessage"></div>
         </div>
         <!-- Mission & Vision -->
         <div class="about_us">
@@ -177,19 +127,19 @@
             </div>
         </div>
         <div class="stats_counter">
-        <div class="stat_item">
-           <h3 class="counter_number">5+</h3>
-            <p>Original Songs</p>
-    </div>
-    <div class="stat_item">
-        <h3 class="counter_number">60+</h3>
-        <p>Active Members</p>
-    </div>
-    <div class="stat_item">
-        <h3 class="counter_number">200+</h3>
-        <p>Alumni</p>
-    </div>
-</div>
+           <div class="stat_item">
+              <h3 class="counter_number">5+</h3>
+              <p>Original Songs</p>
+            </div>
+            <div class="stat_item">
+               <h3 class="counter_number">60+</h3>
+               <p>Active Members</p>
+            </div>
+            <div class="stat_item">
+              <h3 class="counter_number">200+</h3>
+              <p>Alumni</p>
+            </div>
+        </div>
     </section>
 
     <!-- 3. Footer Section -->
@@ -242,9 +192,10 @@
                     <p>Developed by <a href="https://tristechhub.org.rw"><span class="company" >Tris Tech Hub</span></a></p>
                 </center>
             </div>
-        </div>    
+        </div>
+        <div id="flyer" class="hidden"> </div> 
     </section>
     <script src="javascript/main.js"></script>
-    <script src="javascript/home.js"></script>
+    <script type="module" src="javascript/home.js" ></script>
 </body>
 </html>

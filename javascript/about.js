@@ -1,129 +1,129 @@
+import { renderaboutPage } from "./api/renderApi.js";
 
+// --- HERO SLIDESHOW FUNCTIONS ---
+let slideIndex = 0;
+let sliderElements = [];
 
-        // --- HERO SLIDESHOW FUNCTIONS ---
-        let slideIndex = 0;
-        let sliderElements = [];
-        
-        function showSlides() {
-            sliderElements = document.querySelectorAll('.slider-area .slider');
-            if (sliderElements.length === 0) return;
+function showSlides() {
+  sliderElements = document.querySelectorAll(".slider-area .slider");
+  if (sliderElements.length === 0) return;
 
-            // Hide all slides
-            sliderElements.forEach(el => el.classList.remove('active'));
+  // Hide all slides
+  sliderElements.forEach((el) => el.classList.remove("active"));
 
-            // Advance index and handle wrap-around
-            slideIndex = (slideIndex % sliderElements.length); 
+  // Advance index and handle wrap-around
+  slideIndex = slideIndex % sliderElements.length;
 
-            // Show the current slide
-            sliderElements[slideIndex].classList.add('active');
-            slideIndex++;
+  // Show the current slide
+  sliderElements[slideIndex].classList.add("active");
+  slideIndex++;
 
-            // Call again after 7 seconds
-            setTimeout(showSlides, 7000); 
-        }
-        
-        // --- PILLAR ROTATOR FUNCTIONS (Click-activated) ---
+  // Call again after 7 seconds
+  setTimeout(showSlides, 7000);
+}
 
-        const pillarMeanings = document.querySelectorAll('#pillar_meaning .pillar-meaning');
-        const pillarButtons = document.querySelectorAll('.pillars');
-        let currentPillarIndex = 0;
-        let pillarTimer;
-        const autoRotatePillar = true; 
+// --- PILLAR ROTATOR FUNCTIONS (Click-activated) ---
 
-        function updatePillarStyles(index) {
-             pillarButtons.forEach((el, i) => {
-                el.classList.remove('active-pillar');
-                
-                if (i === index) {
-                    el.classList.add('active-pillar');
-                }
-            });
-        }
+const pillarMeanings = document.querySelectorAll(
+  "#pillar_meaning .pillar-meaning"
+);
+const pillarButtons = document.querySelectorAll(".pillars");
+let currentPillarIndex = 0;
+let pillarTimer;
+const autoRotatePillar = true;
 
-        function showPillar(index, resetTimer = true) {
-            if (resetTimer) clearTimeout(pillarTimer);
-            currentPillarIndex = index;
-            
-            // 1. Update the display of meaning boxes (using smooth CSS classes)
-            pillarMeanings.forEach((meaningEl, i) => {
-                if (i === currentPillarIndex) {
-                    meaningEl.classList.add('active');
-                } else {
-                    meaningEl.classList.remove('active');
-                }
-            });
-            
-            // 2. Update button styles
-            updatePillarStyles(index);
+function updatePillarStyles(index) {
+  pillarButtons.forEach((el, i) => {
+    el.classList.remove("active-pillar");
 
-            // 3. Set timer for the next pillar (5 seconds)
-            if (autoRotatePillar) {
-                pillarTimer = setTimeout(nextPillar, 5000);
-            }
-        }
+    if (i === index) {
+      el.classList.add("active-pillar");
+    }
+  });
+}
 
-        function nextPillar() {
-            currentPillarIndex = (currentPillarIndex + 1) % pillarMeanings.length;
-            showPillar(currentPillarIndex, false);
-        }
+function showPillar(index, resetTimer = true) {
+  if (resetTimer) clearTimeout(pillarTimer);
+  currentPillarIndex = index;
 
-        // --- MISSION/VISION ROTATOR (Auto-rotating Card) ---
-        let missionIndex = 0;
-        let missionElements = [];
-        let missionTitles = [];
-        let missionInterval;
+  // 1. Update the display of meaning boxes (using smooth CSS classes)
+  pillarMeanings.forEach((meaningEl, i) => {
+    if (i === currentPillarIndex) {
+      meaningEl.classList.add("active");
+    } else {
+      meaningEl.classList.remove("active");
+    }
+  });
 
-        function initMissionRotator() {
-            missionElements = document.querySelectorAll('#mission_version .mission_aboutus');
-            missionTitles = document.querySelectorAll('#mission_version .vm');
-            if (missionElements.length < 2) return;
+  // 2. Update button styles
+  updatePillarStyles(index);
 
-            // Initialize: show the first element, hide the rest
-            missionElements.forEach((el, i) => {
-                el.style.zIndex = (missionElements.length - i);
-                if (i === 0) {
-                    el.classList.remove('opacity-0');
-                    missionTitles[i].style.color = 'var(--color-accent-olive-light)';
-                } else {
-                    el.classList.add('opacity-0');
-                    missionTitles[i].style.color = 'var(--color-secondary-gold)';
-                }
-            });
+  // 3. Set timer for the next pillar (5 seconds)
+  if (autoRotatePillar) {
+    pillarTimer = setTimeout(nextPillar, 5000);
+  }
+}
 
-            missionInterval = setInterval(rotateMission, 7000);
-        }
+function nextPillar() {
+  currentPillarIndex = (currentPillarIndex + 1) % pillarMeanings.length;
+  showPillar(currentPillarIndex, false);
+}
 
-        function rotateMission() {
-            // Hide current card by opacity and move to back (z-index)
-            missionElements[missionIndex].classList.add('opacity-0');
-            missionElements[missionIndex].style.zIndex = 0; 
+// --- MISSION/VISION ROTATOR (Auto-rotating Card) ---
+let missionIndex = 0;
+let missionElements = [];
+let missionTitles = [];
+let missionInterval;
 
-            // Advance index
-            missionIndex = (missionIndex + 1) % missionElements.length;
+function initMissionRotator() {
+  missionElements = document.querySelectorAll(
+    "#mission_version .mission_aboutus"
+  );
+  missionTitles = document.querySelectorAll("#mission_version .vm");
+  if (missionElements.length < 2) return;
 
-            // Show next card by bringing it to front
-            missionElements[missionIndex].classList.remove('opacity-0');
-            missionElements[missionIndex].style.zIndex = 1; 
+  // Initialize: show the first element, hide the rest
+  missionElements.forEach((el, i) => {
+    el.style.zIndex = missionElements.length - i;
+    if (i === 0) {
+      el.classList.remove("opacity-0");
+      missionTitles[i].style.color = "var(--color-accent-olive-light)";
+    } else {
+      el.classList.add("opacity-0");
+      missionTitles[i].style.color = "var(--color-secondary-gold)";
+    }
+  });
 
-            // Swap title colors for visual feedback
-            missionTitles.forEach((el, i) => {
-                if (i === missionIndex) {
-                    el.style.color = 'var(--color-accent-olive-light)';
-                } else {
-                    el.style.color = 'var(--color-secondary-gold)';
-                }
-            });
-        }
+  missionInterval = setInterval(rotateMission, 7000);
+}
 
+function rotateMission() {
+  // Hide current card by opacity and move to back (z-index)
+  missionElements[missionIndex].classList.add("opacity-0");
+  missionElements[missionIndex].style.zIndex = 0;
 
-        // --- DOM CONTENT LOADED ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Setup Hero Slideshow
-            showSlides();
+  // Advance index
+  missionIndex = (missionIndex + 1) % missionElements.length;
 
-            // Setup Pillar Rotator
-            showPillar(0, true); 
-            
-           
-        });
+  // Show next card by bringing it to front
+  missionElements[missionIndex].classList.remove("opacity-0");
+  missionElements[missionIndex].style.zIndex = 1;
 
+  // Swap title colors for visual feedback
+  missionTitles.forEach((el, i) => {
+    if (i === missionIndex) {
+      el.style.color = "var(--color-accent-olive-light)";
+    } else {
+      el.style.color = "var(--color-secondary-gold)";
+    }
+  });
+}
+
+// --- DOM CONTENT LOADED ---
+document.addEventListener("DOMContentLoaded", () => {
+  // Setup Hero Slideshow
+  showSlides();
+  renderaboutPage();
+  // Setup Pillar Rotator
+  showPillar(0, true);
+});

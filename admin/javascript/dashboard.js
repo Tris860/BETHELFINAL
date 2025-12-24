@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const viewerImage = document.getElementById("viewer-image");
 
   async function overview() {
+
     const songs = await fetchData("song");
     document.getElementById("Songs").innerText = songs.length;
 
@@ -191,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("YearsRecorded").innerText = year.length;
 
   }
+
   overview();
 
   renderSongs();
@@ -571,7 +573,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("staffTitle").innerText = "";
     document.getElementById("staffTitle").innerText =
       "Register a new Bethel Committee";
-
+    console.log(eras);
     // Add one empty row
     const emptyRow = document.createElement("tr");
     emptyRow.innerHTML = `
@@ -615,11 +617,11 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById("staffTitle").innerText =
         "Register a new Bethel Committee";
     });
-
+    console.log(eras)
     eras.forEach((era) => {
       const btn = document.createElement("button");
       btn.classList.add("page-button");
-      btn.dataset.target = era.commit_id;
+      btn.dataset.target = era.era;
       btn.textContent = era.era;
 
       btn.addEventListener("click", async (event) => {
@@ -697,7 +699,7 @@ document.addEventListener('DOMContentLoaded', function() {
       imageViewer.classList.add("hidden");
       imageViewer.style.opacity = 0;
     });
-
+    console.log(data.era);
     // Populate members
     data.members.forEach((member) => {
       const row = document.createElement("tr");

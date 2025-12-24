@@ -220,7 +220,7 @@
                     <img class="profilePic" src="https://placehold.co/300x200/282828/fff?text=New+Post+Image" alt="Profile Pic" id="Pic">
                     
                     <label for="uploadPic" style="margin-top: 1rem;">Upload Picture</label>
-                    <input type="file" name="Mypost" accept="image/*" id="uploadPic" required>
+                    <input type="file" name="Mypost" accept="image/*" id="uploadPic">
 
                     <label for="name">Name</label>
                     <input type="text" name="presidentName" id="presidentName" required>
@@ -266,6 +266,13 @@
                     </div>
                     <div>
                          <label for="yeaContext">Summarize the year </label>
+                         <div class="alert">
+                            <ul>
+                                <li>For <span class="gold-accent">Gold</span> coloring syntax: &lt;span class ="goldenSpan"&gt;Bethel&lt;/span&gt; &rarr;<span class="gold-accent"> Bethel</span></li>
+                                <li>For <span class="olive-accent">Olive</span> coloring syntax: &lt;span class="oliveSpan"&gt;Family&lt;/span&gt; &rarr;<span class="olive-accent"> Family</span></li>
+                                <li>For <i>Italic</i> styling syntax: &lt;i&gt;Choir&lt;/i&gt; &rarr;<i> Choir</i></li>
+                            </ul>
+                        </div>
                         <textarea name="yearContext" id="yearContext" placeholder="Summary of the year's achievements..." required></textarea>
                     </div>
                     <button type="submit" name="submitAnnual">Save Annual Report</button>

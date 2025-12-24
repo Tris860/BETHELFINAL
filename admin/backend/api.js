@@ -51,14 +51,18 @@ function showMessageBox(title, message, isConfirm = false) {
                 }
                 throw new Error(errorDetails);
             }
-            const data = await response.json();
+            const responseText = await response.text(); // Get response as text first
+            // console.log(responseText)
 
+            const data = JSON.parse(responseText);
             if (data.success) {
                 return data.data;
             } else {
+                
                 throw new Error(data.message || 'API error');
             }
         } catch (error) {
+            
             console.error(`Error fetching ${resource}:`, error);
             showMessageBox('Error', `Failed to load ${resource}: ${error.message}. Please ensure your PHP server is running and the main.php file is accessible at ${API_BASE_URL}.`);
             return []; // Return empty array on error for lists

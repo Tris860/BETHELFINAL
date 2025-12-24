@@ -41,7 +41,7 @@
                 
                 <!-- Logo -->
                 <div class="logo-area">
-                    <img src="https://placehold.co/50x50/FFD700/000?text=BFC" alt="Bethel Logo">
+                    <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="Bethel Logo">
                     <h2><span class="goldenSpan">BETHEL</span> FAMILY <span class="goldenSpan">CHIOR</span></h2>
                 </div>
 
@@ -69,7 +69,7 @@
             <div>
                 <div class="mobile-nav-header">
                     <span>Menubar</span>
-                    <button id="nav-close-btn">&times;</button>
+                    <button id="nav-close-btn" >&times;</button>
                 </div>
                 <ul>
                     <li><a href="../index.html">Home</a></li>
@@ -82,7 +82,7 @@
         </nav>
         
         <!-- Hero Content -->
-        <div class="hero-content">
+        <div class="hero-content" id="heroContent">
             <div>
                 <h1>
                     Moments of <span>Fellowship</span>
@@ -101,14 +101,15 @@
     
     <!-- Image Viewer Modal (Lightbox) -->
     <div id="image-viewer" class="image-viewer">
-        <span class="close-btn" onclick="closeViewer()">&times;</span>
+        <span class="close-btn" id="close-btn">&times;</span>
         <div class="viewer-content">
             <img class="viewer-image" id="viewer-image" src="" alt="Gallery Image">
-            <button class="nav-btn prev-btn" onclick="prevImage()">&#10094;</button>
-            <button class="nav-btn next-btn" onclick="nextImage()">&#10095;</button>
+            <button class="nav-btn prev-btn" id="prev-btn" onclick="prevImage()">&#10094;</button>
+            <button class="nav-btn next-btn" id="next-btn">&#10095;</button>
         </div> 
         <p class="image-caption" id="image-caption"></p>
     </div>
+
 
     <!-- Footer -->
      
@@ -161,9 +162,10 @@
                     <p>Developed by <a href="https://TrisTechhub.wuaze.com"><span class="company" >Tris Tech Hub</span></a></p>
                 </center>
             </div>
-        </div>    
+        </div>  
+        
     </section>
     <script src = "../javascript/main.js"></script>
-    <script src="../javascript/gallery.js"></script>
+    <script src="../javascript/gallery.js" type="module"></script>
 </body>
 </html>

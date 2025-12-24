@@ -17,20 +17,7 @@
     <section class="relative" id="header">
         
         <!-- Background Image Slider -->
-         <div class="slider-area" id="image">
-            <div class="slider active">
-                <img class="w-full h-full object-cover" src="../media/placeholders/2100914c-293b-42ad-9824-7773055685e9.png" alt="Bethel Choir in performance">
-            </div>
-            <div class="slider">
-                <img class="w-full h-full object-cover" src="../media/placeholders/2024_2025.jpeg" alt="Worship moment in the church" >
-            </div>
-            <div class="slider">
-                <img class="w-full h-full object-cover" src="../media/placeholders/14d40086-59fc-4512-b057-2da8a873a4de.png" alt="Group photo of Bethel members" >
-            </div>
-            <div class="slider">
-                <img class="w-full h-full object-cover" src="../media/placeholders/IMG-20240409-WA0004.jpg" alt="Group photo of Bethel members" >
-            </div>
-        </div>
+         <div class="slider-area" id="image"></div>
         
         <!-- Semi-Transparent Overlay -->
         <div class="hero-overlay"></div>
@@ -41,7 +28,7 @@
                 
                 <!-- Logo -->
                 <div class="logo-area">
-                    <img src="https://placehold.co/50x50/FFD700/000?text=BFC" alt="Bethel Logo">
+                    <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="Bethel Logo">
                     <h2><span class="goldenSpan">BETHEL</span> FAMILY <span class="goldenSpan">CHIOR</span></h2>
                 </div>
 
@@ -82,16 +69,7 @@
         </nav>
         
         <!-- Hero Content -->
-         <div class="hero-content">
-            <div>
-                <h1>
-                    OUR <span style="color: var(--color-accent-olive-light);">STORY</span>, OUR <span style="color: var(--color-accent-olive-light);">MISSION</span>
-                </h1>
-                <p>
-                    A Foundation Built on Faith, Harmony, and Community.
-                </p>
-            </div>
-        </div>
+         <div class="hero-content" id="heroContent"></div>
     </section>
     <!-- 2. Main Content Section (Dark Background with Light Cards) -->
     <section id="content" class="content">
@@ -257,36 +235,7 @@
                     </ul>
                 </div>
             
-            <div>
-            <h2>Meet Bethel's Committes</h2>
-            <h2>B-<span>Committe</span> members <span>(2024/2025)</span></h2>
-             <div class="Committe">
-                <div class="committeImg">
-                    <img src="../media/placeholders/2024_2025.jpeg" alt="" srcset="">
-                </div>
-                  <div class="description">
-                    <ul>
-                               <li><span>President:</span> Turikumwenayo Moise</li>
-                               <li><span>Vice President:</span> Munezero Isaac</li>
-                               <li><span>Secretary:</span> Isimbi Eunice</li>
-                               <li><span>Disciplinary:</span> Niyonkuru Cyubahiro</li>
-                               <li><span>Disciplinary:</span> Mukamwezi Judith</li>
-                               <li><span>Song Leader:</span> Niyoyera Esperance</li>
-                               <li><span>Song Leader:</span> Nishimwe Emilliene</li>
-                               <li><span>Song Leader:</span> Itanganeza Deborah</li>
-                               <li><span>Song Leader:</span> Tambineza Jacques</li>
-                               <li><span>Song Leader:</span> Irumva Onesme</li>
-                               <li><span>Song Leader:</span> Fred Regis</li>
-                               <li><span>Mama Bethel:</span> Ihirwe Fabiolla</li>
-                               <li><span>Papa Bethel(Pere):</span> Mugisha Prince</li>
-                               <li><span>Mama Bethel(Mere):</span> Ihirwe Fabiolla</li>
-                               <li><span>Intercessor:</span> Uwimana Alice</li>
-                               <li><span>IT:</span> Shimo Adelin</li>
-                            </ul>
-                  </div>
-
-            </div>
-         </div>
+            <div id="bethelCommitte"></div>
             <!-- MISSION & VISION (Interactive Display) -->
             <!-- MISSION & VISION (Interactive Display) -->
             <div id="mission_version">
@@ -371,6 +320,6 @@
     <!-- JAVASCRIPT FOR DYNAMIC FUNCTIONALITY -->
     <!-- -------------------------------------- -->
 <script src="../javascript/main.js"></script>
-<script src="../javascript/about.js"></script>
+<script src="../javascript/about.js" type="module"></script>
 </body>
 </html>
