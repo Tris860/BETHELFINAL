@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         defaultNavBtn.classList.add('selected');
     } */
 });
-
+document.getElementById("navTrigger").addEventListener("click",() => {openNav()})
 function openNav() {
         sidebar.classList.toggle('open');
         console.log('Mobile Navigation Toggled');

@@ -12,7 +12,10 @@
         justify-content: center;
         flex-direction: column;
         align-content: center; 
-        background: url("../media/placeholders/login2.jpg");              
+        background-repeat: no-repeat;
+        background-position: center;
+        backdrop-filter: blur(10px);
+        background: url("../media/placeholders/loginPhone.jpg");              
       }
       .b_logo{
         display: none;
@@ -20,10 +23,9 @@
       .wrapper{
         background-repeat: no-repeat;
         background-size: cover;
-        background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.071));
+        /* background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.071)); */
         margin: auto;
         height: 100vh;
-
         border-radius: 16px;
       }
       /* Login & Signup Form CSS Start */

@@ -1,0 +1,753 @@
+/* ========================================================= */
+/* 0. Root Variables & Global Setup                         */
+/* ========================================================= */
+
+/* --- Primary Theme Variables (Set 1) --- */
+:root {
+    --color-primary-black: #0F0F0F; /* Deep Charcoal */
+    --color-secondary-gold: #FFD700;
+    --color-accent-olive: #8F9779;
+
+    --color-secondary-gold-light: #fff080;
+    --color-accent-olive-light: #a4b08d;
+
+    --color-text-light: #FFFFFF;
+    --color-text-dark: #222222;
+    --color-text-mid: #aaa;
+
+    --color-background-dark: #0F0F0F;
+    --color-background-dark-alt: #1A1A1A;
+    --color-background-card: #FFFFFF;
+
+    --color-hero-overlay-rgba: rgba(0, 0, 0, 0.8);
+    --color-shadow-mid-rgba: rgba(0, 0, 0, 0.4);
+    --color-shadow-dark-rgba: rgba(0, 0, 0, 0.6);
+
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+
+    --navbar-height: 5rem;
+}
+
+/* --- Alternate Theme Variables (Set 2) --- */
+:root {
+    --color-primary-black: #303030; /* Slightly lighter Charcoal */
+    --color-secondary-gold: gold;
+    --color-accent-olive: #8F9779;
+
+    --color-secondary-gold-light: #fff080;
+    --color-accent-olive-light: #a4b08d;
+
+    --color-text-light: #FFFFFF;
+    --color-text-dark: #222222;
+    --color-text-mid: #666;
+
+    --color-background-dark: #0F0F0F;
+    --color-background-dark-alt: #1A1A1A;
+    --color-background-card: #FFFFFF;
+
+    --color-hero-overlay-rgba: rgba(0, 0, 0, 0.75);
+    --color-shadow-mid-rgba: rgba(0, 0, 0, 0.3);
+    --color-shadow-dark-rgba: rgba(0, 0, 0, 0.5);
+
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+
+    --navbar-height: 5rem;
+}
+
+/* ========================================================= */
+/* 1. Global Typography & Base Styles                       */
+/* ========================================================= */
+body {
+    font-family: var(--font-body);
+    color: var(--color-text-dark);
+    background-color: var(--color-background-dark);
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 0;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-heading); }
+
+p {
+    color: var(--color-text-light);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+                 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+span, .oliveSpan { color: var(--color-accent-olive-light); }
+.goldenSpan { color: var(--color-secondary-gold); font-weight: bold; }
+.italicSpan { font-style: italic; }
+
+/* ========================================================= */
+/* 2. Navbar Styling & Alignment                            */
+/* ========================================================= */
+#navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 30;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-bottom: 6px solid var(--color-secondary-gold);
+    background-color: rgba(15, 15, 15, 0.9);
+    background-image: linear-gradient(360deg, rgba(255, 217, 0, 0.071), black, black);
+}
+
+/* ... (navbar buttons, logo, nav-links, nav-button, media queries) ... */
+
+/* ========================================================= */
+/* 3. Hero Section & Slideshow                              */
+/* ========================================================= */
+/* ... hero, slider, overlay, hero-content, responsive typography ... */
+
+/* ========================================================= */
+/* 4. Cards & Hover Effects                                 */
+/* ========================================================= */
+/* ... card-elegant styles ... */
+
+/* ========================================================= */
+/* 5. Content Sections (Gallery, Services, About Us, etc.)  */
+/* ========================================================= */
+/* ... content, gallery, services, bible verse, etc. ... */
+
+/* ========================================================= */
+/* 6. Stats Counter Section                                 */
+/* ========================================================= */
+/* ... stats_counter, counter_number, stat_item ... */
+
+/* ========================================================= */
+/* 7. Mobile Navigation Drawer                              */
+/* ========================================================= */
+/* ... navigation drawer, open/close states, mobile-nav-header ... */
+
+/* ========================================================= */
+/* 8. Message Section                                       */
+/* ========================================================= */
+/* ... msg, profilePic, msg_cont, responsive layout ... */
+
+/* ========================================================= */
+/* 9. About Us Section                                      */
+/* ========================================================= */
+/* ... about_us, mission, vision, responsive layout ... */
+
+/* ========================================================= */
+/* 10. Mission / Vision Rotator                             */
+/* ========================================================= */
+/* ... pillar-meaning, pillars, pillarIcon, pillarNav ... */
+
+/* ========================================================= */
+/* 11. Departments & Families                               */
+/* ========================================================= */
+/* ... departments, department, Families, Family hover effects ... */
+
+/* ========================================================= */
+/* 12. Activities Section                                   */
+/* ========================================================= */
+/* ... activities ul, li, icons ... */
+
+/* ========================================================= */
+/* 13. Committees Section                                   */
+/* ========================================================= */
+/* ... Committe, committeImg, description ... */
+
+/* ========================================================= */
+/* 14. History Section                                      */
+/* ========================================================= */
+/* ... title_option, year_details ... */
+
+
+
+
+/* ========================================================= */
+/* 8. Stats Counter Section                                  */
+/* ========================================================= */
+.stats_counter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    background-color: var(--color-background-dark-alt);
+}
+
+.counter_number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-secondary-gold);
+}
+
+.stat_item p {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--color-text-light);
+}
+
+/* Olive span override for consistency */
+.oliveSpan {
+    color: var(--color-accent-olive);
+}
+
+/* ========================================================= */
+/* 9. Mobile Navigation Drawer                               */
+/* ========================================================= */
+#navigation {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 16rem; /* w-64 */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.77);
+    box-shadow: -8px 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.open { transform: translateX(0); }
+.close { transform: translateX(100%); }
+
+.mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-accent-olive);
+    padding-bottom: 1rem;
+}
+
+/* ========================================================= */
+/* 10. Gallery Section                                       */
+/* ========================================================= */
+#gallery_holder {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.gallery_item {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 2px solid var(--color-accent-olive);
+    box-shadow: 0 4px 10px var(--color-shadow-mid-rgba);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.gallery_item:hover {
+    transform: scale(1.02);
+    border-color: var(--color-secondary-gold);
+}
+
+.gallery_item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Responsive gallery layout */
+@media (min-width: 640px) {
+    #gallery_holder { grid-template-columns: repeat(4, 1fr); }
+    .gallery_item img { height: 450px; }
+}
+
+/* ========================================================= */
+/* 11. Services Section                                      */
+/* ========================================================= */
+.services { text-align: center; }
+
+.service_cont {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.service_card {
+    background-color: var(--color-primary-black);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-background-dark-alt);
+    box-shadow: 0 2px 10px var(--color-shadow-dark-rgba);
+    transition: all 0.3s ease;
+}
+
+.service_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--color-shadow-dark-rgba);
+    border-color: var(--color-secondary-gold);
+}
+
+.service_card h3 {
+    font-size: 1.5rem;
+    color: var(--color-accent-olive-light);
+    margin-top: 0.75rem;
+}
+
+.service_card i {
+    font-size: 2.2rem;
+    color: var(--color-secondary-gold);
+}
+
+/* Responsive services grid */
+@media (min-width: 768px) {
+    .service_cont { grid-template-columns: repeat(3, 1fr); }
+}
+/* ========================================================= */
+/* 8. Stats Counter Section                                  */
+/* ========================================================= */
+.stats_counter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    background-color: var(--color-background-dark-alt);
+}
+
+.counter_number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-secondary-gold);
+}
+
+.stat_item p {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--color-text-light);
+}
+
+/* Olive span override for consistency */
+.oliveSpan {
+    color: var(--color-accent-olive);
+}
+
+/* ========================================================= */
+/* 9. Mobile Navigation Drawer                               */
+/* ========================================================= */
+#navigation {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 16rem; /* w-64 */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.77);
+    box-shadow: -8px 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.open { transform: translateX(0); }
+.close { transform: translateX(100%); }
+
+.mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-accent-olive);
+    padding-bottom: 1rem;
+}
+
+/* ========================================================= */
+/* 10. Gallery Section                                       */
+/* ========================================================= */
+#gallery_holder {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.gallery_item {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 2px solid var(--color-accent-olive);
+    box-shadow: 0 4px 10px var(--color-shadow-mid-rgba);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.gallery_item:hover {
+    transform: scale(1.02);
+    border-color: var(--color-secondary-gold);
+}
+
+.gallery_item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Responsive gallery layout */
+@media (min-width: 640px) {
+    #gallery_holder { grid-template-columns: repeat(4, 1fr); }
+    .gallery_item img { height: 450px; }
+}
+
+/* ========================================================= */
+/* 11. Services Section                                      */
+/* ========================================================= */
+.services { text-align: center; }
+
+.service_cont {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.service_card {
+    background-color: var(--color-primary-black);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-background-dark-alt);
+    box-shadow: 0 2px 10px var(--color-shadow-dark-rgba);
+    transition: all 0.3s ease;
+}
+
+.service_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--color-shadow-dark-rgba);
+    border-color: var(--color-secondary-gold);
+}
+
+.service_card h3 {
+    font-size: 1.5rem;
+    color: var(--color-accent-olive-light);
+    margin-top: 0.75rem;
+}
+
+.service_card i {
+    font-size: 2.2rem;
+    color: var(--color-secondary-gold);
+}
+
+/* Responsive services grid */
+@media (min-width: 768px) {
+    .service_cont { grid-template-columns: repeat(3, 1fr); }
+}
+/* ========================================================= */
+/* 12. Message Section                                       */
+/* ========================================================= */
+.msg {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.profilePic {
+    width: 270px;
+    height: 270px;
+}
+
+.profilePic img {
+    width: 100%;
+    height: 100%;
+    border-radius: 200px;
+    border-right: 5px solid var(--color-secondary-gold);
+    border-left: 5px solid var(--color-secondary-gold);
+}
+
+.msg_cont {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.msg_cont h3 {
+    color: var(--color-secondary-gold);
+    font-size: 1.5rem;
+}
+
+/* Responsive message layout */
+@media (max-width: 996px) {
+    .msg { flex-direction: column; }
+    .profilePic { margin: 0 auto; }
+    .msg_cont p, .msg_cont h3 { text-align: center; }
+    .msg_cont { width: 100%; }
+}
+
+/* ========================================================= */
+/* 13. About Us Section                                      */
+/* ========================================================= */
+.about_us {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    background-color: var(--color-primary-black);
+}
+
+.about_us h3 {
+    color: var(--color-secondary-gold);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.about_us p { color: var(--color-text-light); }
+
+/* Responsive about us layout */
+@media (min-width: 768px) {
+    .about_us {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    .mission, .vision {
+        flex: 1;
+        padding: 1rem 2rem;
+        border-right: 1px solid var(--color-background-dark-alt);
+    }
+    .vision { border-right: none; }
+}
+
+/* ========================================================= */
+/* 14. Mission / Vision Rotator                              */
+/* ========================================================= */
+.pillar-meaning {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.6s ease-out, max-height 0.6s ease-out, padding 0.6s ease-out;
+    text-align: center;
+}
+.pillar-meaning.active {
+    opacity: 1;
+    max-height: fit-content;
+    padding: 1.5rem;
+}
+
+.pillars {
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--color-accent-olive-light);
+}
+
+.pillars.active-pillar {
+    color: var(--color-secondary-gold);
+    border-color: var(--color-secondary-gold);
+}
+
+.pillarIcon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-secondary-gold);
+}
+
+.pillarNav {
+    display: flex;
+    justify-content: space-around;
+    padding: 1.25rem;
+    border-bottom: 1px solid #f3ff60;
+}
+
+/* ========================================================= */
+/* 15. Departments & Families                                */
+/* ========================================================= */
+.departments { display: flex; }
+
+.department {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.department h3 { color: var(--color-secondary-gold); }
+
+.Families {
+    margin-top: 4%;
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.Family {
+    width: 100%;
+    color: var(--color-text-mid);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 100px;
+    background-color: var(--color-background-dark-alt);
+    transition: all 0.4s ease-in-out;
+    box-shadow: 0px 0px 5px var(--color-accent-olive);
+}
+
+.Family:hover {
+    color: var(--color-secondary-gold-light);
+    background-color: var(--color-background-dark);
+    box-shadow: 0px 0px 10px var(--color-secondary-gold-light);
+    transform: scale(1.05);
+}
+
+.Family h3 { font-size: 2rem; }
+
+/* Responsive departments */
+@media (max-width: 996px) {
+    .departments {
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+/* ========================================================= */
+/* 16. Activities Section                                    */
+/* ========================================================= */
+.activities ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1rem;
+}
+
+.activities ul li { color: var(--color-text-light); }
+
+.activities ul li i {
+    color: var(--color-secondary-gold);
+    margin-top: 0.25rem;
+    margin-right: 0.75rem;
+}
+
+/* ========================================================= */
+/* 17. Committees Section                                    */
+/* ========================================================= */
+.Committe {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.committeImg {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.committeImg img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.description {
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+}
+
+.description h3 {
+    color: var(--color-secondary-gold);
+    margin: 2% auto;
+    font-size: 2rem;
+}
+
+.description ul li {
+    list-style: none;
+    color: var(--color-text-light);
+    padding: 0% 1%;
+}
+
+/* ========================================================= */
+/* 18. History Section                                       */
+/* ========================================================= */
+.title_option h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    color: var(--color-secondary-gold);
+    margin-bottom: 2rem;
+    border-bottom: 3px solid var(--color-accent-olive);
+    padding-bottom: 0.5rem;
+}
+
+#year_details p {
+    background-color: var(--color-background-dark);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border-left: 5px solid var(--color-accent-olive);
+    font-size: 1rem;
+    color: var(--color-text-light);
+}
+/* ========================================================= */
+/* 19. Utility Classes                                       */
+/* ========================================================= */
+.hidden { display: none; }
+.text-center { text-align: center; }
+.mt-2 { margin-top: 0.5rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.uppercase { text-transform: uppercase; }
+.bold { font-weight: bold; }
+
+/* ========================================================= */
+/* 20. Animations (Keyframes)                                */
+/* ========================================================= */
+/* Fade-in effect for smooth appearance */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Slide-up effect for content reveal */
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Pulse effect for emphasis */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* ========================================================= */
+/* 21. Responsive Media Queries                              */
+/* ========================================================= */
+
+/* Small devices (phones) */
+@media (max-width: 640px) {
+    .hero-content h1 { font-size: 2rem; }
+    .hero-content p { font-size: 1rem; }
+    .gallery_item img { height: 250px; }
+}
+
+/* Medium devices (tablets) */
+@media (max-width: 996px) {
+    .logo-area h2 { font-size: 1rem; font-weight: 900; }
+    .msg { flex-direction: column; }
+    .departments { flex-direction: column; }
+    .msg_cont { width: 100%; }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 996px) {
+    #navigation-desktop { display: flex; }
+    .nav-trigger { display: none; }
+    .content > div { width: 90%; }
+    .content h2 { font-size: 2.5rem; }
+}
+
+/* Extra large screens */
+@media (min-width: 1280px) {
+    .container { max-width: 1280px; }
+}

@@ -135,7 +135,7 @@
         text-align: center;
         justify-content: center;
         display: flex;
-        padding:1%;
+        padding:0%;
         border:1px solid var(--color-accent-olive);
         box-shadow: 0 0 5px var(--color-accent-olive-light);
         border-radius:10px;
@@ -143,7 +143,10 @@
        }
        .alert ul{
         text-align: left;
-
+        margin:10%;
+       }
+       .alert ul li{
+        list-style: none;
        }
         /* Desktop Main Navigation (Hidden on mobile, only logout visible) */
         .main-nav-desktop ul {
@@ -199,7 +202,7 @@
            background-color:var(--color-background-form);
            display: flex;
            margin-bottom: 2%;
-           padding: 1%;
+           padding: 2% 1%;
            border-radius: 5px;
            overflow-x: auto;
            scrollbar-width: thin; 
