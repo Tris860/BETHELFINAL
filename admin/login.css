@@ -1,497 +1,328 @@
-/* *{
-    padding:0;
-    margin:0;
+/* =============================================
+   BETHEL LOGIN — Responsive CSS (All Screens)
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Lato:wght@300;400;600&display=swap');
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --gold:        #FFD700;
+  --gold-soft:   rgba(255, 215, 0, 0.55);
+  --gold-faint:  rgba(255, 215, 0, 0.08);
+  --black:       #000000;
+  --surface:     rgba(0, 0, 0, 0.72);
+  --border:      rgba(255, 255, 255, 0.18);
+  --text:        #f0f0f0;
+  --text-muted:  #aaa;
+  --cyan:        rgb(8, 239, 239);
+  --error-bg:    #f8d7da;
+  --error-color: #721c24;
+  --radius:      14px;
+  --transition:  0.2s ease;
+}
+
+html, body {
+  min-height: 100vh;
+  font-family: 'Lato', sans-serif;
+  color: var(--text);
+}
+
+/* ── Full-Page Background ── */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 5vw, 60px) clamp(12px, 4vw, 24px);
+  background:  url("../media/placeholders/login2.jpg") rgba(0, 0, 0, 0.406) center / cover no-repeat;
+  /* Subtle dark overlay so text is always readable */
+  background-blend-mode: darken;
+}
+
+/* On very small phones, swap to the portrait background */
+@media (max-width: 480px) {
+  body {
+    background-image: url("../media/placeholders/loginPhone.jpg");
+    align-items: flex-start;
+    padding-top: clamp(24px, 10vw, 48px);
   }
-*/
-  
-  @media screen and (max-width:480px){
-    body{
-        background-color:black;
-        color:whitesmoke;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-content: center; 
-        background-repeat: no-repeat;
-        background-position: center;
-        backdrop-filter: blur(10px);
-        background: url("../media/placeholders/loginPhone.jpg");              
-      }
-      .b_logo{
-        display: none;
-      }
-      .wrapper{
-        background-repeat: no-repeat;
-        background-size: cover;
-        /* background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.071)); */
-        margin: auto;
-        height: 100vh;
-        border-radius: 16px;
-      }
-      /* Login & Signup Form CSS Start */
-      .form{
-        padding: 25px 30px;
-      }
-      .login_head{
-        margin:1% 1% 1% 8%;
-        
-      }
-      .title{
-        height:50px;
-        margin:0% 0 0 -3%;
-        width:70%;
-        position: absolute;
-        
-        display: inline-block;
-      }
-      .title h1{
-        margin:0% 0% 0% 5% ;
-        padding-top:2% ;
-        color:gold;
-      }
-      img{
-        position: relative;
-        display: inline-block;
-        height:50px;
-        border-radius: 50px;
-      }
-      .form header{
-        font-size: 25px;
-        font-weight: 600;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e6e6e6;
-        color:gold;
-      }
-      .form form{
-        margin: 20px 0;
-      }
-      .form form .error-text{
-        color: #721c24;
-        padding: 8px 10px;
-        text-align: center;
-        border-radius: 5px;
-        background: #f8d7da;
-        border: 1px solid #f5c6cb;
-        margin-bottom: 10px;
-        display: none;
-      }
-      .form form .name-details{
-        display: flex;
-      }
-      .form form .field{
-        display: flex;
-        margin-bottom: 10px;
-        flex-direction: column;
-        position: relative;
-        
-      }
-      .form form .field label{
-        margin-bottom: 2px;
-      }
-      .form form .input input{
-        height: 40px;
-        width: 87%;
-        font-size: 16px;
-        padding: 0 10px;
-        border-radius: 5px;
-        color:whitesmoke;
-        border: 1px solid #ccc;
-        background-color: transparent;
-      }
-      .form form .input input:focus{
-        border: 2px solid gold;
-      }
-      .form form .input input:active  > .form form .field label{
-        color:gold;
-      }
-      .form form .field input{
-        outline: none;
-      }
-      .form form .image input{
-        font-size: 17px;
-      }
-      .form form .button input{
-        height: 45px;
-        width:92%;
-        border: none;
-        background-color: black;
-        color: #fff;
-        font-size: 17px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 13px;
-        box-shadow: 0 0 2px gold;
-        transition: transform .1s ease-in-out;
-        background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.64));
-      }
-      .form form .button input:hover{
-        transform: scale(1.02);
-        background-image: linear-gradient(to right,rgba(255, 217, 0, 0.64),black);
-      }
-      .form form .field i{
-        position: absolute;
-        right: 15px;
-        top: 70%;
-        color: #ccc;
-        cursor: pointer;
-        transform: translateY(-50%);
-      }
-      .form form .field i.active::before{
-        color: #ccc;
-        content: "\f070";
-      }
-      .form .link{
-        text-align: center;
-        margin: 10px 0;
-        font-size: 17px;
-      }
-      .form .link a{
-        color:rgb(8,239,239);
-      }
-      .form .link a:hover{
-        text-decoration: underline;
-      }
-      .copyrights span{
-        color:gold;
-    }
-      .wrapper h1{
-        margin-left:20px;
-      }
+}
+
+/* ── Card Wrapper ── */
+.wrapper {
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 0 1px rgba(255,215,0,0.12),
+    0 32px 80px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+
+/* ── Brand Header ── */
+.login_head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(16px, 4vw, 28px) clamp(20px, 5vw, 36px) 0;
+}
+
+.login_head img {
+  height: 52px;
+  width:  52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  flex-shrink: 0;
+  /* reset any stray global img rules */
+  position: static;
+  display: block;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+
+.title h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+/* Hide the large decorative logo on small screens */
+.b_logo {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .b_logo {
+    display: block;
   }
-  @media screen and ((min-width:480px) and (max-width:769px)) {
-    body{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: #000000;
-        padding: 0 10px;
-        background: url("../media/placeholders/login2.jpg");      
-        background-repeat: no-repeat;
-        background-size: cover;
-        padding-top: 10%;
-        color:whitesmoke;
-      }
-      .b_logo{
-        display: none;
-      }
-      .wrapper{
-        padding:5% 5%;
-        background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.071));
-        max-width: 500px;
-        width: 100%;
-        padding:auto;
-        border-radius: 16px;
-        box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
-                    0 32px 64px -48px rgba(0,0,0,0.5);
-        
-      }
-      .login_head{
-        margin:1% 1% 1% 8%;
-        
-      }
-      .title{
-        height:50px;
-        margin:-1% 0 0 -1%;
-        width:70%;
-        position: absolute;
-        
-        display: inline-block;
-      }
-      .title h1{
-        margin:0% 0% 0% 5% ;
-        padding-top:2% ;
-        color:gold;
-      }
-      img{
-        position: relative;
-        display: inline-block;
-        height:50px;
-        border-radius: 50px;
-      }
-      
-      .form{
-        padding: 25px 30px;
-        width:95%;
-      }
-      .form header{
-        font-size: 25px;
-        font-weight: 600;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e6e6e6;
-        color:gold
-      }
-      .form form{
-        margin: 20px 0;
-      }
-      .form form .error-text{
-        color: #721c24;
-        padding: 8px 10px;
-        text-align: center;
-        border-radius: 5px;
-        background: #f8d7da;
-        border: 1px solid #f5c6cb;
-        margin-bottom: 10px;
-        display: none;
-      }
-      .form form .name-details{
-        display: flex;
-      }
-      .form form .field{
-        display: flex;
-        margin-bottom: 10px;
-        flex-direction: column;
-        position: relative;
-      }
-      .form form .field label{
-        margin-bottom: 2px;
-      }
-      .form form .input input{
-        height: 40px;
-        width: 87%;
-        font-size: 16px;
-        padding: 0 10px;
-        border-radius: 5px;
-        color:whitesmoke;
-        border: 1px solid #ccc;
-        background-color: transparent;
-      }
-      .form form .input input:focus{
-        border: 2px solid gold;
-      }
-      .form form .input input:active  > .form form .field label{
-        color:gold;
-      }
-      .form form .field input{
-        outline: none;
-      }
-      .form form .image input{
-        font-size: 17px;
-      }
-      .form form .button input{
-        height: 45px;
-        width:92%;
-        border: none;
-        background-color: black;
-        color: #fff;
-        font-size: 17px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 13px;
-        box-shadow: 0 0 2px gold;
-        transition: transform .1s ease-in-out;
-        background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.64));
-      }
-      .form form .button input:hover{
-        transform: scale(1.02);
-        background-image: linear-gradient(to right,rgba(255, 217, 0, 0.64),black);
-      }
-      .form form .field i{
-        position: absolute;
-        right: 15px;
-        top: 70%;
-        color: #ccc;
-        cursor: pointer;
-        transform: translateY(-50%);
-      }
-      .form form .field i.active::before{
-        color: #ccc;
-        content: "\f070";
-      }
-      .form .link{
-        text-align: center;
-        margin: 10px 0;
-        font-size: 17px;
-      }
-      .form .link a{
-        color:rgb(8,239,239);
-      }
-      .form .link a:hover{
-        text-decoration: underline;
-      }
-      .copyrights span{
-        color:gold;
-      }
-      .wrapper h1{
-        margin-left:20px;
-      }
+}
+
+/* ── Form Section ── */
+.form {
+  padding: clamp(20px, 5vw, 36px) clamp(20px, 6vw, 40px) clamp(16px, 4vw, 28px);
+}
+
+.form header {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+/* ── Fields ── */
+.form form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+
+.form form .field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Wrapper for password + eye icon */
+.password-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+}
+
+.password-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ── Inputs ── */
+.form form .input input,
+.password-field input[type="password"] {
+  width: 100%;
+  height: 46px;
+  padding: 0 44px 0 14px;
+  font-size: 1rem;
+  font-family: 'Lato', sans-serif;
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form form .input input:focus,
+.password-field input[type="password"]:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
+}
+
+.form form .input input::placeholder,
+.password-field input::placeholder {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.9rem;
+}
+
+/* Eye toggle icon */
+.form form .field i,
+.password-field i {
+  position: absolute;
+  right: 14px;
+  bottom: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color var(--transition);
+}
+
+.form form .field i:hover,
+.password-field i:hover {
+  color: var(--gold);
+}
+
+.form form .field i.active::before {
+  content: "\f070";
+}
+
+/* ── Error Boxes ── */
+.form form .error-text {
+  color: var(--error-color);
+  padding: 8px 12px;
+  text-align: center;
+  border-radius: 6px;
+  background: var(--error-bg);
+  border: 1px solid #f5c6cb;
+  font-size: 0.9rem;
+  display: none;
+}
+
+#error {
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.4);
+  box-shadow: 0 0 8px rgba(255,0,0,0.25);
+  text-align: center;
+  border-radius: 8px;
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  display: none;
+}
+
+/* ── Submit Button ── */
+.form form .button input[type="submit"] {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 6px;
+  background: linear-gradient(135deg, #111 0%, var(--gold-soft) 100%);
+  box-shadow: 0 0 0 1px var(--gold-soft), 0 4px 18px rgba(255,215,0,0.18);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.form form .button input[type="submit"]:hover {
+  transform: translateY(-2px) scale(1.01);
+  background: linear-gradient(135deg, var(--gold-soft) 0%, #111 100%);
+  box-shadow: 0 0 0 1px var(--gold), 0 8px 28px rgba(255,215,0,0.28);
+}
+
+.form form .button input[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+/* ── Links ── */
+.form .link {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.95rem;
+}
+
+.form .link a {
+  color: var(--cyan);
+  text-decoration: none;
+  transition: opacity var(--transition);
+}
+
+.form .link a:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+/* ── Copyrights ── */
+.copyrights {
+  margin-top: 20px;
+  text-align: center;
+  font-size: clamp(0.7rem, 2.2vw, 0.82rem);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.copyrights span,
+.copyrights .title3 {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.copyrights a {
+  text-decoration: none;
+}
+
+.copyrights .company {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+/* ── Smooth entrance animation ── */
+.wrapper {
+  animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
   }
-  @media screen and (min-width:769px) {
-    body{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: #000000;
-        padding: 0 0px;
-        backdrop-filter: blur(10px);
-        background: url("../media/placeholders/login2.jpg");      
-        background-repeat: no-repeat;
-        background-size: cover;
-        padding-top: 10%;
-        color:whitesmoke;
-        font-size: 1.2em;
-      }
-      .b_logo{
-        display: inline-block;
-        width:30%;
-      }
-      .b_logo img{
-        width:20%;
-      }
-      .wrapper{
-        width:60%;
-        display: inline-block;
-        padding:1% 1%;
-        background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.071));
-        max-width: 500px;
-        width: 100%;
-        padding:auto;
-        border-radius: 16px;
-        box-shadow: 0 0 128px 0 rgba(0,0,0,0.1),
-                    0 32px 64px -48px rgba(0,0,0,0.5);
-        
-      }
-      .login_head{
-        margin:1% 1% 1% 8%;
-        
-      }
-      .title{
-        height:50px;
-        margin:-1% 0 0 -1%;
-        width:70%;
-        position: absolute;
-        
-        display: inline-block;
-      }
-      .title h1{
-        margin:0% 0% 0% 5% ;
-        padding-top:2% ;
-        color:gold;
-      }
-      img{
-        position: relative;
-        display: inline-block;
-        height:50px;
-        border-radius: 50px;
-      }
-      
-      .form{
-        padding: 25px 30px;
-        width:95%;
-      }
-      .form header{
-        font-size: 25px;
-        font-weight: 600;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e6e6e6;
-        color:gold
-      }
-      .form form{
-        margin: 20px 0;
-      }
-      .form form .error-text{
-        color: #721c24;
-        padding: 8px 10px;
-        text-align: center;
-        border-radius: 5px;
-        background: #f8d7da;
-        border: 1px solid #f5c6cb;
-        margin-bottom: 10px;
-        display: none;
-      }
-      .form form .name-details{
-        display: flex;
-      }
-      .form form .field{
-        display: flex;
-        margin-bottom: 10px;
-        flex-direction: column;
-        position: relative;
-      }
-      .form form .field label{
-        margin-bottom: 2px;
-      }
-      .form form .input input{
-        height: 40px;
-        width: 87%;
-        font-size: 16px;
-        padding: 0 10px;
-        border-radius: 5px;
-        color:whitesmoke;
-        border: 1px solid #ccc;
-        background-color: transparent;
-      }
-      .form form .input input:focus{
-        border: 2px solid gold;
-      }
-      .form form .input input:active  > .form form .field label{
-        color:gold;
-      }
-      .form form .field input{
-        outline: none;
-      }
-      .form form .image input{
-        font-size: 17px;
-      }
-      .form form .button input{
-        height: 45px;
-        width:92%;
-        border: none;
-        background-color: black;
-        color: #fff;
-        font-size: 17px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 13px;
-        box-shadow: 0 0 2px gold;
-        transition: transform .1s ease-in-out;
-        background-image: linear-gradient(to right,black,rgba(255, 217, 0, 0.64));
-      }
-      .form form .button input:hover{
-        transform: scale(1.02);
-        background-image: linear-gradient(to right,rgba(255, 217, 0, 0.64),black);
-      }
-      .form form .field i{
-        position: absolute;
-        right: 15px;
-        top: 70%;
-        color: #ccc;
-        cursor: pointer;
-        transform: translateY(-50%);
-      }
-      .form form .field i.active::before{
-        color: #ccc;
-        content: "\f070";
-      }
-      .form .link{
-        text-align: center;
-        margin: 10px 0;
-        font-size: 17px;
-      }
-      .form .link a{
-        color:rgb(8,239,239);
-      }
-      .form .link a:hover{
-        text-decoration: underline;
-      }
-      .copyrights span{
-        color:gold;
-      }
-      .wrapper h1{
-        margin-left:20px;
-      }
-    
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  #error{
-    background-color: rgba(128, 128, 128, 0.169);
-    text-align: center;
-    box-shadow: 0 0 10px red;
-    width:60%;
-    margin:auto;
-    color:red;
-    font-size: 1em;
-    padding: 1%;
-    display: none;
-  }
+}

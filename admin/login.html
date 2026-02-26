@@ -1,51 +1,88 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/icon" href="../media/icons/icon.png">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Bethel Login page</title>
-	<link rel="stylesheet" type="text/css" href="login.css">
+  <title>Bethel Login page</title>
+  <!-- Font Awesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
-<div class="wrapper">
-   <div class="login_head">
-      <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="" sizes="" srcset="">
+
+  <div class="wrapper">
+
+    <!-- Brand Header -->
+    <div class="login_head">
+      <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="Bethel Logo">
       <div class="title">
-        <h1>Bethel </h1>
+        <h1>Bethel</h1>
       </div>
-   </div>
-    <section class="form signup"> 
-      <header>Log in B-Studio</header>
-      <form  id="adminLoginForm" autocomplete="off">
+    </div>
+
+    <!-- Login Form -->
+    <section class="form signup">
+      <header>Log in — B-Studio</header>
+
+      <form id="adminLoginForm" autocomplete="off" novalidate>
+
         <div class="error-text"></div>
+
+        <!-- Email -->
         <div class="field input">
-          <label>Email Address</label>
-          <input type="email" name="email" id="modalEmail" placeholder="Enter your email" required>
+          <label for="modalEmail">Email Address</label>
+          <input
+            type="email"
+            name="email"
+            id="modalEmail"
+            placeholder="Enter your email"
+            required
+          >
         </div>
-        <div class="field input">
+
+        <!-- Password -->
+        <div class="field">
           <div class="password-field">
-          <label>Password</label>
-          <input type="password" name="password" id="modalPassword" placeholder="Enter new password" required>
-          <i id="toggler" class="fas fa-eye"></i>
+            <label for="modalPassword">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="modalPassword"
+              placeholder="Enter your password"
+              required
+            >
+            <i id="toggler" class="fas fa-eye" aria-label="Toggle password visibility"></i>
+          </div>
         </div>
+
+        <!-- Server error message -->
+        <div id="error" role="alert">
+          <p id="errMsg">Unable to login</p>
         </div>
-        <div id="error">
-          <p id="errMsg">Enable to login</p>
-        </div>
+
+        <!-- Submit -->
         <div class="field button">
-          <input type="submit" value="Log in">
-  
+          <input type="submit" value="Log In">
         </div>
+
       </form>
-    
+
+      <!-- Copyrights -->
       <div class="copyrights">
-        <center><p class="copy"> &copy;copyrighted by <a href="../index.html" style="text-decoration:none;"><span class="title3">Bethel Family Choir</span></a> Indatwa n' Inkesha @2024</p></center>
-        <center><p>Developed by <span class="company">Tris</span> Incorportions</p></center>
-     </div> 
+        <p class="copy">
+          &copy; Copyrighted by
+          <a href="../index.html">
+            <span class="title3">Bethel Family Choir</span>
+          </a>
+          &mdash; Indatwa n&rsquo; Inkesha &copy; 2024
+        </p>
+        <p>Developed by <span class="company">Tris</span> Incorporations</p>
+      </div>
+
     </section>
   </div>
+
   <script src="javascript/login.js"></script>
 </body>
 </html>
