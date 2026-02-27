@@ -520,57 +520,100 @@
   </div><!-- /.main-layout-container -->
 
   <!-- ══════════════════════════════════════════
-       INLINE SCRIPTS
-       Runs synchronously before dashboard.js module
+       INLINE SCRIPTS  (run before dashboard.js module)
   ══════════════════════════════════════════ -->
   <script>
-    /* ── Sidebar overlay sync ──
-       dashboard.js owns navTrigger → calls sidebar.classList.toggle('open')
-       We observe and mirror to overlay. */
-    (function () {
-      const sidebar = document.getElementById('sidebar-nav');
-      const overlay = document.getElementById('sidebarOverlay');
 
-      new MutationObserver(() => {
+    /* ════════════════════════════════════════
+       1. SELF-CONTAINED PANEL SWITCHER
+       ════════════════════════════════════════
+       dashboard.js keeps show_div2 private inside its ES module scope.
+       We duplicate the core switching logic here so quick-links and the
+       Welcome button work immediately, without waiting on the module.
+       dashboard.js still runs its own copy for sidebar nav-buttons —
+       both copies do the same thing so there's no conflict.
+    ════════════════════════════════════════ */
+    function navigateTo(panelId) {
+      // 1. Hide every content-panel
+      document.querySelectorAll('.content-panel').forEach(function (p) {
+        p.style.display = 'none';
+        p.classList.add('hidden');
+      });
+
+      // 2. Show the target panel
+      var target = document.getElementById(panelId);
+      if (!target) {
+        // Fallback to intro if panel not found
+        target = document.getElementById('intro');
+        panelId = 'intro';
+      }
+      target.classList.remove('hidden');
+      target.style.display = 'block';
+
+      // 3. Update sidebar selected state
+      document.querySelectorAll('.nav-button').forEach(function (btn) {
+        btn.classList.remove('selected');
+      });
+      var activeBtn = document.querySelector('.nav-button[data-target="' + panelId + '"]');
+      if (activeBtn) activeBtn.classList.add('selected');
+
+      // 4. Also expose on window so dashboard.js's own DOMContentLoaded
+      //    can call it after the module loads (keeps both in sync)
+      window._lastPanel = panelId;
+    }
+
+    // Expose globally so dashboard.js CAN call it if it adds window.show_div2 = show_div2
+    window.show_div2 = navigateTo;
+
+    /* ════════════════════════════════════════
+       2. CLICK DISPATCHER
+       Handles .activity-link (quick-links) and .nav-link-btn (Welcome button)
+    ════════════════════════════════════════ */
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('.activity-link[data-target], .nav-link-btn[data-target]');
+      if (link) {
+        e.preventDefault();
+        navigateTo(link.dataset.target);
+      }
+    });
+
+    /* ════════════════════════════════════════
+       3. SIDEBAR MOBILE OVERLAY SYNC
+       dashboard.js calls sidebar.classList.toggle('open') on navTrigger.
+       We observe that and mirror to the overlay.
+    ════════════════════════════════════════ */
+    (function () {
+      var sidebar = document.getElementById('sidebar-nav');
+      var overlay = document.getElementById('sidebarOverlay');
+
+      new MutationObserver(function () {
         overlay.classList.toggle('visible', sidebar.classList.contains('open'));
       }).observe(sidebar, { attributes: true, attributeFilter: ['class'] });
 
-      overlay.addEventListener('click', () => sidebar.classList.remove('open'));
+      // Tap overlay → close sidebar
+      overlay.addEventListener('click', function () {
+        sidebar.classList.remove('open');
+      });
 
-      // Auto-close drawer on nav-button click at ≤1024px
-      sidebar.addEventListener('click', (e) => {
-        if (e.target.closest('.nav-button') && window.innerWidth <= 1024)
+      // Tap a nav-button on mobile → close sidebar
+      sidebar.addEventListener('click', function (e) {
+        if (e.target.closest('.nav-button') && window.innerWidth <= 1024) {
           sidebar.classList.remove('open');
+        }
       });
     })();
 
-    /* ── penNav shim ──
-       dashboard.js has a typo: calls penNav() instead of openNav(). */
+    /* ════════════════════════════════════════
+       4. penNav SHIM
+       dashboard.js has a typo — calls penNav() instead of openNav().
+       Define it globally so it doesn't throw a ReferenceError.
+    ════════════════════════════════════════ */
     window.penNav = function () {
       document.getElementById('sidebar-nav').classList.toggle('open');
     };
 
-    /* ── Quick-links & Welcome nav button ──
-       Both activity buttons (.activity-link) and the navbar Welcome button
-       (.nav-link-btn) call show_div2. Since dashboard.js is a module that
-       loads after this script, we proxy through window.show_div2 which
-       dashboard.js must expose on window. */
-    document.addEventListener('click', function (e) {
-      const link = e.target.closest('[data-target].activity-link, [data-target].nav-link-btn');
-      if (link) {
-        e.preventDefault();
-        const target = link.dataset.target;
-        if (typeof window.show_div2 === 'function') {
-          window.show_div2(target);
-        } else {
-          // Queue it — dashboard.js will pick it up once loaded
-          window._pendingNav = target;
-        }
-      }
-    });
   </script>
 
-  <!-- dashboard.js — must call window.show_div2 = show_div2 to expose it -->
   <script type="module" src="javascript/dashboard.js"></script>
 </body>
 </html>

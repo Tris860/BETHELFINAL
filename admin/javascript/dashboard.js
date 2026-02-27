@@ -1,867 +1,837 @@
-import {  deleteData, postData , putData, fetchData,showMessageBox } from "../backend/api.js";
+/**
+ * ═══════════════════════════════════════════════════════════
+ *  BETHEL STUDIO — dashboard.js
+ *
+ *  Loaded as a plain <script> tag (no type="module").
+ *  Uses a dynamic import() inside an async IIFE to pull the
+ *  API helpers — this keeps the file itself a normal script
+ *  so everything (show_div2, toggleSidebar, etc.) lives in
+ *  the regular global scope and is reachable from anywhere.
+ * ═══════════════════════════════════════════════════════════
+ */
 
-document.getElementById('logoutButton').addEventListener('click', async () => {
-    const confirmed = await showMessageBox('Confirm Logout', 'Are you sure you want to logout ?', true);
-    if (confirmed) {
-            // Simulate logout process
-        const result = await postData('logout','');
-           
-        if (result.success) {
-            window.location.href = '../index.html'; 
-        }
-     }
- });
+(async function () {
+  /* ─────────────────────────────────────────────────────
+     IMPORT API HELPERS
+     Dynamic import so this file stays a plain script.
+  ───────────────────────────────────────────────────── */
+  const { deleteData, postData, fetchData, showMessageBox } =
+    await import("../backend/api.js");
 
-const contentPanels = document.querySelectorAll('.content-panel');
-const navButtons = document.querySelectorAll('.nav-button');
-const sidebar = document.getElementById('sidebar-nav');
+  /* ─────────────────────────────────────────────────────
+     DOM REFERENCES  (script is at end of <body> so DOM
+     is already present when this runs)
+  ───────────────────────────────────────────────────── */
+  const contentPanels = document.querySelectorAll(".content-panel");
+  const navButtons = document.querySelectorAll(".nav-button");
+  const sidebar = document.getElementById("sidebar-nav");
+  const overlay = document.getElementById("sidebarOverlay");
+  const imageViewer = document.getElementById("image-viewer");
+  const viewerImage = document.getElementById("viewer-image");
 
-
-
-
-function show_div2(panelId) {
-            
-            // 1. Hide all content panels
-    contentPanels.forEach(panel => {
-            panel.style.display = 'none';
-        });
-
-            // 2. Show the target panel
-    const targetPanel = document.getElementById(panelId);
-    if (targetPanel) {
-        targetPanel.classList.remove('hidden');
-        targetPanel.style.display = 'block'; // Make it visible
-    } else {
-        console.error(`Content panel with ID '${panelId}' not found.`);
-                // If the target panel is missing, default back to 'intro'
-         document.getElementById('intro').style.display = 'block';
-         panelId = 'intro';
-    }
-
-            // 3. Update active state in sidebar (using 'selected' class)
-    navButtons.forEach(btn => btn.classList.remove('selected'));
-
-            // Find the button associated with the panel ID using the data-target attribute
-    const activeBtn = document.querySelector(`.nav-button[data-target="${panelId}"]`);
-    if (activeBtn) {
-        activeBtn.classList.add('selected');
-    }
-            
-            // 4. Close mobile menu if open
-    if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
-        penNav(); // Toggles the 'open' class
-    }
-}
-sidebar.addEventListener('click', (event) => {
-    const clickedButton = event.target.closest('.nav-button');
-    if (clickedButton) {
-      const targetId = clickedButton.dataset.target;
-      if (targetId) {
-          show_div2(targetId);
-        }
-    }
-});
-document.addEventListener('DOMContentLoaded', () => {
-            // Ensure the intro is the default active view
-    show_div2('intro'); 
-
-            // Initial active button highlight (must run after intro is shown)
-   /*  const defaultNavBtn = document.querySelector('.nav-button[data-target="scriptureOfDay"]');
-    if(defaultNavBtn) {
-        defaultNavBtn.classList.add('selected');
-    } */
-});
-document.getElementById("navTrigger").addEventListener("click",() => {openNav()})
-function openNav() {
-        sidebar.classList.toggle('open');
-        console.log('Mobile Navigation Toggled');
-    }
-
-    // Stub for other original functions
-    
-    function addInput() {
-        // This function probably added an input row dynamically, 
-        // e.g., to the service_songs form, or B_commit table.
-        console.log('Add input/row functionality triggered.');
-    }
-    
-    // Helper function for dynamic row adding (Example for B_commit table)
-    document.getElementById('add-row-btn')?.addEventListener('click', () => {
-        const tableBody = document.querySelector('#staff-table tbody');
-        const newRow = tableBody.insertRow();
-        
-        newRow.innerHTML = `
-            <td><input type="text" name="names[]" placeholder="Enter name" required></td>
-            <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
-            <td>
-                <button type="button" class="delete-btn">Delete</button>
-            </td>
-        `;
-        
-        newRow.querySelector('.delete-btn').addEventListener('click', (e) => {
-            e.target.closest('tr').remove();
-        });
+  /* ═══════════════════════════════════════════════════
+     1.  PANEL SWITCHER
+  ═══════════════════════════════════════════════════ */
+  function show_div2(panelId) {
+    // Hide all panels
+    contentPanels.forEach((p) => {
+      p.style.display = "none";
+      p.classList.add("hidden");
     });
 
-    // Delegate delete button functionality to the table for dynamism
-    document.querySelectorAll('table').forEach(table => {
-        table.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete-btn')) {
-                e.target.closest('tr').remove();
-            }
-        });
+    // Show target — fall back to intro if id not found
+    let panel = document.getElementById(panelId);
+    if (!panel) {
+      console.warn(`Panel "${panelId}" not found — showing intro.`);
+      panel = document.getElementById("intro");
+      panelId = "intro";
+    }
+    panel.classList.remove("hidden");
+    panel.style.display = "block";
+
+    // Update sidebar highlighted state
+    navButtons.forEach((b) => b.classList.remove("selected"));
+    const activeBtn = document.querySelector(
+      `.nav-button[data-target="${panelId}"]`,
+    );
+    if (activeBtn) activeBtn.classList.add("selected");
+
+    // Close mobile drawer if open
+    if (window.innerWidth <= 1024 && sidebar.classList.contains("open")) {
+      sidebar.classList.remove("open");
+    }
+  }
+
+  // Expose on window — the Welcome button and activity
+  // quick-links both call window.show_div2(target)
+  window.show_div2 = show_div2;
+
+  /* ═══════════════════════════════════════════════════
+     2.  SIDEBAR — hamburger, overlay, drawer
+  ═══════════════════════════════════════════════════ */
+  function toggleSidebar() {
+    sidebar.classList.toggle("open");
+  }
+
+  document
+    .getElementById("navTrigger")
+    .addEventListener("click", toggleSidebar);
+
+  overlay.addEventListener("click", () => sidebar.classList.remove("open"));
+
+  // Keep overlay .visible in sync with sidebar .open
+  new MutationObserver(() => {
+    overlay.classList.toggle("visible", sidebar.classList.contains("open"));
+  }).observe(sidebar, { attributes: true, attributeFilter: ["class"] });
+
+  // Sidebar nav-button → switch panel
+  sidebar.addEventListener("click", (e) => {
+    const btn = e.target.closest(".nav-button");
+    if (btn && btn.dataset.target) show_div2(btn.dataset.target);
+  });
+
+  // Legacy typo shims
+  window.penNav = toggleSidebar;
+  window.openNav = toggleSidebar;
+
+  /* ═══════════════════════════════════════════════════
+     3.  QUICK-LINKS  +  WELCOME NAVBAR BUTTON
+         .activity-link  — Key Activity cards (intro panel)
+         .nav-link-btn   — "Welcome" button in header nav
+         Both carry data-target and call show_div2.
+  ═══════════════════════════════════════════════════ */
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest(
+      ".activity-link[data-target], .nav-link-btn[data-target]",
+    );
+    if (link) {
+      e.preventDefault();
+      show_div2(link.dataset.target);
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════
+     4.  LOGOUT
+  ═══════════════════════════════════════════════════ */
+  document
+    .getElementById("logoutButton")
+    .addEventListener("click", async () => {
+      const ok = await showMessageBox(
+        "Confirm Logout",
+        "Are you sure you want to logout?",
+        true,
+      );
+      if (!ok) return;
+      const result = await postData("logout", "");
+      if (result.success) window.location.href = "../index.html";
     });
 
-    // Simple image preview for single file inputs (Mypost2/Myupdate)
-    function setupImagePreview(inputId, imgId) {
-        const input = document.getElementById(inputId);
-        const img = document.getElementById(imgId);
+  /* ═══════════════════════════════════════════════════
+     5.  ADD-ROW / DELETE-ROW TABLE HELPERS
+  ═══════════════════════════════════════════════════ */
 
-        if (input && img) {
-            input.addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        img.src = e.target.result;
-                        img.style.display = 'block';
-                    }
-                    reader.readAsDataURL(file);
-                } else {
-                    img.src = '';
-                    // Using placeholder for better UX
-                    img.src = `https://placehold.co/${img.width}x${img.height}/282828/fff?text=New+Image`;
-                }
-            });
-        }
+  // Committee table — Add Row
+  document.getElementById("add-row-btn")?.addEventListener("click", () => {
+    const tbody = document.querySelector("#staff-table tbody");
+    const row = tbody.insertRow();
+    row.innerHTML = `
+        <td><input type="text" name="names[]" placeholder="Enter name" required></td>
+        <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
+        <td class="action-cell">
+          <button type="button" class="delete-btn" title="Remove row">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </td>`;
+    row
+      .querySelector(".delete-btn")
+      .addEventListener("click", (e) => e.target.closest("tr").remove());
+  });
+
+  // Memory album — Add Image
+  document.getElementById("add-memory-row")?.addEventListener("click", () => {
+    const tbody = document.querySelector("#memory-images tbody");
+    const row = tbody.insertRow();
+    row.innerHTML = `
+        <td><input type="file" name="memories[]" accept="image/*" required></td>
+        <td class="action-cell">
+          <button type="button" class="delete-btn" title="Remove">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </td>`;
+    row
+      .querySelector(".delete-btn")
+      .addEventListener("click", (e) => e.target.closest("tr").remove());
+  });
+
+  // Delegate in-table delete for all tables
+  document.querySelectorAll("table").forEach((table) => {
+    table.addEventListener("click", (e) => {
+      const btn = e.target.closest(".delete-btn");
+      if (btn?.closest("tbody")) btn.closest("tr").remove();
+    });
+  });
+
+  /* ═══════════════════════════════════════════════════
+     6.  IMAGE PREVIEW HELPERS
+  ═══════════════════════════════════════════════════ */
+  function setupImagePreview(inputId, imgId) {
+    const input = document.getElementById(inputId);
+    const img = document.getElementById(imgId);
+    if (!input || !img) return;
+    input.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) {
+        img.src = "https://placehold.co/300x200/282828/fff?text=New+Image";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        img.src = ev.target.result;
+        img.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  setupImagePreview("imagePost", "Mypost2");
+  setupImagePreview("uploadPic", "Pic");
+  setupImagePreview("updateImage", "Myupdate");
+  setupImagePreview("updateImage2", "Myupdate2");
+
+  /* ═══════════════════════════════════════════════════
+     7.  IMAGE HOVER VIEWER  (shared helper)
+  ═══════════════════════════════════════════════════ */
+  function showViewer(url) {
+    if (!url) return;
+    viewerImage.src = "../" + url;
+    imageViewer.classList.remove("hidden");
+    imageViewer.style.opacity = "1";
+  }
+  function hideViewer() {
+    imageViewer.classList.add("hidden");
+    imageViewer.style.opacity = "0";
+  }
+
+  /* ═══════════════════════════════════════════════════
+     8.  DATA RENDERS
+  ═══════════════════════════════════════════════════ */
+
+  /* ── Overview stats ── */
+  async function loadOverview() {
+    try {
+      const [songs, pictures, committee, years] = await Promise.all([
+        fetchData("song"),
+        fetchData("picture"),
+        fetchData("Committee"),
+        fetchData("AnnualAchievement"),
+      ]);
+      document.getElementById("Songs").innerText = songs.length;
+      document.getElementById("Pictures").innerText = pictures.length;
+      document.getElementById("Committes").innerText = committee.length;
+      document.getElementById("YearsRecorded").innerText = years.length;
+    } catch (err) {
+      console.error("Overview load failed:", err);
     }
-    
-    // Apply image preview to main post sections
-    setupImagePreview('imagePost', 'Mypost2');
-    setupImagePreview('uploadPic', 'Pic');
-    setupImagePreview('updateImage', 'Myupdate');
-    setupImagePreview('updateImage2', 'Myupdate2');
+  }
 
-document.addEventListener('DOMContentLoaded', function() {
+  /* ── CTA ── */
   const CTAForm = document.getElementById("CTAform");
-  const heading = document.getElementById("headingCTA");
-  const caption = document.getElementById("caption");
-  const page = document.getElementById("pageselected");
-  const pageButtons = document.querySelectorAll(".page-button");
+  const headingCTA = document.getElementById("headingCTA");
+  const captionInput = document.getElementById("caption");
+  const pageSelected = document.getElementById("pageselected");
   const pageSelector = document.getElementById("pageSelector");
 
+  CTAForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!pageSelected.value) {
+      await showMessageBox("Fill form", "Please select a page first.");
+      return;
+    }
+    const ok = await showMessageBox("Confirm Submission", "Update this CTA?");
+    if (!ok) return;
+    const fd = new FormData();
+    fd.append("heading", headingCTA.value);
+    fd.append("caption", captionInput.value);
+    fd.append("page", pageSelected.value);
+    const data = await postData("CTA", fd);
+    if (data.success) {
+      headingCTA.value = "";
+      captionInput.value = "";
+      pageSelected.value = "";
+      document
+        .querySelectorAll(".page-button")
+        .forEach((b) => b.classList.remove("selectedpage"));
+    }
+  });
+
+  pageSelector?.addEventListener("click", async (e) => {
+    const btn = e.target.closest(".page-button");
+    if (!btn) return;
+    const page = btn.dataset.target;
+    pageSelected.value = page;
+    document
+      .querySelectorAll(".page-button")
+      .forEach((b) => b.classList.remove("selectedpage"));
+    btn.classList.add("selectedpage");
+    const data = await fetchData("CTA", page);
+    headingCTA.value = data.heading || "";
+    pageSelected.value = data.page || page;
+    captionInput.value = data.caption || "";
+  });
+
+  /* ── Scripture ── */
   const ScriptureForm = document.getElementById("ScriptureForm");
   const ScriptureTitle = document.getElementById("ScriptureTitle");
   const ScriptureMeaning = document.getElementById("ScriptureMeaning");
 
-  const actionButtonsContainer = document.getElementById("deleteContainer");
-
-  const presidentWordForm = document.getElementById("presidentWordForm");
-  const uploadPic = document.getElementById("uploadPic");
-  const message = document.getElementById("message");
-  const presidentName = document.getElementById("presidentName");
-
-  const songTable = document.getElementById("song-list");
-  const songTableBody = document.querySelector("#song-list tbody");
-  const SongForm = document.getElementById("SongForm");
-  const addSong = document.getElementById("add-row-btn3");
-  const SongFormTitle = document.getElementById("SongFormTitle");
-
-  const PictureForm = document.getElementById("imagePostForm");
-  const image = document.getElementById("imagePost");
-  const ImageCaption = document.getElementById("ImageCaption");
-  const pictureTableBody = document.querySelector("#pictureTableBody");
-  const addPicture = document.getElementById("add-row-btn4");
-  const pictureFormTitle = document.getElementById("pictureFormTitle");
-
-  const imageViewer = document.getElementById("image-viewer");
-  const viewerImage = document.getElementById("viewer-image");
-
-  async function overview() {
-
-    const songs = await fetchData("song");
-    document.getElementById("Songs").innerText = songs.length;
-
-    const Pictures = await fetchData("picture");
-    document.getElementById("Pictures").innerText = Pictures.length;
-
-    const committee = await fetchData("Committee");
-    document.getElementById("Committes").innerText = committee.length;
-
-    const year = await fetchData("AnnualAchievement");
-    document.getElementById("YearsRecorded").innerText = year.length;
-
-  }
-
-  overview();
-
-  renderSongs();
-
-  if (CTAForm) {
-    CTAForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent default form submission
-      if (page.value) {
-        const confirmed = await showMessageBox(
-          "Confirm Submission",
-          "Are you sure you want to update CTA ?"
-        );
-        if (confirmed) {
-          const formData = new FormData();
-          formData.append("heading", heading.value);
-          formData.append("caption", caption.value);
-          formData.append("page", page.value);
-          const data = await postData("CTA", formData);
-          if (data.success) {
-            heading.value = "";
-            caption.value = "";
-            page.value = "";
-            pageButtons.forEach((btn) => btn.classList.remove("selectedpage"));
-          }
-        }
-      } else {
-        const confirmed = await showMessageBox(
-          "Fill form",
-          "Please Select Page ?"
-        );
-      }
-    });
-  }
-  pageSelector.addEventListener("click", async (event) => {
-    const clickedButton = event.target.closest(".page-button");
-    if (clickedButton) {
-      const targetpage = clickedButton.dataset.target;
-
-      document.getElementById("pageselected").value = targetpage;
-      pageButtons.forEach((btn) => btn.classList.remove("selectedpage"));
-
-      // Find the button associated with the panel ID using the data-target attribute
-      const activeBtn = document.querySelector(
-        `.page-button[data-target="${targetpage}"]`
-      );
-      if (activeBtn) {
-        activeBtn.classList.add("selectedpage");
-        const data = await fetchData("CTA", targetpage);
-        heading.value = data.heading;
-        page.value = data.page;
-        caption.value = data.caption;
-      }
-    }
-  });
-  async function Scripturerender() {
+  async function loadScripture() {
     const data = await fetchData("Scripture");
-    ScriptureTitle.value = data.title;
-    ScriptureMeaning.value = data.content;
-  }
-  async function Wordrender() {
-    const data = await fetchData("PresidentWord");
-
-    presidentName.value = data.name;
-    message.value = data.message;
-    document.getElementById("Pic").src = "../" + data.image;
+    if (ScriptureTitle) ScriptureTitle.value = data.title || "";
+    if (ScriptureMeaning) ScriptureMeaning.value = data.content || "";
   }
 
   if (ScriptureForm) {
-    Scripturerender();
-
-    ScriptureForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent default form submission
-
-      const confirmed = await showMessageBox(
+    loadScripture();
+    ScriptureForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const ok = await showMessageBox(
         "Confirm Submission",
-        "Are you sure you want to update Scripture of the Day?"
+        "Update Scripture of the Day?",
       );
-      if (confirmed) {
-        const formData = new FormData();
-        formData.append("ScriptureTitle", ScriptureTitle.value);
-        formData.append("ScriptureMeaning", ScriptureMeaning.value);
-
-        const data = await postData("Scripture", formData);
-        if (data.success) {
-          ScriptureTitle.value = "";
-          ScriptureMeaning.value = "";
-          Scripturerender();
-        }
+      if (!ok) return;
+      const fd = new FormData();
+      fd.append("ScriptureTitle", ScriptureTitle.value);
+      fd.append("ScriptureMeaning", ScriptureMeaning.value);
+      const data = await postData("Scripture", fd);
+      if (data.success) {
+        ScriptureTitle.value = "";
+        ScriptureMeaning.value = "";
+        loadScripture();
       }
     });
+  }
+
+  /* ── President's Word ── */
+  const presidentWordForm = document.getElementById("presidentWordForm");
+  const uploadPic = document.getElementById("uploadPic");
+  const messageTA = document.getElementById("message");
+  const presidentName = document.getElementById("presidentName");
+
+  async function loadPresidentWord() {
+    const data = await fetchData("PresidentWord");
+    if (presidentName) presidentName.value = data.name || "";
+    if (messageTA) messageTA.value = data.message || "";
+    const pic = document.getElementById("Pic");
+    if (pic && data.image) pic.src = "../" + data.image;
   }
 
   if (presidentWordForm) {
-    Wordrender();
-    presidentWordForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent default form submission
-
-      const confirmed = await showMessageBox(
+    loadPresidentWord();
+    presidentWordForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const ok = await showMessageBox(
         "Confirm Submission",
-        "Are you sure you want to update President word ?"
+        "Update the President's message?",
       );
-      if (confirmed) {
-        const formData = new FormData();
-        const featured_image = uploadPic.files[0];
-        if (uploadPic.files.length > 0) {
-          formData.append("featured_image", featured_image);
-        }
-        formData.append("presidentName", presidentName.value);
-        formData.append("message", message.value);
-
-        const data = await postData("PresidentWord", formData);
-        if (data.success) {
-          presidentName.value = "";
-          message.value = "";
-          Wordrender();
-        }
+      if (!ok) return;
+      const fd = new FormData();
+      if (uploadPic?.files.length)
+        fd.append("featured_image", uploadPic.files[0]);
+      fd.append("presidentName", presidentName.value);
+      fd.append("message", messageTA.value);
+      const data = await postData("PresidentWord", fd);
+      if (data.success) {
+        presidentName.value = "";
+        messageTA.value = "";
+        loadPresidentWord();
       }
     });
   }
 
+  /* ── Songs ── */
+  const SongForm = document.getElementById("SongForm");
+  const songTableBody = document.querySelector("#song-list tbody");
+  const addSongBtn = document.getElementById("add-row-btn3");
+
   async function renderSongs() {
-    SongForm.style.display = "none";
-    let songs = await fetchData("song");
+    if (SongForm) SongForm.style.display = "none";
+    if (!songTableBody) return;
+    const songs = await fetchData("song");
     songTableBody.innerHTML = "";
     songs.forEach((song) => {
       const row = songTableBody.insertRow();
       row.insertCell(0).textContent = song.title;
-      const actionsCell = row.insertCell(1);
-      const editBtn = document.createElement("button");
-      editBtn.textContent = "Edit";
-      editBtn.classList.add("edit-btn");
-      editBtn.addEventListener("click", () => editSong(song.id));
-      actionsCell.appendChild(editBtn);
+      const cell = row.insertCell(1);
+      cell.className = "action-cell";
 
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "Delete";
-      deleteBtn.classList.add("delete-btn");
-      deleteBtn.addEventListener("click", () => deleteSong(song.id));
-      actionsCell.appendChild(deleteBtn);
+      const editBtn = document.createElement("button");
+      editBtn.className = "edit-btn";
+      editBtn.innerHTML =
+        '<i class="fa-solid fa-pen-to-square fa-xs"></i> Edit';
+      editBtn.addEventListener("click", () => editSong(song.id));
+
+      const delBtn = document.createElement("button");
+      delBtn.className = "delete-btn";
+      delBtn.title = "Delete";
+      delBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+      delBtn.addEventListener("click", () => deleteSong(song.id));
+
+      cell.appendChild(editBtn);
+      cell.appendChild(delBtn);
     });
   }
-  addSong.addEventListener("click", () => {
-    SongForm.style.display = "flex";
-    document.getElementById("SongFormTitle").innerText = "Add a song";
+
+  addSongBtn?.addEventListener("click", () => {
+    if (SongForm) SongForm.style.display = "flex";
+    document.getElementById("SongFormTitle").innerText = "Add a Song";
     document.getElementById("titleSong").value = "";
     document.getElementById("linkSong").value = "";
+    document.getElementById("songId").value = "";
   });
+
   async function editSong(id) {
     const song = await fetchData("song", id);
-    if (song) {
-      SongForm.style.display = "flex";
-      document.getElementById("SongFormTitle").innerText = "Edit the song";
-      document.getElementById("songId").value = song.id;
-      document.getElementById("titleSong").value = song.title;
-      document.getElementById("linkSong").value = song.link;
-    }
+    if (!song) return;
+    if (SongForm) SongForm.style.display = "flex";
+    document.getElementById("SongFormTitle").innerText = "Edit Song";
+    document.getElementById("songId").value = song.id;
+    document.getElementById("titleSong").value = song.title;
+    document.getElementById("linkSong").value = song.link;
   }
+
   async function deleteSong(id) {
-    const confirmed = await showMessageBox(
+    const ok = await showMessageBox(
       "Confirm Delete",
-      "Delete this song",
-      true
+      "Delete this song?",
+      true,
     );
-    if (confirmed) {
-      const result = await deleteData("song", id);
-      if (result.success) {
-        renderSongs();
-      }
+    if (!ok) return;
+    const result = await deleteData("song", id);
+    if (result.success) renderSongs();
+  }
+
+  SongForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData();
+    fd.append("title", document.getElementById("titleSong").value);
+    fd.append("link", document.getElementById("linkSong").value);
+    const id = document.getElementById("songId").value;
+    const data = await postData("song", fd, id);
+    if (data.success) {
+      SongForm.style.display = "none";
+      document.getElementById("SongFormTitle").innerText = "";
+      document.getElementById("titleSong").value = "";
+      document.getElementById("linkSong").value = "";
+      document.getElementById("songId").value = "";
+      renderSongs();
     }
+  });
+
+  /* ── Pictures / Gallery ── */
+  const PictureForm = document.getElementById("imagePostForm");
+  const imageInput = document.getElementById("imagePost");
+  const ImageCaption = document.getElementById("ImageCaption");
+  const pictureTableBody = document.querySelector("#pictureTableBody");
+  const addPictureBtn = document.getElementById("add-row-btn4");
+  const pictureFormTitle = document.getElementById("pictureFormTitle");
+
+  function setStatusBtn(btn, isActive) {
+    btn.textContent = isActive ? "ACTIVE" : "INACTIVE";
+    btn.setAttribute("data-status", isActive ? "1" : "0");
+    btn.classList.remove("status-active-button", "status-inactive-button");
+    btn.classList.add(
+      isActive ? "status-active-button" : "status-inactive-button",
+    );
   }
-  if (SongForm) {
-    SongForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent default form submission
-
-      const formData = new FormData();
-      formData.append("title", document.getElementById("titleSong").value);
-      formData.append("link", document.getElementById("linkSong").value);
-      const id = document.getElementById("songId").value;
-      const data = await postData("song", formData, id);
-      if (data.success) {
-        SongForm.style.display = "none";
-        document.getElementById("SongFormTitle").innerText = "";
-        document.getElementById("titleSong").value = "";
-        document.getElementById("linkSong").value = "";
-        document.getElementById("songId").value = "";
-        renderSongs();
-      }
-    });
-  }
-  renderPictures();
-  // Function to create the switch element
- function updateButtonAppearance(button, isActive) {
-   button.textContent = isActive ? "ACTIVE" : "INACTIVE";
-   button.setAttribute("data-status", isActive);
-
-   // Remove existing status classes
-   button.classList.remove("status-active-button", "status-inactive-button");
-
-   // Add the correct status class
-   if (isActive) {
-     button.classList.add("status-active-button");
-   } else {
-     button.classList.add("status-inactive-button");
-   }
- }
-
- /**
-  * Global function to handle the status button click and state change.
-  * @param {HTMLButtonElement} button - The button element that triggered the change.
-  * @param {string} caption - The caption associated with the row/item.
-  */
-
-
- /**
-  * Creates the full HTML structure for the status button.
-  * @param {string} captionText - The text used to identify the button in the console log.
-  * @param {boolean} isActive - Initial state of the status.
-  * @returns {HTMLButtonElement} The complete status button element.
-  */
-
-
-  // Example usage: append to body
- 
 
   async function renderPictures() {
-    PictureForm.style.display = "none";
-    let pictures = await fetchData("picture");
+    if (PictureForm) PictureForm.style.display = "none";
+    if (!pictureTableBody) return;
+    const pictures = await fetchData("picture");
     pictureTableBody.innerHTML = "";
+
     pictures.forEach((picture) => {
       const row = pictureTableBody.insertRow();
-      row.classList.add("hover-row");
       row.setAttribute("data-image-url", picture.link);
-      row.addEventListener("mouseover", (event) => {
-        // Get the image URL from the data attribute of the hovered row
-        const imageUrl = row.getAttribute("data-image-url");
+      row.addEventListener("mouseover", () => showViewer(picture.link));
+      row.addEventListener("mouseout", hideViewer);
 
-        // If a URL exists, update the viewer and show it
-        if (imageUrl) {
-          const imageUrls = "../" + imageUrl;
-          viewerImage.src = imageUrls;
-          imageViewer.classList.remove("hidden");
-          imageViewer.style.opacity = 1; // Fade in effect
-        }
-      });
-
-      // Event listener for when the mouse leaves a row
-      row.addEventListener("mouseout", () => {
-        // Hide the viewer instantly
-        imageViewer.classList.add("hidden");
-        imageViewer.style.opacity = 0;
-      });
       row.insertCell(0).textContent = picture.caption;
-      const statusButton = document.createElement("button");
-      statusButton.className = "status-button";
-      statusButton.textContent = picture.slideshow ? "ACTIVE" : "INACTIVE";
-      
-      statusButton.addEventListener("click", async () => {
-        console.log(`Status button for "${picture.slideshow}" clicked.`);
-        const formData = new FormData();
-        formData.append("status", !picture.slideshow);
-        formData.append("imageId", picture.id);
+      const cell = row.insertCell(1);
+      cell.className = "action-cell";
 
-        const result = await postData("Slideshow", formData, picture.id);
-        if (result.success) {
-            renderPictures();
-        }
+      const statusBtn = document.createElement("button");
+      statusBtn.className = "status-button";
+      setStatusBtn(statusBtn, picture.slideshow);
+      statusBtn.addEventListener("click", async () => {
+        const fd = new FormData();
+        fd.append("status", String(!picture.slideshow));
+        fd.append("imageId", picture.id);
+        const result = await postData("Slideshow", fd, picture.id);
+        if (result.success) renderPictures();
       });
-      const actionsCell = row.insertCell(1); 
-      actionsCell.appendChild(statusButton);
-      
-       
+
       const editBtn = document.createElement("button");
-      editBtn.textContent = "Edit";
-      editBtn.classList.add("edit-btn");
+      editBtn.className = "edit-btn";
+      editBtn.innerHTML =
+        '<i class="fa-solid fa-pen-to-square fa-xs"></i> Edit';
       editBtn.addEventListener("click", () => editPicture(picture.id));
-      actionsCell.appendChild(editBtn);
-      
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "Delete";
-      deleteBtn.classList.add("delete-btn");
-      deleteBtn.addEventListener("click", () => deletePicture(picture.id));
-        actionsCell.appendChild(deleteBtn); 
+
+      const delBtn = document.createElement("button");
+      delBtn.className = "delete-btn";
+      delBtn.title = "Delete";
+      delBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+      delBtn.addEventListener("click", () => deletePicture(picture.id));
+
+      cell.appendChild(statusBtn);
+      cell.appendChild(editBtn);
+      cell.appendChild(delBtn);
     });
-      
   }
-  addPicture.addEventListener("click", () => {
-    PictureForm.style.display = "flex";
-    document.getElementById("pictureFormTitle").innerText = "Add a picture";
-    ImageCaption.value = "";
-    document.getElementById("Mypost2").value = "";
-    document.getElementById("url").value = "";
-    document.getElementById("pictureId").value = "";
+
+  addPictureBtn?.addEventListener("click", () => {
+    if (PictureForm) PictureForm.style.display = "flex";
+    if (pictureFormTitle) pictureFormTitle.innerText = "Add a Picture";
+    if (ImageCaption) ImageCaption.value = "";
+    const mypost = document.getElementById("Mypost2");
+    if (mypost)
+      mypost.src = "https://placehold.co/300x200/1a1a1a/FFD700?text=New+Image";
+    ["pictureId", "url"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
   });
+
   async function editPicture(id) {
-    const picture = await fetchData("picture", id);
-    if (picture) {
-      PictureForm.style.display = "flex";
-      document.getElementById("pictureFormTitle").innerText =
-        "Edit the picture";
-      document.getElementById("pictureId").value = picture.id;
-      document.getElementById("Mypost2").src = "../" + picture.link;
-      document.getElementById("url").value = picture.link;
-      ImageCaption.value = picture.caption;
-    }
+    const pic = await fetchData("picture", id);
+    if (!pic) return;
+    if (PictureForm) PictureForm.style.display = "flex";
+    if (pictureFormTitle) pictureFormTitle.innerText = "Edit Picture";
+    document.getElementById("pictureId").value = pic.id;
+    document.getElementById("url").value = pic.link;
+    document.getElementById("Mypost2").src = "../" + pic.link;
+    if (ImageCaption) ImageCaption.value = pic.caption;
   }
+
   async function deletePicture(id) {
-    const confirmed = await showMessageBox(
+    const ok = await showMessageBox(
       "Confirm Delete",
-      "Delete this picture",
-      true
+      "Delete this picture?",
+      true,
     );
-    if (confirmed) {
-      const result = await deleteData("picture", id);
-      if (result.success) {
-        renderSongs();
-      }
+    if (!ok) return;
+    const result = await deleteData("picture", id);
+    if (result.success) renderPictures();
+  }
+
+  PictureForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData();
+    fd.append("url", document.getElementById("url").value);
+    fd.append("caption", document.getElementById("ImageCaption").value);
+    fd.append("pictureId", document.getElementById("pictureId").value);
+    if (imageInput?.files.length)
+      fd.append("featured_image", imageInput.files[0]);
+    const id = document.getElementById("pictureId").value;
+    const data = await postData("picture", fd, id);
+    if (data.success) {
+      if (pictureFormTitle) pictureFormTitle.innerText = "";
+      document.getElementById("Mypost2").src = "";
+      document.getElementById("ImageCaption").value = "";
+      document.getElementById("url").value = "";
+      document.getElementById("pictureId").value = "";
+      PictureForm.reset();
+      renderPictures();
     }
-  }
-  if (PictureForm) {
-    PictureForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent default form submission
+  });
 
-      const formData = new FormData();
-      formData.append("url", document.getElementById("url").value);
-      formData.append("caption", document.getElementById("ImageCaption").value);
-      formData.append("pictureId", document.getElementById("pictureId").value);
-      const featured_image = image.files[0];
-      if (image.files.length > 0) {
-        formData.append("featured_image", featured_image);
-      }
-      const id = document.getElementById("pictureId").value;
-      const data = await postData("picture", formData, id);
-      if (data.success) {
-        SongForm.style.display = "none";
-        document.getElementById("pictureId").innerText = "";
-        pictureFormTitle.innerText = "";
-        document.getElementById("Mypost2").src = "";
-        ImageCaption.value = "";
-        document.getElementById("url").value = "";
-        PictureForm.reset();
-        renderPictures();
-      }
-    });
-  }
-
+  /* ── Committee ── */
   const StaffForm = document.getElementById("staff-form");
+  const actionButtonsContainer = document.getElementById("deleteContainer");
 
-  if (StaffForm) {
-    StaffForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevent default form submission
-
-      const confirmed = await showMessageBox(
-        "Confirm Submission",
-        "Are you sure you want to save this Committee?"
-      );
-
-      if (confirmed) {
-        const formData = new FormData(StaffForm);
-
-        // Send data to backend
-        const data = await postData("Committee", formData);
-
-        if (data.success) {
-          // Reset form fields
-          StaffForm.reset();
-          renderEra();
-        }
-      }
-    });
-  }
   async function renderEra() {
-    // Fetch all eras from backend
-    let eras = await fetchData("Committee");
+    const eras = await fetchData("Committee");
     const tableBody = document.querySelector("#staff-table tbody");
     const container = document.getElementById("committeAction");
-    container.innerHTML = ""; // clear old buttons
+    if (!container || !tableBody) return;
+
+    container.innerHTML = "";
     tableBody.innerHTML = "";
-    document.getElementById("staffTitle").innerText = "";
     document.getElementById("staffTitle").innerText =
       "Register a new Bethel Committee";
-    console.log(eras);
-    // Add one empty row
+
+    // Default empty row
     const emptyRow = document.createElement("tr");
     emptyRow.innerHTML = `
-        <td><input type="text" name="names[]" placeholder="Enter name" required></td>
-        <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
-        <td><button type="button" class="delete-btn">Delete</button></td>
-    `;
+      <td><input type="text" name="names[]" placeholder="Enter name" required></td>
+      <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
+      <td class="action-cell">
+        <button type="button" class="delete-btn" title="Remove row">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </td>`;
     tableBody.appendChild(emptyRow);
     tableBody.removeAttribute("data-image-url");
 
-    const btn = document.createElement("button");
-    btn.classList.add("page-button");
-    btn.textContent = "New";
-    btn.id = "NewCommitte";
-    container.appendChild(btn);
-    btn.addEventListener("click", () => {
-      // Clear form for new entry
+    // "New" button
+    const newBtn = document.createElement("button");
+    newBtn.className = "page-button selectedpage";
+    newBtn.id = "NewCommitte";
+    newBtn.textContent = "New";
+    newBtn.addEventListener("click", () => {
       tableBody.removeAttribute("data-image-url");
       document
         .querySelectorAll(".page-button")
         .forEach((b) => b.classList.remove("selectedpage"));
-      btn.classList.add("selectedpage");
-      actionButtonsContainer.innerHTML = "";
-      StaffForm.reset();
-      const inputs = document.querySelectorAll("#staff-form input");
-      inputs.forEach((input) => {
-        input.required = false; // or input.removeAttribute('required');
-      });
-
-      // Clear all existing rows
+      newBtn.classList.add("selectedpage");
+      if (actionButtonsContainer) actionButtonsContainer.innerHTML = "";
+      if (StaffForm) StaffForm.reset();
       tableBody.innerHTML = "";
-
-      // Add one empty row
-      const emptyRow = document.createElement("tr");
-      emptyRow.innerHTML = `
+      const row = document.createElement("tr");
+      row.innerHTML = `
         <td><input type="text" name="names[]" placeholder="Enter name" required></td>
         <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
-        <td><button type="button" class="delete-btn">Delete</button></td>
-    `;
-      tableBody.appendChild(emptyRow);
+        <td class="action-cell">
+          <button type="button" class="delete-btn" title="Remove row">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </td>`;
+      tableBody.appendChild(row);
       document.getElementById("staffTitle").innerText =
         "Register a new Bethel Committee";
     });
-    console.log(eras)
+    container.appendChild(newBtn);
+
+    // One button per saved era
     eras.forEach((era) => {
       const btn = document.createElement("button");
-      btn.classList.add("page-button");
+      btn.className = "page-button";
       btn.dataset.target = era.era;
       btn.textContent = era.era;
-
-      btn.addEventListener("click", async (event) => {
-        const commit_id = btn.dataset.target;
-
-        // Update hidden field
-        document.getElementById("pageselected").value = commit_id;
-
-        // Remove active class from all buttons
+      btn.addEventListener("click", async () => {
         document
           .querySelectorAll(".page-button")
           .forEach((b) => b.classList.remove("selectedpage"));
-
-        // Mark this one active
         btn.classList.add("selectedpage");
-
-        // Fetch committee data for this era
         document.getElementById("staffTitle").innerText =
           "Editing Bethel Committee of " + era.era;
-        const data = await fetchData("Committee", commit_id);
-
+        const data = await fetchData("Committee", era.era);
         renderCommitteeForm(data);
-        const inputs = document.querySelectorAll("#staff-form input");
-        inputs.forEach((input) => {
-          input.required = false; // or input.removeAttribute('required');
-        });
       });
-
       container.appendChild(btn);
     });
   }
 
-  renderEra();
   async function renderCommitteeForm(data) {
-    const staffForm = document.getElementById("staff-form");
-    const tableBody = staffForm.querySelector("#staff-table tbody");
-    actionButtonsContainer.innerHTML = ""; // Clear previous buttons
-    const btn = document.createElement("button");
-    btn.classList.add("delete-btn");
-    btn.textContent = "Delete Committee";
-    btn.type = "button";
-    btn.addEventListener("click", async () => {
-      const confirmed = await showMessageBox(
+    const tableBody = StaffForm.querySelector("#staff-table tbody");
+    if (actionButtonsContainer) actionButtonsContainer.innerHTML = "";
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "delete-btn";
+    delBtn.textContent = "Delete Committee";
+    delBtn.type = "button";
+    delBtn.addEventListener("click", async () => {
+      const ok = await showMessageBox(
         "Confirm Delete",
-        "Delete this Committee",
-        true
+        "Delete this entire Committee?",
+        true,
       );
-      if (confirmed) {
-        const result = await deleteData("Committee", data.commit_id);
-        if (result.success) {
-          // Clear form and re-render eras
-          staffForm.reset();
-          renderEra();
-        }
+      if (!ok) return;
+      const result = await deleteData("Committee", data.commit_id);
+      if (result.success) {
+        StaffForm.reset();
+        renderEra();
       }
     });
-    actionButtonsContainer.appendChild(btn);
-    // Clear existing rows
+    if (actionButtonsContainer) actionButtonsContainer.appendChild(delBtn);
+
     tableBody.innerHTML = "";
     tableBody.setAttribute("data-image-url", data.picture);
-    tableBody.addEventListener("mouseover", (event) => {
-      // Get the image URL from the data attribute of the hovered row
-      const imageUrl = tableBody.getAttribute("data-image-url");
+    tableBody.addEventListener("mouseover", () => showViewer(data.picture));
+    tableBody.addEventListener("mouseout", hideViewer);
 
-      // If a URL exists, update the viewer and show it
-      if (imageUrl) {
-        const imageUrls = "../" + imageUrl;
-        viewerImage.src = imageUrls;
-        imageViewer.classList.remove("hidden");
-        imageViewer.style.opacity = 1; // Fade in effect
-      }
-    });
-    tableBody.addEventListener("mouseout", () => {
-      // Hide the viewer instantly
-      imageViewer.classList.add("hidden");
-      imageViewer.style.opacity = 0;
-    });
-    console.log(data.era);
-    // Populate members
     data.members.forEach((member) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-            <td><input type="text" name="names[]" value="${member.names}" required></td>
-            <td><input type="text" name="posts[]" value="${member.post}" required></td>
-            <td><button type="button" class="delete-btn">Delete</button></td>
-        `;
+        <td><input type="text" name="names[]" value="${member.names}" required></td>
+        <td><input type="text" name="posts[]" value="${member.post}"  required></td>
+        <td class="action-cell">
+          <button type="button" class="delete-btn" title="Remove row">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </td>`;
       tableBody.appendChild(row);
     });
 
-    // Fill decree and period
-    staffForm.querySelector('input[name="ecree"]').value = data.ecree || "";
-    staffForm.querySelector('input[name="period"]').value = data.era || "";
-    staffForm.querySelector('input[name="commit_id"]').value =
+    StaffForm.querySelector('input[name="ecree"]').value = data.ecree || "";
+    StaffForm.querySelector('input[name="period"]').value = data.era || "";
+    StaffForm.querySelector('input[name="commit_id"]').value =
       data.commit_id || "";
-    staffForm.querySelector('input[name="url"]').value = data.picture || "";
+    StaffForm.querySelector('input[name="url"]').value = data.picture || "";
   }
-  renderAnnualAchievements();
+
+  StaffForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const ok = await showMessageBox(
+      "Confirm Submission",
+      "Save this Committee?",
+    );
+    if (!ok) return;
+    const data = await postData("Committee", new FormData(StaffForm));
+    if (data.success) {
+      StaffForm.reset();
+      renderEra();
+    }
+  });
+
+  /* ── Annual Achievements ── */
   async function renderAnnualAchievements() {
     const achievements = await fetchData("AnnualAchievement");
-    const erachievementsContainer = document.getElementById("annual_achivementsAction");
-    const newbtn = document.createElement("button");
-    erachievementsContainer.innerHTML = ""; // clear old buttons
-    newbtn.classList.add("page-button");
-    newbtn.classList.add("selectedpage");
-    newbtn.textContent = "New";
-    newbtn.id = "NewAchievement";
-    erachievementsContainer.appendChild(newbtn);
-    newbtn.addEventListener("click", () => {
-      document.querySelectorAll(".page-button")
+    const container = document.getElementById("annual_achivementsAction");
+    if (!container) return;
+    container.innerHTML = "";
+
+    const newBtn = document.createElement("button");
+    newBtn.className = "page-button selectedpage";
+    newBtn.id = "NewAchievement";
+    newBtn.textContent = "New";
+    newBtn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".page-button")
         .forEach((b) => b.classList.remove("selectedpage"));
-      newbtn.classList.add("selectedpage");
+      newBtn.classList.add("selectedpage");
       document.getElementById("actionbox").innerHTML = "";
       document.getElementById("yearId").value = "";
-
-      // Clear all existing rows
       document.getElementById("yearForm").reset();
-      document.getElementById("achievementTitle").innerText ="New Annual Achievements";
+      document.getElementById("achievementTitle").innerText =
+        "New Annual Achievements";
     });
+    container.appendChild(newBtn);
 
-    
     achievements.forEach((achievement) => {
       const btn = document.createElement("button");
-      btn.classList.add("page-button");
+      btn.className = "page-button";
       btn.dataset.target = achievement.id;
-      btn.textContent = achievement.year; 
-
-      btn.addEventListener("click", async (event) => {
-        const yearId = btn.dataset.target;  
-        document.getElementById("yearId").value = yearId;
-        /* document.getElementById(
-          "achievementTitle"
-        ).innerText = `Edit ${achievement.year} Annual Achievements`;
- */
-        // Remove active class from all buttons
+      btn.textContent = achievement.year;
+      btn.addEventListener("click", async () => {
         document
           .querySelectorAll(".page-button")
-          .forEach((b) => b.classList.remove("selectedpage"));  
-        
-        // Mark this one active
-
+          .forEach((b) => b.classList.remove("selectedpage"));
         btn.classList.add("selectedpage");
-
-        // Fetch achievement data for this year
-        const data = await fetchData("AnnualAchievement", yearId);  
-
+        document.getElementById("yearId").value = achievement.id;
         document.getElementById("year").value = achievement.year;
         document.getElementById("yearContext").value = achievement.summary;
 
+        const actionbox = document.getElementById("actionbox");
+        actionbox.innerHTML = "";
         const actionBtn = document.createElement("button");
-        actionBtn.classList.add("delete-btn");
+        actionBtn.className = "delete-btn";
         actionBtn.textContent = "Delete Achievement";
         actionBtn.type = "button";
-        document.getElementById("actionbox").innerHTML = "";
-        document.getElementById("actionbox").appendChild(actionBtn);
         actionBtn.addEventListener("click", async () => {
-          const confirmed = await showMessageBox(
+          const ok = await showMessageBox(
             "Confirm Delete",
-            "Delete this Achievement",
-            true
+            "Delete this Achievement?",
+            true,
           );
-          if (confirmed) {
-            const result = await deleteData("AnnualAchievement",achievement.id);
-            if (result.success) {
-              console.log(result.success);
-              erachievementsContainer.reset();
-              renderAnnualAchievements();
-            }
-          }
+          if (!ok) return;
+          const result = await deleteData("AnnualAchievement", achievement.id);
+          if (result.success) renderAnnualAchievements();
         });
+        actionbox.appendChild(actionBtn);
       });
-      erachievementsContainer.appendChild(btn);
+      container.appendChild(btn);
     });
   }
-  const achievementsForm = document.getElementById("yearForm");
-  if (achievementsForm) {
-    achievementsForm.addEventListener("submit", async function (event) {
-      event.preventDefault();// Prevent default form submission
-      const formData = new FormData(achievementsForm);
 
-      const id = document.getElementById("yearId").value;
-      const data = await postData("AnnualAchievement", formData, id);
+  document.getElementById("yearForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("yearId").value;
+    const data = await postData(
+      "AnnualAchievement",
+      new FormData(e.target),
+      id,
+    );
+    if (data.success) {
+      e.target.reset();
+      renderAnnualAchievements();
+    }
+  });
+
+  /* ── Service Flyer ── */
+  async function renderFlyer() {
+    const flyer = await fetchData("flyer");
+    const img = document.getElementById("Myupdate2");
+    if (img && flyer.link) img.src = "../" + flyer.link;
+
+    // Replace button node to avoid stacking event listeners on re-render
+    const oldBtn = document.getElementById("status-btn");
+    if (!oldBtn) return;
+    const newBtn = oldBtn.cloneNode(true);
+    oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+
+    const isActive = !!flyer.status;
+    newBtn.textContent = isActive ? "ACTIVE" : "INACTIVE";
+    newBtn.setAttribute("data-status", isActive ? "1" : "0");
+    newBtn.classList.remove(
+      "status-active-button",
+      "status-inactive-button",
+      "active-button",
+      "inactive-button",
+    );
+    newBtn.classList.add(
+      isActive ? "status-active-button" : "status-inactive-button",
+    );
+
+    newBtn.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const next = newBtn.getAttribute("data-status") !== "1";
+      newBtn.setAttribute("data-status", next ? "1" : "0");
+      newBtn.textContent = next ? "ACTIVE" : "INACTIVE";
+      newBtn.classList.remove("status-active-button", "status-inactive-button");
+      newBtn.classList.add(
+        next ? "status-active-button" : "status-inactive-button",
+      );
+    });
+  }
+
+  document
+    .getElementById("flyerForm")
+    ?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const ok = await showMessageBox("Confirm Submission", "Save this Flyer?");
+      if (!ok) return;
+      const fd = new FormData(e.target);
+      fd.append(
+        "status",
+        document.getElementById("status-btn")?.getAttribute("data-status") ||
+          "0",
+      );
+      const data = await postData("flyer", fd);
       if (data.success) {
-        achievementsForm.reset();
-        renderAnnualAchievements();
+        e.target.reset();
+        renderFlyer();
       }
     });
+
+  /* ═══════════════════════════════════════════════════
+     BOOT — initialise everything once DOM is ready
+  ═══════════════════════════════════════════════════ */
+  function boot() {
+    show_div2("intro");
+    loadOverview();
+    renderSongs();
+    renderPictures();
+    renderEra();
+    renderAnnualAchievements();
+    renderFlyer();
   }
-  renderFlyer();
-  async function renderFlyer() {
-    const flyer = await fetchData('flyer');
-    document.getElementById("Myupdate2").src ="../" + flyer.link;
-    const button = document.getElementById("status-btn");
-    button.textContent = flyer.status ? "ACTIVE" : "INACTIVE";
-    button.setAttribute("data-status", flyer.status);
-    button.classList.add("status-button");
-    button.classList.add(
-      flyer.status ?  "active-button" : "inactive-button"
-    );
-    button.addEventListener('click', (event) => {
-      let status = button.getAttribute("data-status")=="0" ? 1 : 0; 
 
-      button.classList.remove("active-button", "inactive-button");
-      event.preventDefault();
-      button.setAttribute("data-status", status);
-       
-      button.textContent = status ? "ACTIVE" : "INACTIVE";
-      
-
-    });
-    
+  // Script is at end of <body> so DOM is already parsed,
+  // but guard against the rare edge-case just in case.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
   }
-  const flyerForm = document.getElementById("flyerForm");
-  if (flyerForm) {
-    flyerForm.addEventListener("submit", async function (event) {
-       event.preventDefault();
-
-       const confirmed = await showMessageBox(
-         "Confirm Submission",
-         "Are you sure you want to save this Flyer ?"
-       );
-
-       if (confirmed) {
-         const formData = new FormData(flyerForm);
-
-         // Send data to backend
-
-         const status = document
-           .getElementById("status-btn")
-           .getAttribute("data-status");
-
-         formData.append("status", status);
-         const data = await postData("flyer", formData);
-
-         if (data.success) {
-           // Reset form fields
-           flyerForm.reset();
-           renderFlyer();
-         }
-       }
-     });
-  }
-  
-});
+})(); // end async IIFE
