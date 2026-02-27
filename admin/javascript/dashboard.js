@@ -139,7 +139,7 @@
         <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
         <td class="action-cell">
           <button type="button" class="delete-btn" title="Remove row">
-            <i class="fa-solid fa-trash-can"></i>
+            <i class="fa-solid fa-trash-can"></i> Delete
           </button>
         </td>`;
     row
@@ -155,7 +155,7 @@
         <td><input type="file" name="memories[]" accept="image/*" required></td>
         <td class="action-cell">
           <button type="button" class="delete-btn" title="Remove">
-            <i class="fa-solid fa-trash-can"></i>
+            <i class="fa-solid fa-trash-can"></i> Delete
           </button>
         </td>`;
     row
@@ -373,7 +373,7 @@
       const delBtn = document.createElement("button");
       delBtn.className = "delete-btn";
       delBtn.title = "Delete";
-      delBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+      delBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i> Delete';
       delBtn.addEventListener("click", () => deleteSong(song.id));
 
       cell.appendChild(editBtn);
@@ -480,7 +480,7 @@
       const delBtn = document.createElement("button");
       delBtn.className = "delete-btn";
       delBtn.title = "Delete";
-      delBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+      delBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i> Delete';
       delBtn.addEventListener("click", () => deletePicture(picture.id));
 
       cell.appendChild(statusBtn);
@@ -567,7 +567,7 @@
       <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
       <td class="action-cell">
         <button type="button" class="delete-btn" title="Remove row">
-          <i class="fa-solid fa-trash-can"></i>
+          <i class="fa-solid fa-trash-can"></i> Delete Delete
         </button>
       </td>`;
     tableBody.appendChild(emptyRow);
@@ -593,7 +593,7 @@
         <td><input type="text" name="posts[]" placeholder="Enter post held" required></td>
         <td class="action-cell">
           <button type="button" class="delete-btn" title="Remove row">
-            <i class="fa-solid fa-trash-can"></i>
+            <i class="fa-solid fa-trash-can"></i> Delete
           </button>
         </td>`;
       tableBody.appendChild(row);
@@ -657,7 +657,7 @@
         <td><input type="text" name="posts[]" value="${member.post}"  required></td>
         <td class="action-cell">
           <button type="button" class="delete-btn" title="Remove row">
-            <i class="fa-solid fa-trash-can"></i>
+            <i class="fa-solid fa-trash-can"></i> Delete
           </button>
         </td>`;
       tableBody.appendChild(row);
@@ -771,8 +771,8 @@
     oldBtn.parentNode.replaceChild(newBtn, oldBtn);
 
     const isActive = !!flyer.status;
-    newBtn.textContent = isActive ? "ACTIVE" : "INACTIVE";
-    newBtn.setAttribute("data-status", isActive ? "1" : "0");
+    newBtn.textContent = isActive ? "INACTIVE" : "ACTIVE";
+    newBtn.setAttribute("data-status", isActive ? "0" : "1");
     newBtn.classList.remove(
       "status-active-button",
       "status-inactive-button",
@@ -808,6 +808,7 @@
           "0",
       );
       const data = await postData("flyer", fd);
+      console.log("Flyer save result:", data);
       if (data.success) {
         e.target.reset();
         renderFlyer();

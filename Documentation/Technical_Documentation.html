@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bethel Family Choir Website - Technical Documentation</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #2c3e50;
+        margin-top: 30px;
+        margin-bottom: 15px;
+      }
+      h1 {
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+      }
+      h2 {
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 5px;
+      }
+      code {
+        background: #f8f9fa;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+      pre {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        border-left: 4px solid #3498db;
+      }
+      .api-endpoint {
+        background: #e8f4fd;
+        border: 1px solid #3498db;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 10px 0;
+      }
+      .method {
+        font-weight: bold;
+        color: #27ae60;
+      }
+      .method.POST {
+        color: #e74c3c;
+      }
+      .method.GET {
+        color: #3498db;
+      }
+      .method.DELETE {
+        color: #e67e22;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+      .function-signature {
+        background: #2c3e50;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        font-family: "Courier New", monospace;
+        margin: 10px 0;
+      }
+      .parameter {
+        font-style: italic;
+        color: #7f8c8d;
+      }
+      .return-type {
+        color: #27ae60;
+        font-weight: bold;
+      }
+      .toc {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 30px;
+      }
+      .toc ul {
+        list-style: none;
+        padding: 0;
+      }
+      .toc li {
+        margin: 5px 0;
+      }
+      .toc a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      .toc a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bethel Family Choir Website - Technical Documentation</h1>
+       <h3>Version 2.0 - June 2026</h3>
+        <p>
+          This technical documentation provides an in-depth overview of the
+          architecture, components, and implementation details of the Bethel
+          Family Choir website. It is intended for developers, maintainers, and
+          contributors working on the project.
+        </p>
+      <div class="toc">
+        <h3>Table of Contents</h3>
+        <ul>
+          <li><a href="#system-overview">1. System Overview</a></li>
+          <li><a href="#architecture">2. Architecture</a></li>
+          <li><a href="#frontend-components">3. Frontend Components</a></li>
+          <li><a href="#backend-components">4. Backend Components</a></li>
+          <li><a href="#api-reference">5. API Reference</a></li>
+          <li><a href="#database-schema">6. Database Schema</a></li>
+          <li><a href="#security">7. Security Considerations</a></li>
+          <li><a href="#deployment">8. Deployment Guide</a></li>
+          <li><a href="#troubleshooting">9. Troubleshooting</a></li>
+        </ul>
+      </div>
+
+      <section id="system-overview">
+        <h2>1. System Overview</h2>
+        <p>
+          The Bethel Family Choir website is a comprehensive content management
+          system (CMS) built for a Christian choir organization. It consists of
+          a public-facing website for visitors and an admin dashboard for
+          content management.
+        </p>
+
+        <h3>Key Features</h3>
+        <ul>
+          <li>
+            <strong>Public Website</strong>: Responsive design with dynamic
+            content including hero sliders, gallery, history, services, and
+            contact information
+          </li>
+          <li>
+            <strong>Admin Dashboard</strong>: Secure authentication with full
+            CRUD operations for all website content
+          </li>
+          <li>
+            <strong>Content Management</strong>: Manage hero sections,
+            scriptures, president messages, gallery images, songs, committees,
+            and achievements
+          </li>
+          <li>
+            <strong>Media Management</strong>: Upload and organize images and
+            videos
+          </li>
+          <li>
+            <strong>Responsive Design</strong>: Optimized for desktop, tablet,
+            and mobile devices
+          </li>
+        </ul>
+
+        <h3>Technology Stack</h3>
+        <ul>
+          <li><strong>Frontend</strong>: HTML5, CSS3, JavaScript (ES6+)</li>
+          <li><strong>Backend</strong>: PHP 8.0+, MySQL 5.7+</li>
+          <li><strong>Libraries</strong>: Font Awesome, Google Fonts</li>
+          <li>
+            <strong>Architecture</strong>: RESTful API with AJAX communication
+          </li>
+        </ul>
+      </section>
+
+      <section id="architecture">
+        <h2>2. Architecture</h2>
+
+        <h3>High-Level Architecture</h3>
+        <pre>
+┌─────────────────┐    AJAX/Fetch    ┌─────────────────┐
+│   Frontend      │◄────────────────►│   Backend API   │
+│   (HTML/CSS/JS) │                  │   (PHP)         │
+└─────────────────┘                  └─────────────────┘
+         │                                   │
+         │                                   │
+         ▼                                   ▼
+┌─────────────────┐                  ┌─────────────────┐
+│   Browser       │                  │   Database      │
+│   (Client)      │                  │   (MySQL)       │
+└─────────────────┘                  └─────────────────┘
+            </pre
+        >
+
+        <h3>Data Flow</h3>
+        <ol>
+          <li>User interacts with frontend (clicks, form submissions)</li>
+          <li>JavaScript makes AJAX calls to PHP API endpoints</li>
+          <li>PHP processes requests, interacts with MySQL database</li>
+          <li>Data is returned as JSON to frontend</li>
+          <li>Frontend updates UI dynamically</li>
+        </ol>
+      </section>
+
+      <section id="frontend-components">
+        <h2>3. Frontend Components</h2>
+
+        <h3>Core Files Structure</h3>
+        <pre>
+javascript/
+├── main.js              # Mobile navigation and core utilities
+├── home.js              # Homepage-specific functionality
+├── about.js             # About page interactions
+├── service.js           # Service page functionality
+├── gallery.js           # Gallery page features
+├── history.js           # History page components
+└── api/
+    └── renderApi.js     # API interaction and data rendering
+            </pre
+        >
+
+        <h3>Key Functions in renderApi.js</h3>
+
+        <h4>Slideshow()</h4>
+        <div class="function-signature">async function Slideshow()</div>
+        <ul>
+          <li>
+            <strong>Purpose</strong>: Loads and displays hero background images
+          </li>
+          <li>
+            <strong>API Call</strong>: <code>fetchData("Slideshow")</code>
+          </li>
+          <li><strong>Parameters</strong>: None</li>
+          <li><strong>Returns</strong>: Updates DOM with slider images</li>
+          <li>
+            <strong>Error Handling</strong>: Logs errors, continues with empty
+            slideshow
+          </li>
+        </ul>
+
+        <h4>HeroContent(targetpage)</h4>
+        <div class="function-signature">
+          async function HeroContent(targetpage)
+        </div>
+        <ul>
+          <li>
+            <strong>Purpose</strong>: Loads and renders page-specific hero
+            content
+          </li>
+          <li>
+            <strong>API Call</strong>: <code>fetchData("CTA", targetpage)</code>
+          </li>
+          <li>
+            <strong>Parameters</strong>:
+            <span class="parameter">targetpage</span> (string) - Page identifier
+            ("Home", "Service", etc.)
+          </li>
+          <li>
+            <strong>Returns</strong>: Updates hero heading and caption with
+            highlighting
+          </li>
+          <li>
+            <strong>Logic</strong>: Alternates word highlighting for visual
+            effect
+          </li>
+        </ul>
+
+        <h4>BibleVerse()</h4>
+        <div class="function-signature">async function BibleVerse()</div>
+        <ul>
+          <li><strong>Purpose</strong>: Displays daily scripture</li>
+          <li>
+            <strong>API Call</strong>: <code>fetchData("Scripture")</code>
+          </li>
+          <li><strong>Parameters</strong>: None</li>
+          <li>
+            <strong>Returns</strong>: Updates scripture display with icon and
+            content
+          </li>
+        </ul>
+
+        <h4>renderGallery()</h4>
+        <div class="function-signature">async function renderGallery()</div>
+        <ul>
+          <li><strong>Purpose</strong>: Shows gallery preview on homepage</li>
+          <li><strong>API Call</strong>: <code>fetchData("picture")</code></li>
+          <li><strong>Parameters</strong>: None</li>
+          <li>
+            <strong>Returns</strong>: Displays first 4 gallery images as links
+          </li>
+        </ul>
+
+        <h4>PresidentMessage()</h4>
+        <div class="function-signature">async function PresidentMessage()</div>
+        <ul>
+          <li><strong>Purpose</strong>: Shows president's message</li>
+          <li>
+            <strong>API Call</strong>: <code>fetchData("PresidentWord")</code>
+          </li>
+          <li><strong>Parameters</strong>: None</li>
+          <li>
+            <strong>Returns</strong>: Renders profile image and message content
+          </li>
+        </ul>
+
+        <h4>renderVideoGallery()</h4>
+        <div class="function-signature">
+          async function renderVideoGallery()
+        </div>
+        <ul>
+          <li><strong>Purpose</strong>: Displays YouTube video embeds</li>
+          <li><strong>API Call</strong>: <code>fetchData("song")</code></li>
+          <li><strong>Parameters</strong>: None</li>
+          <li>
+            <strong>Returns</strong>: Creates responsive video cards with iframe
+            embeds
+          </li>
+        </ul>
+
+        <h4>CommitteeSlideshow()</h4>
+        <div class="function-signature">
+          async function CommitteeSlideshow()
+        </div>
+        <ul>
+          <li><strong>Purpose</strong>: Shows committee history slideshow</li>
+          <li>
+            <strong>API Call</strong>: <code>fetchData("Committee")</code>
+          </li>
+          <li><strong>Parameters</strong>: None</li>
+          <li>
+            <strong>Returns</strong>: Creates interactive committee slides with
+            images and member lists
+          </li>
+        </ul>
+
+        <h4>createYearDetails()</h4>
+        <div class="function-signature">async function createYearDetails()</div>
+        <ul>
+          <li>
+            <strong>Purpose</strong>: Renders annual achievements timeline
+          </li>
+          <li>
+            <strong>API Call</strong>:
+            <code>fetchData("AnnualAchievement")</code>
+          </li>
+          <li><strong>Parameters</strong>: None</li>
+          <li>
+            <strong>Returns</strong>: Creates chronological list of yearly
+            achievements
+          </li>
+        </ul>
+
+        <h3>API Client Functions (api.js)</h3>
+
+        <h4>fetchData(resource, id)</h4>
+        <div class="function-signature">
+          async function fetchData(resource, id = '')
+        </div>
+        <ul>
+          <li><strong>Purpose</strong>: Generic GET request handler</li>
+          <li>
+            <strong>Parameters</strong>:
+            <ul>
+              <li>
+                <span class="parameter">resource</span> (string): API endpoint
+                name
+              </li>
+              <li>
+                <span class="parameter">id</span> (string, optional): Resource
+                identifier
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Returns</strong>: Promise resolving to data array or
+            throwing error
+          </li>
+          <li>
+            <strong>Error Handling</strong>: Shows user-friendly error messages
+          </li>
+        </ul>
+
+        <h4>postData(resource, payload, id)</h4>
+        <div class="function-signature">
+          async function postData(resource, payload, id = '')
+        </div>
+        <ul>
+          <li>
+            <strong>Purpose</strong>: Generic POST request handler for creating
+            resources
+          </li>
+          <li>
+            <strong>Parameters</strong>:
+            <ul>
+              <li>
+                <span class="parameter">resource</span> (string): API endpoint
+                name
+              </li>
+              <li>
+                <span class="parameter">payload</span> (FormData): Form data to
+                send
+              </li>
+              <li>
+                <span class="parameter">id</span> (string, optional): Resource
+                identifier for updates
+              </li>
+            </ul>
+          </li>
+          <li><strong>Returns</strong>: Promise with success/error response</li>
+          <li>
+            <strong>Error Handling</strong>: Displays success/error messages to
+            user
+          </li>
+        </ul>
+      </section>
+
+      <section id="backend-components">
+        <h2>4. Backend Components</h2>
+
+        <h3>Core Files Structure</h3>
+        <pre>
+admin/backend/
+├── main.php            # Main API router and request handler
+├── manager.php         # Database operations and business logic
+└── api.js              # Frontend API client (already covered)
+            </pre
+        >
+
+        <h3>main.php - API Router</h3>
+        <p>
+          <strong>Architecture</strong>: Single entry point for all API requests
+          using query parameter routing.
+        </p>
+
+        <h4>Request Routing Logic</h4>
+        <pre><code>$action = $_GET['action'] ?? '';
+$id = $_GET['id'] ?? '';
+
+switch ($action) {
+    case 'login': // Authentication
+    case 'CTA': // Call-to-action content
+    case 'Scripture': // Daily scripture
+    case 'PresidentWord': // President's message
+    case 'song': // Music content
+    case 'picture': // Gallery images
+    case 'Slideshow': // Hero images
+    case 'Committee': // Committee data
+    case 'AnnualAchievement': // Yearly achievements
+    case 'flyer': // Service flyers
+    // ... more cases
+}</code></pre>
+
+        <h4>HTTP Method Handling</h4>
+        <ul>
+          <li><code>GET</code>: Data retrieval</li>
+          <li><code>POST</code>: Create/update operations</li>
+          <li><code>DELETE</code>: Resource deletion</li>
+          <li><code>OPTIONS</code>: CORS preflight handling</li>
+        </ul>
+
+        <h3>manager.php - Database Operations</h3>
+        <p><strong>Class Structure</strong>:</p>
+        <pre><code>class Manager {
+    private $conn; // Database connection
+
+    // Content management methods
+    public function getCTA($page) { /* ... */ }
+    public function updateCTA($data) { /* ... */ }
+    public function getScripture($id) { /* ... */ }
+    // ... more methods
+}</code></pre>
+
+        <h4>Key Methods</h4>
+
+        <h5>Content Retrieval Methods</h5>
+        <ul>
+          <li>
+            <code>getCTA($page)</code>: Fetches hero content for specific page
+          </li>
+          <li><code>getScripture($id)</code>: Retrieves daily scripture</li>
+          <li><code>getWord($id)</code>: Gets president's message</li>
+          <li><code>getPicture($id)</code>: Gallery image data</li>
+          <li><code>getSong($id)</code>: Music content</li>
+          <li><code>getCommittee($id)</code>: Committee information</li>
+          <li><code>getAnnualAchievements($id)</code>: Yearly achievements</li>
+        </ul>
+
+        <h5>Content Update Methods</h5>
+        <ul>
+          <li><code>updateCTA($data)</code>: Updates hero content</li>
+          <li><code>updateScripture($data)</code>: Modifies scripture</li>
+          <li><code>updateWord($data)</code>: Changes president's message</li>
+          <li><code>addPicture($data)</code>: Creates new gallery image</li>
+          <li>
+            <code>updatePicture($id, $data)</code>: Modifies existing image
+          </li>
+          <li><code>addCommittee($data)</code>: Creates committee record</li>
+          <li>
+            <code>updateCommittee($id, $data)</code>: Updates committee info
+          </li>
+        </ul>
+      </section>
+
+      <section id="api-reference">
+        <h2>5. API Reference</h2>
+
+        <h3>Authentication Endpoints</h3>
+
+        <div class="api-endpoint">
+          <h4>
+            <span class="method POST">POST</span>
+            /admin/backend/main.php?action=login
+          </h4>
+          <p><strong>Purpose</strong>: User authentication</p>
+          <p><strong>Request Body</strong>:</p>
+          <pre><code>{
+  "email": "admin@example.com",
+  "password": "password123"
+}</code></pre>
+          <p><strong>Response</strong>:</p>
+          <pre><code>{
+  "success": true,
+  "message": "Login successful",
+  "data": { "user_id": 1, "email": "admin@example.com" }
+}</code></pre>
+        </div>
+
+        <div class="api-endpoint">
+          <h4>
+            <span class="method GET">GET</span>
+            /admin/backend/main.php?action=CTA&id={page}
+          </h4>
+          <p><strong>Purpose</strong>: Get hero content for specific page</p>
+          <p>
+            <strong>Parameters</strong>: <code>page</code> (Home, Service,
+            Gallery, History, About)
+          </p>
+          <p><strong>Response</strong>:</p>
+          <pre><code>{
+  "success": true,
+  "data": {
+    "heading": "Welcome to Bethel",
+    "caption": "Glorifying God through music"
+  }
+}</code></pre>
+        </div>
+
+        <div class="api-endpoint">
+          <h4>
+            <span class="method GET">GET</span>
+            /admin/backend/main.php?action=Scripture
+          </h4>
+          <p><strong>Purpose</strong>: Get daily scripture</p>
+          <p><strong>Response</strong>:</p>
+          <pre><code>{
+  "success": true,
+  "data": {
+    "title": "John 3:16",
+    "content": "For God so loved the world..."
+  }
+}</code></pre>
+        </div>
+
+        <div class="api-endpoint">
+          <h4>
+            <span class="method GET">GET</span>
+            /admin/backend/main.php?action=picture
+          </h4>
+          <p><strong>Purpose</strong>: Get gallery images</p>
+          <p><strong>Response</strong>:</p>
+          <pre><code>{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "caption": "Choir performance",
+      "link": "media/image1.jpg"
+    }
+  ]
+}</code></pre>
+        </div>
+
+        <div class="api-endpoint">
+          <h4>
+            <span class="method GET">GET</span>
+            /admin/backend/main.php?action=Committee
+          </h4>
+          <p><strong>Purpose</strong>: Get committee information</p>
+          <p><strong>Response</strong>:</p>
+          <pre><code>{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "era": "2024-2025",
+      "ecree": "Bethel niferme",
+      "picture": "media/committee.jpg",
+      "members": [
+        {
+          "name": "John Doe",
+          "post": "President"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="database-schema">
+        <h2>6. Database Schema</h2>
+
+        <h3>Core Tables</h3>
+
+        <h4>users</h4>
+        <pre><code>CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+        <h4>pictures</h4>
+        <pre><code>CREATE TABLE pictures (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    caption VARCHAR(255),
+    link VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+        <h4>songs</h4>
+        <pre><code>CREATE TABLE songs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255),
+    link VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+        <h4>committees</h4>
+        <pre><code>CREATE TABLE committees (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    era VARCHAR(50),
+    ecree VARCHAR(255),
+    picture VARCHAR(255),
+    members JSON,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+        <h4>annual_achievements</h4>
+        <pre><code>CREATE TABLE annual_achievements (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    year VARCHAR(20),
+    summary TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+      </section>
+
+      <section id="security">
+        <h2>7. Security Considerations</h2>
+
+        <h3>Authentication</h3>
+        <ul>
+          <li>Session-based authentication</li>
+          <li>Password hashing (assumed in User class)</li>
+          <li>Admin-only access to dashboard</li>
+        </ul>
+
+        <h3>Input Validation</h3>
+        <ul>
+          <li>Server-side validation in PHP</li>
+          <li>Prepared statements to prevent SQL injection</li>
+          <li>File upload validation (type, size, malware)</li>
+        </ul>
+
+        <h3>CORS Configuration</h3>
+        <ul>
+          <li>Restricted to specific origins in production</li>
+          <li>Proper preflight handling</li>
+        </ul>
+
+        <h3>File Upload Security</h3>
+        <ul>
+          <li>File type validation</li>
+          <li>Unique filename generation</li>
+          <li>Directory traversal protection</li>
+        </ul>
+      </section>
+
+      <section id="deployment">
+        <h2>8. Deployment Guide</h2>
+
+        <h3>Prerequisites</h3>
+        <ul>
+          <li>PHP 8.0+</li>
+          <li>MySQL 5.7+</li>
+          <li>Apache/Nginx web server</li>
+          <li>Composer (for PHP dependencies)</li>
+        </ul>
+
+        <h3>Steps</h3>
+        <ol>
+          <li>
+            <strong>Clone Repository</strong>
+            <pre><code>git clone [repository-url]
+cd bethel-family-choir</code></pre>
+          </li>
+          <li>
+            <strong>Configure Database</strong>
+            <pre><code>CREATE DATABASE bethelfinal;
+-- Import schema from schema.sql</code></pre>
+          </li>
+          <li>
+            <strong>Update Configuration</strong>
+            <ul>
+              <li>
+                Edit <code>admin/backend/main.php</code> with database
+                credentials
+              </li>
+              <li>Configure CORS origins for production</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Set File Permissions</strong>
+            <pre><code>chmod 755 media/
+chown www-data:www-data media/</code></pre>
+          </li>
+          <li>
+            <strong>Deploy Files</strong>
+            <ul>
+              <li>Upload all files to web root</li>
+              <li>Ensure PHP files are executable</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Test Installation</strong>
+            <ul>
+              <li>Access homepage</li>
+              <li>Test admin login</li>
+              <li>Verify API endpoints</li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <section id="troubleshooting">
+        <h2>9. Troubleshooting</h2>
+
+        <h3>Common Issues</h3>
+
+        <h4>API Returns 500 Error</h4>
+        <ul>
+          <li>Check PHP error logs</li>
+          <li>Verify database connection</li>
+          <li>Ensure all required PHP extensions are installed</li>
+        </ul>
+
+        <h4>Images Not Uploading</h4>
+        <ul>
+          <li>Check file permissions on media/ directory</li>
+          <li>Verify upload_max_filesize in php.ini</li>
+          <li>Check file type restrictions</li>
+        </ul>
+
+        <h4>JavaScript Errors</h4>
+        <ul>
+          <li>Check browser console for errors</li>
+          <li>Verify API_BASE_URL in api.js</li>
+          <li>Ensure PHP server is running on correct port</li>
+        </ul>
+
+        <h4>Database Connection Failed</h4>
+        <ul>
+          <li>Verify database credentials</li>
+          <li>Check MySQL service status</li>
+          <li>Ensure database exists</li>
+        </ul>
+
+        <h3>Debug Mode</h3>
+        <p>Enable debug logging by setting:</p>
+        <pre><code>ini_set('display_errors', 1);
+error_reporting(E_ALL);</code></pre>
+
+        <h3>Performance Optimization</h3>
+        <ul>
+          <li>Enable PHP opcode caching (OPcache)</li>
+          <li>Use database indexes on frequently queried columns</li>
+          <li>Implement CDN for static assets</li>
+          <li>Compress images before upload</li>
+        </ul>
+      </section>
+
+      <hr style="margin: 40px 0" />
+      <p style="text-align: center; color: #7f8c8d; font-size: 14px">
+        <strong>Note</strong>: This documentation provides a comprehensive
+        technical overview for developers working on the Bethel Family Choir
+        website. For specific implementation details, refer to the inline code
+        comments and function documentation within the source files.
+      </p>
+      <p style="text-align: center; color: #7f8c8d; font-size: 14px">if you have any questions or need further assistance, please contact the development team at
+      <a href="mailto:sezeranshimo@gmail.com" style="text-align: center; color: #7f8c8d; font-size: 14px">sezeranoshimo@gmail.com</a></p>
+      <p style="text-align: center; color: #7f8c8d; font-size: 14px">or visit our website at
+      <a href="https://www.tristechhub.org.rw" style="text-align: center; color: limegreen ; font-size: 14px">www.tristechhub.org.rw</a></p>
+    </div>
+  </body>
+</html>

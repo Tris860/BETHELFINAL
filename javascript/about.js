@@ -24,34 +24,44 @@ function showSlides() {
 
 // --- PILLAR ROTATOR FUNCTIONS (Click-activated) ---
 
+// DOM elements for pillar rotator functionality
 const pillarMeanings = document.querySelectorAll(
-  "#pillar_meaning .pillar-meaning"
-);
-const pillarButtons = document.querySelectorAll(".pillars");
-let currentPillarIndex = 0;
-let pillarTimer;
-const autoRotatePillar = true;
+  "#pillar_meaning .pillar-meaning",
+); // Meaning content boxes
+const pillarButtons = document.querySelectorAll(".pillars"); // Pillar navigation buttons
+let currentPillarIndex = 0; // Current active pillar index
+let pillarTimer; // Timer for auto-rotation
+const autoRotatePillar = true; // Enable/disable auto-rotation
 
+/**
+ * Updates the visual styling of pillar buttons
+ * @param {number} index - Index of the active pillar button
+ */
 function updatePillarStyles(index) {
   pillarButtons.forEach((el, i) => {
-    el.classList.remove("active-pillar");
+    el.classList.remove("active-pillar"); // Remove active class from all buttons
 
     if (i === index) {
-      el.classList.add("active-pillar");
+      el.classList.add("active-pillar"); // Add active class to current button
     }
   });
 }
 
+/**
+ * Shows a specific pillar's content and updates button styles
+ * @param {number} index - Index of the pillar to show
+ * @param {boolean} resetTimer - Whether to reset the auto-rotation timer
+ */
 function showPillar(index, resetTimer = true) {
-  if (resetTimer) clearTimeout(pillarTimer);
+  if (resetTimer) clearTimeout(pillarTimer); // Clear existing timer if resetting
   currentPillarIndex = index;
 
   // 1. Update the display of meaning boxes (using smooth CSS classes)
   pillarMeanings.forEach((meaningEl, i) => {
     if (i === currentPillarIndex) {
-      meaningEl.classList.add("active");
+      meaningEl.classList.add("active"); // Show current pillar content
     } else {
-      meaningEl.classList.remove("active");
+      meaningEl.classList.remove("active"); // Hide other pillar content
     }
   });
 
@@ -64,9 +74,13 @@ function showPillar(index, resetTimer = true) {
   }
 }
 
+/**
+ * Advances to the next pillar in the rotation
+ * Wraps around to first pillar when reaching the end
+ */
 function nextPillar() {
   currentPillarIndex = (currentPillarIndex + 1) % pillarMeanings.length;
-  showPillar(currentPillarIndex, false);
+  showPillar(currentPillarIndex, false); // Don't reset timer for auto-rotation
 }
 
 // --- MISSION/VISION ROTATOR (Auto-rotating Card) ---
@@ -77,7 +91,7 @@ let missionInterval;
 
 function initMissionRotator() {
   missionElements = document.querySelectorAll(
-    "#mission_version .mission_aboutus"
+    "#mission_version .mission_aboutus",
   );
   missionTitles = document.querySelectorAll("#mission_version .vm");
   if (missionElements.length < 2) return;

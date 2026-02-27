@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bethel Family Choir — Technical Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --gold-dim: rgba(201,168,76,0.15);
+    --black: #0A0A0A;
+    --surface: #111111;
+    --surface2: #1A1A1A;
+    --surface3: #222222;
+    --border: rgba(201,168,76,0.2);
+    --text: #E8E0D0;
+    --text-muted: #8A8070;
+    --text-dim: #5A5248;
+    --red: #C45C3A;
+    --green: #5A8C5A;
+    --blue: #4A7CA8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-brand {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand .logo-icon {
+    width: 42px; height: 42px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .sidebar-brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+
+  .sidebar-brand p {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .sidebar nav { padding: 16px 0; flex: 1; }
+
+  .nav-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    padding: 12px 24px 6px;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 24px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    color: var(--gold-light);
+    background: var(--gold-dim);
+    border-left-color: var(--gold);
+  }
+
+  .nav-link .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  .nav-link:hover .dot, .nav-link.active .dot {
+    background: var(--gold);
+  }
+
+  .sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--surface) 0%, #0F0D08 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 72px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold-dim);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 560px;
+    font-style: italic;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .hero-meta-item .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--gold-light);
+  }
+
+  /* ── CONTENT AREA ── */
+  .content {
+    padding: 56px 72px;
+    max-width: 900px;
+  }
+
+  /* ── SECTIONS ── */
+  .doc-section {
+    margin-bottom: 72px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin: 36px 0 14px;
+  }
+
+  h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 24px 0 10px;
+  }
+
+  p { margin-bottom: 14px; color: var(--text); }
+
+  /* ── CODE BLOCKS ── */
+  pre {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #C8C0A8;
+    position: relative;
+  }
+
+  pre .lang-tag {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--gold-light);
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* Syntax colors */
+  .kw { color: #C45C8A; }
+  .str { color: #8BAA6A; }
+  .cm { color: #5A5248; font-style: italic; }
+  .fn { color: #7AACCC; }
+  .num { color: #D4926A; }
+  .var { color: #C8C0A8; }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 16px 0 28px; border-radius: 6px; border: 1px solid var(--border); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead tr {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(201,168,76,0.07);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--gold-dim); }
+
+  td code { font-size: 12px; }
+
+  /* ── INFO CARDS ── */
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0 24px;
+  }
+
+  .card.note {
+    border-left: 3px solid var(--blue);
+    background: rgba(74,124,168,0.08);
+  }
+
+  .card.warn {
+    border-left: 3px solid var(--gold);
+    background: rgba(201,168,76,0.07);
+  }
+
+  .card.danger {
+    border-left: 3px solid var(--red);
+    background: rgba(196,92,58,0.08);
+  }
+
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .card.note .card-title { color: var(--blue); }
+  .card.warn .card-title { color: var(--gold); }
+  .card.danger .card-title { color: var(--red); }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  .badge-get { background: rgba(90,140,90,0.2); color: #8AC88A; border: 1px solid rgba(90,140,90,0.3); }
+  .badge-post { background: rgba(74,124,168,0.2); color: #7AACCC; border: 1px solid rgba(74,124,168,0.3); }
+  .badge-delete { background: rgba(196,92,58,0.2); color: #D47A5A; border: 1px solid rgba(196,92,58,0.3); }
+
+  /* ── DIR TREE ── */
+  .tree {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 16px 0 24px;
+  }
+
+  .tree .dir { color: var(--gold-light); }
+  .tree .file { color: var(--text-muted); }
+  .tree .comment { color: var(--text-dim); font-style: italic; }
+
+  /* ── COLOR SWATCHES ── */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 16px 0 28px;
+  }
+
+  .swatch {
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .swatch-color { height: 48px; }
+  .swatch-info {
+    background: var(--surface2);
+    padding: 8px 10px;
+  }
+  .swatch-name {
+    font-size: 12px;
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+  }
+  .swatch-hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ── ARCH DIAGRAM ── */
+  .arch-diagram {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    margin: 16px 0 28px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .arch-box {
+    flex: 1;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .arch-box .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .arch-box .items {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.9;
+  }
+
+  .arch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    color: var(--gold);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 56px;
+  }
+
+  .toc h3 {
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 16px;
+  }
+
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 32px;
+  }
+
+  .toc li {
+    counter-increment: toc;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  .toc a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .toc a:hover { color: var(--gold-light); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .hero, .content { padding: 32px 24px; }
+    .toc ol { grid-template-columns: 1fr; }
+    .arch-diagram { flex-direction: column; }
+    .arch-arrow { transform: rotate(90deg); align-self: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="logo-icon">♪</div>
+    <h1>Bethel Family Choir</h1>
+    <p>v1.0 — Technical Docs</p>
+  </div>
+  <nav>
+    <div class="nav-section-label">Overview</div>
+    <a href="#overview" class="nav-link"><span class="dot"></span>System Overview</a>
+    <a href="#architecture" class="nav-link"><span class="dot"></span>Architecture</a>
+
+    <div class="nav-section-label">Frontend</div>
+    <a href="#javascript" class="nav-link"><span class="dot"></span>JavaScript Modules</a>
+    <a href="#css" class="nav-link"><span class="dot"></span>CSS Styling</a>
+    <a href="#pages" class="nav-link"><span class="dot"></span>Pages & Sections</a>
+
+    <div class="nav-section-label">Backend</div>
+    <a href="#backend-main" class="nav-link"><span class="dot"></span>main.php (Router)</a>
+    <a href="#backend-manager" class="nav-link"><span class="dot"></span>manager.php (DB)</a>
+
+    <div class="nav-section-label">Reference</div>
+    <a href="#api" class="nav-link"><span class="dot"></span>API Reference</a>
+    <a href="#database" class="nav-link"><span class="dot"></span>Database Schema</a>
+    <a href="#security" class="nav-link"><span class="dot"></span>Security</a>
+    <a href="#deployment" class="nav-link"><span class="dot"></span>Deployment Guide</a>
+    <a href="#content-editor" class="nav-link"><span class="dot"></span>Content Editor Guide</a>
+    <a href="#troubleshooting" class="nav-link"><span class="dot"></span>Troubleshooting</a>
+  </nav>
+  <div class="sidebar-footer">
+    <strong style="color:var(--gold)">Tris Tech Hub</strong><br>
+    <strong style="color:var(--gold-light)">Shimo Sezerano Second Adelin</strong><br>
+    <a href="mailto:sezeranoshimo@gmail.com" style="color:var(--gold);text-decoration:none;">sezeranoshimo@gmail.com</a><br><br>
+    Rwanda · Est. 2005
+  </div>
+</aside>
+
+<!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Technical Documentation</div>
+    <h1>Bethel Family<br><span>Choir</span> Website</h1>
+    <p>Complete developer & content editor reference for the Bethel Family Choir web platform.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="label">Version</span>
+        <span class="value">1.0.0</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Stack</span>
+        <span class="value">PHP · MySQL · JS</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Company</span>
+        <span class="value">Tris Tech Hub</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Developer</span>
+        <span class="value" style="font-size:11px;">Shimo Sezerano Second Adelin</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Email</span>
+        <a href="mailto:sezeranoshimo@gmail.com" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold-light);text-decoration:none;">sezeranoshimo@gmail.com</a>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Location</span>
+        <span class="value">Rwanda, Africa</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- TOC -->
+    <div class="toc">
+      <h3>Table of Contents</h3>
+      <ol>
+        <li><a href="#overview">System Overview</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#javascript">JavaScript Modules</a></li>
+        <li><a href="#css">CSS Styling</a></li>
+        <li><a href="#pages">Pages & Sections</a></li>
+        <li><a href="#backend-main">API Router (main.php)</a></li>
+        <li><a href="#backend-manager">Database Ops (manager.php)</a></li>
+        <li><a href="#api">API Reference</a></li>
+        <li><a href="#database">Database Schema</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#deployment">Deployment Guide</a></li>
+        <li><a href="#content-editor">Content Editor Guide</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+      </ol>
+    </div>
+
+    <!-- ══ 1. OVERVIEW ══ -->
+    <section class="doc-section" id="overview">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2>System Overview</h2>
+      </div>
+
+      <p>The <strong>Bethel Family Choir</strong> website is a full-stack content management platform built for a Christian choir organization based in <strong>Huye, Rwanda</strong>. The choir was founded in <strong>2005</strong> at Groupe Scolaire Officiel de Butare (Indatwa n' Inkesha School).</p>
+
+      <h3>Key Features</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Public Website</strong></td><td>Responsive multi-page site with hero sliders, gallery, history, services, and contact info</td></tr>
+            <tr><td><strong>Admin Dashboard</strong></td><td>Secure login with full CRUD operations for all website content</td></tr>
+            <tr><td><strong>Media Management</strong></td><td>Upload and manage images and YouTube video embeds</td></tr>
+            <tr><td><strong>Dynamic Content</strong></td><td>All content loaded via AJAX — no page refreshes needed</td></tr>
+            <tr><td><strong>Responsive Design</strong></td><td>Optimized for desktop, tablet, and mobile</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Technology Stack</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Layer</th><th>Technology</th><th>Version</th></tr></thead>
+          <tbody>
+            <tr><td>Frontend</td><td>HTML5, CSS3, JavaScript (ES6+ Modules)</td><td>—</td></tr>
+            <tr><td>Backend</td><td>PHP</td><td>8.0+</td></tr>
+            <tr><td>Database</td><td>MySQL</td><td>5.7+</td></tr>
+            <tr><td>Icons</td><td>Font Awesome</td><td>6.5.2</td></tr>
+            <tr><td>Fonts</td><td>Playfair Display, Inter (Google Fonts)</td><td>—</td></tr>
+            <tr><td>API Style</td><td>RESTful over AJAX/Fetch</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ 2. ARCHITECTURE ══ -->
+    <section class="doc-section" id="architecture">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2>Architecture</h2>
+      </div>
+
+      <h3>High-Level Architecture</h3>
+      <div class="arch-diagram">
+        <div class="arch-box">
+          <div class="title">Frontend (Browser)</div>
+          <div class="items">
+            index.html<br>
+            websections/*.html<br>
+            javascript/*.js<br>
+            css/*.css
+          </div>
+        </div>
+        <div class="arch-arrow">⇄</div>
+        <div class="arch-box">
+          <div class="title">Backend (PHP Server)</div>
+          <div class="items">
+            main.php (API Router)<br>
+            manager.php (DB Ops)<br>
+            MySQL Database
+          </div>
+        </div>
+      </div>
+
+      <h3>Data Flow</h3>
+      <pre>User Action (click / form submit)
+    │
+    ▼
+JavaScript Event Handler
+    │  fetch() API call
+    ▼
+admin/backend/main.php   ◄── HTTP Request ($_GET['action'])
+    │
+    ▼
+manager.php              ◄── SQL Query (prepared statements)
+    │
+    ▼
+MySQL Database
+    │
+    ▼
+JSON Response  →  DOM Update (UI refresh)</pre>
+
+      <h3>Directory Structure</h3>
+      <div class="tree">
+<span class="dir">bethel-family-choir/</span>
+├── <span class="file">index.html</span>               <span class="comment"># Main homepage</span>
+│
+├── <span class="dir">admin/</span>                   <span class="comment"># Admin panel</span>
+│   ├── <span class="file">login.html</span>
+│   ├── <span class="file">dashboard.html</span>
+│   ├── <span class="file">login.css</span>
+│   ├── <span class="dir">css/</span>
+│   │   └── <span class="file">admin.css</span>
+│   ├── <span class="dir">javascript/</span>
+│   │   ├── <span class="file">dashboard.js</span>      <span class="comment"># 650+ lines</span>
+│   │   └── <span class="file">login.js</span>
+│   └── <span class="dir">backend/</span>
+│       ├── <span class="file">api.js</span>            <span class="comment"># Frontend API client</span>
+│       ├── <span class="file">main.php</span>          <span class="comment"># API router 500+ lines</span>
+│       └── <span class="file">manager.php</span>       <span class="comment"># DB operations 800+ lines</span>
+│
+├── <span class="dir">websections/</span>             <span class="comment"># Public page sections</span>
+│   ├── <span class="file">about.html</span>
+│   ├── <span class="file">service.html</span>
+│   ├── <span class="file">gallery.html</span>
+│   └── <span class="file">history.html</span>
+│
+├── <span class="dir">css/</span>
+│   ├── <span class="file">index.css</span>             <span class="comment"># Main import file</span>
+│   ├── <span class="file">initial.css</span>           <span class="comment"># Core styles ~1000 lines</span>
+│   └── <span class="file">initial2.css</span>
+│
+├── <span class="dir">javascript/</span>
+│   ├── <span class="file">main.js</span>               <span class="comment"># Navigation & utilities</span>
+│   ├── <span class="file">home.js</span>
+│   ├── <span class="file">about.js</span>
+│   ├── <span class="file">service.js</span>
+│   ├── <span class="file">gallery.js</span>
+│   ├── <span class="file">history.js</span>
+│   └── <span class="dir">api/</span>
+│       └── <span class="file">renderApi.js</span>      <span class="comment"># API calls & rendering</span>
+│
+└── <span class="dir">media/</span>
+    ├── <span class="dir">icons/</span>
+    ├── <span class="dir">placeholders/</span>
+    └── <span class="comment">[uploaded content]</span>
+      </div>
+    </section>
+
+    <!-- ══ 3. JAVASCRIPT ══ -->
+    <section class="doc-section" id="javascript">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2>JavaScript Modules</h2>
+      </div>
+
+      <h3>main.js — Core Navigation</h3>
+      <p>Handles the mobile navigation drawer and core utility event listeners used across all pages.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>openNav()</code></td><td>Opens the mobile navigation drawer</td></tr>
+            <tr><td><code>closeNav()</code></td><td>Closes the mobile navigation drawer</td></tr>
+            <tr><td>Event Listeners</td><td>Attaches click handlers for nav toggle buttons</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>home.js — Homepage Functionality</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>showSlides()</code></td><td>Rotates hero slider images every 7 seconds automatically</td></tr>
+            <tr><td><code>animateCounter(element, target)</code></td><td>Animates stat counters from 0 up to their target number</td></tr>
+            <tr><td><code>initStatsObserver()</code></td><td>Uses <code>IntersectionObserver</code> to trigger counters when visible in viewport</td></tr>
+            <tr><td><code>renderHomePage()</code></td><td>Main init function — calls all home page data loaders</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card note">
+        <div class="card-title">Note</div>
+        The stats counters display: <strong>5+ songs</strong>, <strong>60+ members</strong>, <strong>200+ alumni</strong>. These are animated only once per page load when the section scrolls into view.
+      </div>
+
+      <h3>gallery.js — Gallery & Lightbox</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>openViewer(index)</code></td><td>Opens image lightbox at the specified array index</td></tr>
+            <tr><td><code>showImage(index)</code></td><td>Displays image with fade-in transition</td></tr>
+            <tr><td><code>closeViewer()</code></td><td>Closes lightbox with fade-out effect</td></tr>
+            <tr><td><code>nextImage()</code></td><td>Navigate to next image (wraps around at end)</td></tr>
+            <tr><td><code>prevImage()</code></td><td>Navigate to previous image (wraps around)</td></tr>
+            <tr><td><code>renderGallery_2()</code></td><td>Fetches images from API and renders the gallery grid</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The lightbox supports <strong>keyboard navigation</strong>: <code>Escape</code> to close, <code>←</code> / <code>→</code> arrow keys to navigate, and clicking outside the image also closes the viewer.</p>
+
+      <h3>renderApi.js — Central API Layer</h3>
+      <p>This is the main bridge between the frontend pages and the PHP backend. All data fetching goes through this file.</p>
+
+      <h4>Data Fetching Functions</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>API Endpoint</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>Slideshow()</code></td><td><code>Slideshow</code></td><td>Loads hero background images for root-level pages</td></tr>
+            <tr><td><code>Slideshow_2()</code></td><td><code>Slideshow</code></td><td>Same but with adjusted relative path for subdirectories</td></tr>
+            <tr><td><code>flyerRender()</code></td><td><code>flyer</code></td><td>Loads service flyer image; shows/hides based on status flag</td></tr>
+            <tr><td><code>HeroContent(page)</code></td><td><code>CTA</code></td><td>Gets hero heading and caption text for a given page</td></tr>
+            <tr><td><code>BibleVerse()</code></td><td><code>Scripture</code></td><td>Gets the current daily scripture verse</td></tr>
+            <tr><td><code>renderGallery()</code></td><td><code>picture</code></td><td>Gets first 4 gallery images for homepage preview</td></tr>
+            <tr><td><code>PresidentMessage()</code></td><td><code>PresidentWord</code></td><td>Gets the president's message content</td></tr>
+            <tr><td><code>renderVideoGallery()</code></td><td><code>song</code></td><td>Gets YouTube video embed links</td></tr>
+            <tr><td><code>BethelCommittee()</code></td><td><code>Committee</code></td><td>Gets the most recent committee data</td></tr>
+            <tr><td><code>CommitteeSlideshow()</code></td><td><code>Committee</code></td><td>Gets all committees for the history page slideshow</td></tr>
+            <tr><td><code>createYearDetails()</code></td><td><code>AnnualAchievement</code></td><td>Gets yearly achievements for history timeline</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Page Render Functions</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>Calls</th></tr></thead>
+          <tbody>
+            <tr><td><code>renderHomePage()</code></td><td>Slideshow, flyerRender, HeroContent, BibleVerse, renderGallery, PresidentMessage</td></tr>
+            <tr><td><code>renderServicesPage()</code></td><td>Slideshow_2, HeroContent, renderVideoGallery</td></tr>
+            <tr><td><code>renderaboutPage()</code></td><td>Slideshow_2, HeroContent, BethelCommittee</td></tr>
+            <tr><td><code>renderGalleryPage()</code></td><td>Slideshow_2, HeroContent</td></tr>
+            <tr><td><code>renderHistoryPage()</code></td><td>Slideshow_2, HeroContent, CommitteeSlideshow, createYearDetails</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Helper Function</h4>
+      <pre><code>highlightByPattern(originalText)</code>
+
+<span class="cm">// Splits text by spaces, then wraps every other word in &lt;span&gt; tags</span>
+<span class="cm">// Used for visual alternating-color effects in hero headings</span>
+<span class="cm">// Example: "Glorifying God" → "Glorifying &lt;span&gt;God&lt;/span&gt;"</span></pre>
+
+      <h3>api.js — Admin API Client</h3>
+      <p>HTTP request handler used exclusively in the admin panel.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>Method</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>fetchData(resource, id)</code></td><td><span class="badge badge-get">GET</span></td><td>Generic data retrieval</td></tr>
+            <tr><td><code>postData(resource, payload, id)</code></td><td><span class="badge badge-post">POST</span></td><td>Create or update records</td></tr>
+            <tr><td><code>putData(resource, id, payload)</code></td><td><span class="badge badge-post">POST</span></td><td>Update specific records</td></tr>
+            <tr><td><code>deleteData(resource, id)</code></td><td><span class="badge badge-delete">DELETE</span></td><td>Remove records</td></tr>
+            <tr><td><code>showMessageBox(title, message, isConfirm)</code></td><td>—</td><td>Display modal dialog / confirmation</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card warn">
+        <div class="card-title">API Base URL</div>
+        <code>http://localhost:3000/admin/backend/main.php</code> — update this in <code>api.js</code> when deploying to production.
+      </div>
+
+      <h3>dashboard.js — Admin Panel</h3>
+      <p>Manages all admin dashboard interactions including panel switching, form submissions, and data rendering.</p>
+
+      <h4>Panel Switching</h4>
+      <pre><code><span class="fn">show_div2</span>(panelId)  <span class="cm">// Switches the visible admin panel</span></code></pre>
+
+      <h4>Admin Panels</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Panel ID</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>intro</code></td><td>Welcome dashboard with overview stats</td></tr>
+            <tr><td><code>HomeCTA</code></td><td>Edit hero section heading and caption per page</td></tr>
+            <tr><td><code>scriptureOfDay</code></td><td>Manage the daily scripture verse</td></tr>
+            <tr><td><code>presidentMessage</code></td><td>Edit president's message and photo</td></tr>
+            <tr><td><code>servicesbody</code></td><td>Upload and manage the service flyer</td></tr>
+            <tr><td><code>bethel_songs</code></td><td>Manage YouTube video song links</td></tr>
+            <tr><td><code>picture</code></td><td>Upload and manage gallery images</td></tr>
+            <tr><td><code>memories</code></td><td>Create memory albums</td></tr>
+            <tr><td><code>updates</code></td><td>Post news and updates</td></tr>
+            <tr><td><code>B_commit</code></td><td>Manage choir committee members and eras</td></tr>
+            <tr><td><code>annual_achivements</code></td><td>Add/edit yearly achievement records</td></tr>
+            <tr><td><code>remarkable</code></td><td>Manage special event highlights</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ 4. CSS ══ -->
+    <section class="doc-section" id="css">
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <h2>CSS Styling</h2>
+      </div>
+
+      <h3>File Structure</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>css/index.css</code></td><td>Entry point — imports <code>initial.css</code></td></tr>
+            <tr><td><code>css/initial.css</code></td><td>Core styles (~1000 lines) — all public pages</td></tr>
+            <tr><td><code>css/initial2.css</code></td><td>Additional/supplementary styles</td></tr>
+            <tr><td><code>admin/login.css</code></td><td>Admin login page styles</td></tr>
+            <tr><td><code>admin/css/admin.css</code></td><td>Admin dashboard styles</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Color Palette</h3>
+      <div class="color-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0F0F0F;border-bottom:1px solid #333"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Primary Black</div>
+            <div class="swatch-hex">#0F0F0F</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FFD700"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Secondary Gold</div>
+            <div class="swatch-hex">#FFD700</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#8F9779"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Accent Olive</div>
+            <div class="swatch-hex">#8F9779</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FFFFFF;border-bottom:1px solid #333"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Text Light</div>
+            <div class="swatch-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#222222"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Text Dark</div>
+            <div class="swatch-hex">#222222</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#0F0F0F;border-bottom:1px solid #444"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Background Dark</div>
+            <div class="swatch-hex">#0F0F0F</div>
+          </div>
+        </div>
+      </div>
+
+      <pre><code><span class="cm">/* CSS Custom Properties — defined in :root */</span>
+<span class="var">--color-primary-black:</span>    <span class="str">#0F0F0F</span>;   <span class="cm">/* Deep Charcoal */</span>
+<span class="var">--color-secondary-gold:</span>   <span class="str">#FFD700</span>;   <span class="cm">/* Gold accent */</span>
+<span class="var">--color-accent-olive:</span>     <span class="str">#8F9779</span>;   <span class="cm">/* Olive green */</span>
+<span class="var">--color-text-light:</span>       <span class="str">#FFFFFF</span>;
+<span class="var">--color-text-dark:</span>        <span class="str">#222222</span>;
+<span class="var">--color-background-dark:</span>  <span class="str">#0F0F0F</span>;</code></pre>
+
+      <h3>Typography</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Use</th><th>Font</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td>Headings</td><td>Playfair Display</td><td>Serif</td></tr>
+            <tr><td>Body Text</td><td>Inter</td><td>Sans-serif</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>CSS Sections in initial.css</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Section</th><th>What it covers</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Root Variables</td><td>Color palette and global CSS custom properties</td></tr>
+            <tr><td>2</td><td>Navbar</td><td>Fixed header, logo, links, mobile drawer</td></tr>
+            <tr><td>3</td><td>Hero Section</td><td>Full-screen background slider and overlay text</td></tr>
+            <tr><td>4</td><td>Content Sections</td><td>Cards, grids, content layout</td></tr>
+            <tr><td>5</td><td>Gallery</td><td>Image grid layout and lightbox overlay</td></tr>
+            <tr><td>6</td><td>Footer</td><td>Contact information, links, copyright</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ 5. PAGES ══ -->
+    <section class="doc-section" id="pages">
+      <div class="section-header">
+        <span class="section-number">05</span>
+        <h2>Pages & Sections</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>File</th><th>URL</th><th>Page Name</th><th>JS Loaded</th></tr></thead>
+          <tbody>
+            <tr><td><code>index.html</code></td><td><code>/</code></td><td>Home</td><td>main.js, home.js, renderApi.js</td></tr>
+            <tr><td><code>websections/about.html</code></td><td><code>/websections/about.html</code></td><td>About</td><td>main.js, about.js, renderApi.js</td></tr>
+            <tr><td><code>websections/service.html</code></td><td><code>/websections/service.html</code></td><td>Services</td><td>main.js, service.js, renderApi.js</td></tr>
+            <tr><td><code>websections/gallery.html</code></td><td><code>/websections/gallery.html</code></td><td>Gallery</td><td>main.js, gallery.js, renderApi.js</td></tr>
+            <tr><td><code>websections/history.html</code></td><td><code>/websections/history.html</code></td><td>History</td><td>main.js, history.js, renderApi.js</td></tr>
+            <tr><td><code>admin/login.html</code></td><td><code>/admin/login.html</code></td><td>Admin Login</td><td>login.js</td></tr>
+            <tr><td><code>admin/dashboard.html</code></td><td><code>/admin/dashboard.html</code></td><td>Admin Dashboard</td><td>dashboard.js, api.js</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Home Page Sections</h3>
+      <p>The homepage (<code>index.html</code>) is the main entry point and loads the following dynamic content sections via API:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Section</th><th>Content Source</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Hero Slider</td><td>Slideshow API</td><td>Images with auto-rotation every 7 seconds</td></tr>
+            <tr><td>Hero CTA Text</td><td>CTA API (page=Home)</td><td>Editable heading & caption</td></tr>
+            <tr><td>Daily Scripture</td><td>Scripture API</td><td>Bible verse displayed below hero</td></tr>
+            <tr><td>Gallery Preview</td><td>Picture API (first 4)</td><td>Links to full gallery page</td></tr>
+            <tr><td>President's Message</td><td>PresidentWord API</td><td>Photo + message text</td></tr>
+            <tr><td>Stats Counter</td><td>Static / animated JS</td><td>Members, songs, alumni counts</td></tr>
+            <tr><td>Service Flyer</td><td>Flyer API</td><td>Only shown if status = active</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ 6. BACKEND MAIN ══ -->
+    <section class="doc-section" id="backend-main">
+      <div class="section-header">
+        <span class="section-number">06</span>
+        <h2>API Router — main.php</h2>
+      </div>
+
+      <p>Located at <code>admin/backend/main.php</code>, this is the single entry point for all API requests. It reads the <code>action</code> query parameter and routes to the appropriate database operation.</p>
+
+      <h3>Request Routing</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>action</th><th>Routes To</th></tr></thead>
+          <tbody>
+            <tr><td><code>login</code></td><td>User::login()</td></tr>
+            <tr><td><code>logout</code></td><td>User::logout()</td></tr>
+            <tr><td><code>CTA</code></td><td>Manager::getCTA() / updateCTA()</td></tr>
+            <tr><td><code>Scripture</code></td><td>Manager::getScripture() / updateScripture()</td></tr>
+            <tr><td><code>PresidentWord</code></td><td>Manager::getWord() / updateWord()</td></tr>
+            <tr><td><code>song</code></td><td>Manager::getSong() / addSong() / updateSong() / deleteSong()</td></tr>
+            <tr><td><code>picture</code></td><td>Manager::getPicture() / addPicture() / updatePicture() / deletePicture()</td></tr>
+            <tr><td><code>Slideshow</code></td><td>Manager::getSlideshowImages() / updateSlideshowImage()</td></tr>
+            <tr><td><code>Committee</code></td><td>Manager::getCommittee() / addCommittee() / updateCommittee() / deleteCommittee()</td></tr>
+            <tr><td><code>AnnualAchievement</code></td><td>Manager::getAnnualAchievements() / add / update / delete</td></tr>
+            <tr><td><code>flyer</code></td><td>Manager::getFlyer() / updateFlyer()</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Code Structure</h3>
+      <pre><span class="cm">// 1. Start session</span>
+<span class="fn">session_start</span>();
+
+<span class="cm">// 2. CORS headers</span>
+<span class="fn">header</span>(<span class="str">'Access-Control-Allow-Origin: *'</span>);
+<span class="fn">header</span>(<span class="str">'Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS'</span>);
+
+<span class="cm">// 3. File upload handler</span>
+<span class="kw">function</span> <span class="fn">uploadImage</span>($files) { <span class="cm">/* validates & moves file to media/ */</span> }
+
+<span class="cm">// 4. Database connection</span>
+$conn = <span class="kw">new</span> <span class="fn">mysqli</span>($servername, $username, $password, $dbname);
+
+<span class="cm">// 5. Action router</span>
+<span class="kw">switch</span> ($action) {
+    <span class="kw">case</span> <span class="str">'login'</span>:  <span class="cm">/* ... */</span>
+    <span class="kw">case</span> <span class="str">'CTA'</span>:    <span class="cm">/* ... */</span>
+    <span class="cm">// etc.</span>
+}
+
+<span class="cm">// 6. JSON output</span>
+<span class="kw">echo</span> <span class="fn">json_encode</span>($response);</pre>
+
+      <h3>Key Features</h3>
+      <p>The router handles <strong>CORS preflight</strong> (OPTIONS method), <strong>file uploads</strong> with unique filename generation via <code>uniqid()</code>, and wraps all operations in try-catch blocks that return structured JSON error responses.</p>
+    </section>
+
+    <!-- ══ 7. BACKEND MANAGER ══ -->
+    <section class="doc-section" id="backend-manager">
+      <div class="section-header">
+        <span class="section-number">07</span>
+        <h2>Database Operations — manager.php</h2>
+      </div>
+
+      <p>Located at <code>admin/backend/manager.php</code>. Contains two classes: <strong>User</strong> and <strong>Manager</strong>.</p>
+
+      <h3>User Class</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Method</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>register(email, passkey)</code></td><td>Create a new admin account</td></tr>
+            <tr><td><code>login(email, passkey)</code></td><td>Authenticate user and set PHP session</td></tr>
+            <tr><td><code>logout()</code></td><td>Destroy the session</td></tr>
+            <tr><td><code>changePassword(userId, current, new)</code></td><td>Update password with verification</td></tr>
+            <tr><td><code>changeEmail(userId, password, newEmail)</code></td><td>Update email after password confirmation</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Manager Class</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Category</th><th>Method</th><th>SQL</th></tr></thead>
+          <tbody>
+            <tr><td>CTA</td><td><code>getCTA(page)</code></td><td>SELECT from cta</td></tr>
+            <tr><td></td><td><code>updateCTA(data)</code></td><td>UPDATE cta</td></tr>
+            <tr><td>Scripture</td><td><code>getScripture(id)</code></td><td>SELECT from scriptureofday</td></tr>
+            <tr><td></td><td><code>updateScripture(data)</code></td><td>UPDATE scriptureofday</td></tr>
+            <tr><td>President</td><td><code>getWord(id)</code></td><td>SELECT from presidentsword</td></tr>
+            <tr><td></td><td><code>updateWord(data)</code></td><td>UPDATE presidentsword</td></tr>
+            <tr><td>Songs</td><td><code>getSong / addSong / updateSong / deleteSong</code></td><td>Full CRUD on songs table</td></tr>
+            <tr><td>Pictures</td><td><code>getPicture / addPicture / updatePicture / deletePicture</code></td><td>Full CRUD on pictures table</td></tr>
+            <tr><td></td><td><code>updateSlideshowImage(id, status)</code></td><td>UPDATE pictures SET slideshow</td></tr>
+            <tr><td>Committee</td><td><code>getAllCommittees()</code></td><td>JOIN bethelcommitte + bethelcommittemember</td></tr>
+            <tr><td></td><td><code>addCommittee / updateCommittee / deleteCommittee</code></td><td>Transactional CRUD</td></tr>
+            <tr><td>Achievements</td><td><code>getAnnualAchievements / add / update / delete</code></td><td>Full CRUD on annualachievements</td></tr>
+            <tr><td>Flyer</td><td><code>getFlyer / updateFlyer</code></td><td>SELECT/UPDATE flyer table</td></tr>
+            <tr><td>Slideshow</td><td><code>getSlideshowImages()</code></td><td>SELECT pictures WHERE slideshow=1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ 8. API REFERENCE ══ -->
+    <section class="doc-section" id="api">
+      <div class="section-header">
+        <span class="section-number">08</span>
+        <h2>API Reference</h2>
+      </div>
+
+      <p>All requests go to <code>admin/backend/main.php</code> with a <code>?action=</code> query parameter.</p>
+
+      <h3>Authentication</h3>
+      <h4><span class="badge badge-post">POST</span> ?action=login</h4>
+      <pre><span class="cm">// Request body</span>
+email=admin@example.com&password=password123
+
+<span class="cm">// Response</span>
+{
+  <span class="str">"success"</span>: <span class="kw">true</span>,
+  <span class="str">"message"</span>: <span class="str">"Login successful"</span>,
+  <span class="str">"data"</span>: { <span class="str">"user_id"</span>: <span class="num">1</span>, <span class="str">"email"</span>: <span class="str">"admin@example.com"</span> }
+}</pre>
+
+      <h4><span class="badge badge-post">POST</span> ?action=logout</h4>
+      <pre>{
+  <span class="str">"success"</span>: <span class="kw">true</span>,
+  <span class="str">"message"</span>: <span class="str">"Logged out successfully"</span>
+}</pre>
+
+      <h3>Content Endpoints</h3>
+      <h4><span class="badge badge-get">GET</span> ?action=CTA&id=Home</h4>
+      <pre>{
+  <span class="str">"success"</span>: <span class="kw">true</span>,
+  <span class="str">"data"</span>: {
+    <span class="str">"id"</span>: <span class="num">1</span>,
+    <span class="str">"page"</span>: <span class="str">"Home"</span>,
+    <span class="str">"heading"</span>: <span class="str">"Welcome to Bethel Family Choir"</span>,
+    <span class="str">"caption"</span>: <span class="str">"Glorifying God through music since 2005"</span>
+  }
+}</pre>
+
+      <h4><span class="badge badge-get">GET</span> ?action=picture</h4>
+      <pre>{
+  <span class="str">"success"</span>: <span class="kw">true</span>,
+  <span class="str">"data"</span>: [
+    {
+      <span class="str">"id"</span>: <span class="num">1</span>,
+      <span class="str">"caption"</span>: <span class="str">"Choir performance"</span>,
+      <span class="str">"link"</span>: <span class="str">"media/abc123image.jpg"</span>,
+      <span class="str">"slideshow"</span>: <span class="num">1</span>,
+      <span class="str">"created_at"</span>: <span class="str">"2024-01-15 10:30:00"</span>
+    }
+  ]
+}</pre>
+
+      <h4><span class="badge badge-get">GET</span> ?action=Committee</h4>
+      <pre>{
+  <span class="str">"success"</span>: <span class="kw">true</span>,
+  <span class="str">"data"</span>: [{
+    <span class="str">"commit_id"</span>: <span class="num">1</span>,
+    <span class="str">"era"</span>: <span class="str">"2024-2025"</span>,
+    <span class="str">"ecree"</span>: <span class="str">"Bethel niferme"</span>,
+    <span class="str">"picture"</span>: <span class="str">"media/committee2024.jpg"</span>,
+    <span class="str">"members"</span>: [
+      { <span class="str">"names"</span>: <span class="str">"John Doe"</span>, <span class="str">"post"</span>: <span class="str">"President"</span> },
+      { <span class="str">"names"</span>: <span class="str">"Jane Smith"</span>, <span class="str">"post"</span>: <span class="str">"Vice President"</span> }
+    ]
+  }]
+}</pre>
+
+      <p>All endpoints follow the same pattern: <code>{ "success": true/false, "data": [...], "message": "..." }</code>. Failed operations return <code>"success": false</code> with an error message.</p>
+    </section>
+
+    <!-- ══ 9. DATABASE ══ -->
+    <section class="doc-section" id="database">
+      <div class="section-header">
+        <span class="section-number">09</span>
+        <h2>Database Schema</h2>
+      </div>
+      <p>Database name: <code>bethelfinal</code></p>
+
+      <h3>Tables Overview</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Table</th><th>Description</th><th>Key Columns</th></tr></thead>
+          <tbody>
+            <tr><td><code>users</code></td><td>Admin accounts</td><td>id, email, passkey</td></tr>
+            <tr><td><code>cta</code></td><td>Hero section text per page</td><td>page, heading, caption</td></tr>
+            <tr><td><code>scriptureofday</code></td><td>Daily Bible verse</td><td>title, content</td></tr>
+            <tr><td><code>presidentsword</code></td><td>President's message</td><td>name, message, image</td></tr>
+            <tr><td><code>pictures</code></td><td>Gallery images</td><td>link, caption, slideshow</td></tr>
+            <tr><td><code>songs</code></td><td>YouTube video links</td><td>title, link</td></tr>
+            <tr><td><code>bethelcommitte</code></td><td>Committee eras</td><td>era, ecree, picture</td></tr>
+            <tr><td><code>bethelcommittemember</code></td><td>Members per committee</td><td>commit_id (FK), names, post</td></tr>
+            <tr><td><code>annualachievements</code></td><td>Yearly achievements</td><td>year, summary</td></tr>
+            <tr><td><code>flyer</code></td><td>Service flyer</td><td>link, status</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Key SQL Definitions</h3>
+      <pre><span class="kw">CREATE TABLE</span> <span class="fn">pictures</span> (
+    id         <span class="kw">INT</span> PRIMARY KEY AUTO_INCREMENT,
+    caption    <span class="kw">VARCHAR</span>(<span class="num">255</span>),
+    link       <span class="kw">VARCHAR</span>(<span class="num">255</span>),
+    slideshow  <span class="kw">TINYINT</span> DEFAULT <span class="num">0</span>,  <span class="cm">-- 1 = appears in hero slider</span>
+    created_at <span class="kw">TIMESTAMP</span> DEFAULT CURRENT_TIMESTAMP
+);
+
+<span class="kw">CREATE TABLE</span> <span class="fn">bethelcommittemember</span> (
+    id        <span class="kw">INT</span> PRIMARY KEY AUTO_INCREMENT,
+    commit_id <span class="kw">INT</span>,
+    names     <span class="kw">VARCHAR</span>(<span class="num">255</span>),
+    post      <span class="kw">VARCHAR</span>(<span class="num">255</span>),
+    <span class="kw">FOREIGN KEY</span> (commit_id) <span class="kw">REFERENCES</span> <span class="fn">bethelcommitte</span>(commit_id) <span class="kw">ON DELETE CASCADE</span>
+);</pre>
+
+      <div class="card note">
+        <div class="card-title">Slideshow Flag</div>
+        The <code>pictures.slideshow</code> column controls whether an image appears in the hero slider (<code>1</code>) or only in the gallery (<code>0</code>). This can be toggled from the admin panel.
+      </div>
+    </section>
+
+    <!-- ══ 10. SECURITY ══ -->
+    <section class="doc-section" id="security">
+      <div class="section-header">
+        <span class="section-number">10</span>
+        <h2>Security</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Concern</th><th>Implementation</th></tr></thead>
+          <tbody>
+            <tr><td>Authentication</td><td>PHP <code>$_SESSION</code> — set on login, destroyed on logout</td></tr>
+            <tr><td>Password Storage</td><td><code>password_hash()</code> bcrypt + <code>password_verify()</code></td></tr>
+            <tr><td>SQL Injection</td><td>Prepared statements with <code>$stmt->bind_param()</code> throughout</td></tr>
+            <tr><td>File Uploads</td><td>Unique filenames via <code>uniqid()</code>, type validation, moved to <code>media/</code></td></tr>
+            <tr><td>Error Handling</td><td>try-catch blocks; generic messages to client, detailed <code>error_log()</code></td></tr>
+            <tr><td>CORS</td><td>Currently set to <code>*</code> — restrict to your domain in production</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card danger">
+        <div class="card-title">Production Warning</div>
+        Change <code>Access-Control-Allow-Origin: *</code> to your specific domain before going live. Example: <code>Access-Control-Allow-Origin: https://bethelfamilychoir.com</code>
+      </div>
+    </section>
+
+    <!-- ══ 11. DEPLOYMENT ══ -->
+    <section class="doc-section" id="deployment">
+      <div class="section-header">
+        <span class="section-number">11</span>
+        <h2>Deployment Guide</h2>
+      </div>
+
+      <h3>Prerequisites</h3>
+      <p>PHP 8.0+, MySQL 5.7+, Apache or Nginx web server.</p>
+
+      <h3>Step-by-Step Setup</h3>
+
+      <h4>1. Create the Database</h4>
+      <pre><span class="kw">CREATE DATABASE</span> bethelfinal;
+<span class="kw">USE</span> bethelfinal;
+<span class="cm">-- Run all CREATE TABLE statements from Section 9</span></pre>
+
+      <h4>2. Configure Database Connection</h4>
+      <p>Edit <code>admin/backend/main.php</code>:</p>
+      <pre>$servername = <span class="str">"localhost"</span>;
+$username   = <span class="str">"root"</span>;
+$password   = <span class="str">""</span>;         <span class="cm">// Your MySQL password</span>
+$dbname     = <span class="str">"bethelfinal"</span>;</pre>
+
+      <h4>3. Set File Permissions</h4>
+      <pre><span class="fn">chmod</span> 755 media/
+<span class="fn">chown</span> www-data:www-data media/</pre>
+
+      <h4>4. Start PHP Server (Development)</h4>
+      <pre><span class="kw">cd</span> admin/backend
+php -S localhost:3000</pre>
+
+      <h4>5. Access the Site</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>What</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td>Public Website</td><td><code>http://localhost/</code></td></tr>
+            <tr><td>Admin Login</td><td><code>http://localhost/admin/login.html</code></td></tr>
+            <tr><td>Admin Dashboard</td><td><code>http://localhost/admin/dashboard.html</code></td></tr>
+            <tr><td>API Endpoint</td><td><code>http://localhost:3000/admin/backend/main.php</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ 12. CONTENT EDITOR ══ -->
+    <section class="doc-section" id="content-editor">
+      <div class="section-header">
+        <span class="section-number">12</span>
+        <h2>Content Editor Guide</h2>
+      </div>
+
+      <p>This section is for the <strong>website content editor</strong> — the person responsible for keeping the site up to date. All content changes are made through the Admin Dashboard.</p>
+
+      <div class="card warn">
+        <div class="card-title">How to Access</div>
+        Go to <code>/admin/login.html</code> and enter your admin email and password. You will be redirected to the dashboard.
+      </div>
+
+      <h3>What You Can Edit</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Content</th><th>Dashboard Panel</th><th>How to Update</th></tr></thead>
+          <tbody>
+            <tr><td>Hero text (heading & caption)</td><td>Home CTA</td><td>Select the page, edit text, click Save</td></tr>
+            <tr><td>Daily Bible verse</td><td>Scripture of the Day</td><td>Type the verse title and content, click Save</td></tr>
+            <tr><td>President's message</td><td>President's Message</td><td>Edit the name, message text, and upload a photo</td></tr>
+            <tr><td>Gallery photos</td><td>Picture Management</td><td>Upload images; toggle "Slideshow" to add to hero slider</td></tr>
+            <tr><td>Songs / Videos</td><td>Bethel Songs</td><td>Paste a YouTube embed URL and give it a title</td></tr>
+            <tr><td>Service flyer</td><td>Services Body</td><td>Upload flyer image and toggle it on/off</td></tr>
+            <tr><td>Committee members</td><td>B-Commit</td><td>Select or create an era, add member names and roles</td></tr>
+            <tr><td>Annual achievements</td><td>Annual Achievements</td><td>Add year and a summary of achievements</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Adding Gallery Images</h3>
+      <p>Navigate to <strong>Picture Management</strong> in the dashboard. Click "Add New", choose an image file from your computer, and add a caption. Once uploaded, you can toggle the <strong>Slideshow</strong> switch to make the image appear in the homepage hero slider.</p>
+
+      <h3>Managing the Committee</h3>
+      <p>Go to <strong>B-Commit</strong> in the dashboard. You can create a new committee era (e.g., "2024–2025"), upload a group photo, and add each member with their name and role/position. The most recent committee automatically appears on the About page.</p>
+
+      <div class="card note">
+        <div class="card-title">Tip for Editors</div>
+        Always check the public website after making changes to confirm everything looks correct. Use a different browser or incognito mode to see the site as a visitor would.
+      </div>
+    </section>
+
+    <!-- ══ 13. TROUBLESHOOTING ══ -->
+    <section class="doc-section" id="troubleshooting">
+      <div class="section-header">
+        <span class="section-number">13</span>
+        <h2>Troubleshooting</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Issue</th><th>Solution</th></tr></thead>
+          <tbody>
+            <tr><td>500 Internal Server Error</td><td>Check PHP error logs; verify database credentials in main.php</td></tr>
+            <tr><td>Images not uploading</td><td>Check <code>media/</code> folder permissions; verify <code>php.ini</code> upload_max_filesize</td></tr>
+            <tr><td>API calls failing</td><td>Ensure PHP server is running on port 3000; verify API_BASE_URL in api.js</td></tr>
+            <tr><td>Database connection failed</td><td>Check MySQL credentials and that the service is running</td></tr>
+            <tr><td>CORS errors in browser</td><td>Update allowed origin in main.php to match your domain</td></tr>
+            <tr><td>Login not working</td><td>Ensure <code>session_start()</code> is at top of main.php; check password hash</td></tr>
+            <tr><td>Content not updating on site</td><td>Hard refresh browser (Ctrl+Shift+R); check browser console for API errors</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Enable Debug Mode</h3>
+      <pre><span class="cm">// Add to the very top of admin/backend/main.php</span>
+<span class="fn">ini_set</span>(<span class="str">'display_errors'</span>, <span class="num">1</span>);
+<span class="fn">error_reporting</span>(E_ALL);
+<span class="cm">// ⚠️ Remove this in production!</span></pre>
+
+      <h3>Performance Tips</h3>
+      <p>Enable PHP OPcache on the server for faster script execution. Add database indexes on frequently queried columns like <code>pictures.slideshow</code> and <code>cta.page</code>. Compress images before uploading to keep page load times fast. For static assets (CSS, JS), consider using a CDN.</p>
+
+      <div class="card note">
+        <div class="card-title">Support</div>
+        For technical support, contact the development team at <strong>Tris Tech Hub</strong>.
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+  // Active nav link highlighting
+  const sections = document.querySelectorAll('.doc-section');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const id = entry.target.id;
+        const active = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

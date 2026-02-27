@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/icon" href="../media/icons/icon.png">
+  <link rel="icon" type="image/icon" href="../media/icons/IMG-20240712-WA0019.jpg">
   <title>Bethel Studio — Admin</title>
 
   <!-- Fonts -->
@@ -83,8 +83,8 @@
       <div class="sidebar-menu-group">
         <span class="group-heading">Gallery</span>
         <button class="nav-button" data-target="picture"><i class="fa-solid fa-images fa-xs"></i> Picture Post</button>
-        <button class="nav-button" data-target="memories"><i class="fa-solid fa-photo-film fa-xs"></i> Memory Albums</button>
-        <button class="nav-button" data-target="updates"><i class="fa-solid fa-newspaper fa-xs"></i> Updates &amp; Stories</button>
+        <button class="nav-button" data-target="memories" hidden style="display:none;"><i class="fa-solid fa-photo-film fa-xs" ></i> Memory Albums</button>
+        <button class="nav-button" data-target="updates" style="display:none;"><i class="fa-solid fa-newspaper fa-xs" ></i> Updates &amp; Stories</button>
       </div>
 
       <div class="sidebar-menu-group">
@@ -93,7 +93,7 @@
         <button class="nav-button" data-target="annual_achivements"><i class="fa-solid fa-trophy fa-xs"></i> Annual Achievements</button>
       </div>
 
-      <div class="sidebar-menu-group">
+      <div class="sidebar-menu-group" hidden>
         <span class="group-heading">Events</span>
         <button class="nav-button" data-target="remarkable"><i class="fa-solid fa-star fa-xs"></i> Remarkable Event</button>
       </div>
@@ -317,9 +317,9 @@
           <label>Summary of the Year</label>
           <div class="alert">
             <ul>
-              <li>Gold text: <code>&lt;span class="goldenSpan"&gt;text&lt;/span&gt;</code></li>
-              <li>Olive text: <code>&lt;span class="oliveSpan"&gt;text&lt;/span&gt;</code></li>
-              <li>Italic: <code>&lt;i&gt;text&lt;/i&gt;</code></li>
+              <li>Gold text: <code>&lt;span class="goldenSpan"&gt; <span class="goldenSpan">text</span> &lt;/span&gt;</code></li>
+              <li>Olive text: <code>&lt;span class="oliveSpan"&gt; <span>text</span> &lt;/span&gt;</code></li>
+              <li>Italic: <code>&lt;i&gt;<i>text</i>&lt;/i&gt;</code></li>
             </ul>
           </div>
           <textarea name="yearContext" id="yearContext" placeholder="Summary of the year's achievements..." required></textarea>
