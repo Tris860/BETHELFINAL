@@ -225,7 +225,7 @@
             <p class="copy">
               &copy;copyrighted by
               <a href="admin/login.html" class="title3">Bethel Family Choir</a>
-              Indatwa n' Inkesha @2024
+              Indatwa n' Inkesha @<span id="copy-year"></span>
             </p>
           </center>
           <center>
@@ -242,5 +242,9 @@
     </section>
     <script src="javascript/main.js"></script>
     <script type="module" src="javascript/home.js"></script>
+    <script>
+      document.getElementById("copy-year").textContent =
+        new Date().getFullYear();
+    </script>
   </body>
 </html>

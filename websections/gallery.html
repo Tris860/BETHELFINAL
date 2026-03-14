@@ -156,15 +156,21 @@
             <!-- Copyrights (placed using grid column span) -->
             <div class="copyrights">
                 <center>
-                    <p class="copy"> &copy;copyrighted by <a href="../admin/login.html" class="title3">Bethel Family Choir</a> Indatwa n' Inkesha @2024</p>
+                    <p class="copy"> &copy;copyrighted by <a href="../admin/login.html" class="title3">Bethel Family Choir</a> Indatwa n' Inkesha @<span id="copy-year"></span></p>
                 </center>
-                <center>
-                    <p>Developed by <a href="https://TrisTechhub.wuaze.com"><span class="company" >Tris Tech Hub</span></a></p>
+               <center>
+                    <p>Developed by  <a href="https://tristechhub.org.rw"
+                ><span class="company">Tris Tech Hub</span></a
+              ></p>
                 </center>
             </div>
-        </div>    
+        </div> 
     </section>
     <script src = "../javascript/main.js"></script>
     <script src="../javascript/gallery.js" type="module"></script>
+    <script>
+      document.getElementById("copy-year").textContent =
+        new Date().getFullYear();
+    </script>
 </body>
 </html>

@@ -306,10 +306,7 @@ body {
   text-decoration: none;
 }
 
-.copyrights .company {
-  color: var(--cyan);
-  font-weight: 600;
-}
+
 
 /* ── Smooth entrance animation ── */
 .wrapper {
@@ -325,4 +322,8 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+.copyrights .company {
+  color:limegreen;
+  font-weight: 600;
 }

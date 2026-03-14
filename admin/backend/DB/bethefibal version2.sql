@@ -6,6 +6,10 @@
 -- Generation Time: Mar 14, 2026 at 09:02 AM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.26
+--
+-- !! FIXED: Replaced utf8mb4_0900_ai_ci with utf8mb4_general_ci
+-- !! for compatibility with MySQL versions older than 8.0
+--
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,10 +35,10 @@ DROP TABLE IF EXISTS `annualachievements`;
 CREATE TABLE IF NOT EXISTS `annualachievements` (
   `id` int NOT NULL AUTO_INCREMENT,
   `year` varchar(250) NOT NULL,
-  `summary` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `summary` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `year` (`year`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `annualachievements`
@@ -45,11 +49,11 @@ INSERT INTO `annualachievements` (`id`, `year`, `summary`) VALUES
 (4, '2003', 'Bethel appointed its first leader, named MUSAFIRI Jean de Dieu. That same year, Bethel was asked to become a Chorale, but it declined, preferring to remain <span class =\"goldenSpan\"> Groupe de Louange et Adoration.</span>'),
 (5, '2004', '<i>President :  MUSAFIRI</i> did not return to school, so Jean Paul, then a second-year student, became president.'),
 (6, '2005', 'Bethel faced challenges, including being prohibited from singing and lacking representation in the church committee. On <span class =\"goldenSpan\"> May 17, 2005 </span>, it was officially allowed to become a Chorale by both the school administration and the church, and was named  <span class =\"goldenSpan\"> Bethel Choir</span> . In 2016, the name was extended to include <span>Family</span>'),
-(7, '2008', 'Graduated members decided that their divine calling did not end at G.S.O.B, and they launched a ministry called <Span> Bethel Ministry</Span>. That year, they also established Bethel’s mission: <i>\"Binyuze muritwe Imana yigaragarize abandi\"</i>.'),
+(7, '2008', 'Graduated members decided that their divine calling did not end at G.S.O.B, and they launched a ministry called <Span> Bethel Ministry</Span>. That year, they also established Bethel\'s mission: <i>\"Binyuze muritwe Imana yigaragarize abandi\"</i>.'),
 (8, '2012', 'The Bethel Choir <a href=\"about.html#B_logo\" class=\"goldenSpan\" >logo</a> was introduced. Bethel celebrated its first anniversary, marking seven years (7-Year B-Anniversary).\r\n                 That same year, a sports division was launched within Bethel, called <span><i>B-Sport</i></span>.'),
 (9, '2013', 'A football competition named <span><i>B-CHAMPION</i></span>.was initiated.'),
 (10, '2015', 'New uniforms were purchased for the choir.'),
-(11, '2016', 'A week of thanksgiving was organized to celebrate Bethel’s journey.'),
+(11, '2016', 'A week of thanksgiving was organized to celebrate Bethel\'s journey.'),
 (12, '2018-2019', 'We achieved many things but among them we had time to teach members more about having you personal prayer with God,reading the word of God.\r\n                                          We had 2 songs that we recorded. We had many sorties out side of the college. <i>( foursquare Gospel church) </i>'),
 (13, '2023-2024', 'We recorded a new audio song titled <span class =\"goldenSpan\"> DUFITIMANIKORA.</span>'),
 (14, '2024-2025', 'We organized a fellowship meal for the choir, and we are currently working on creating a website for the choir. In addition, we spread the message in every possible way, which helped many young people grow spiritually and gain a deeper understanding of the Word of God.');
@@ -68,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `bethelcommitte` (
   `picture` varchar(255) NOT NULL,
   PRIMARY KEY (`commit_id`),
   UNIQUE KEY `era` (`era`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bethelcommitte`
@@ -93,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `bethelcommittemember` (
   `post` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `commit_id` (`commit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bethelcommittemember`
@@ -122,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `cta` (
   `caption` varchar(250) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `page` (`page`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cta`
@@ -147,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `flyer` (
   `link` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `flyer`
@@ -169,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `pictures` (
   `slideshow` tinyint(1) NOT NULL DEFAULT '0',
   `link` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `pictures`
@@ -193,14 +197,14 @@ CREATE TABLE IF NOT EXISTS `presidentsword` (
   `name` varchar(250) NOT NULL,
   `message` text NOT NULL,
   `image` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `presidentsword`
 --
 
 INSERT INTO `presidentsword` (`id`, `name`, `message`, `image`) VALUES
-(1, 'kwizera', 'Welcome to the Bethel Choir family, \r\n    a ministry rooted in worship and service to our Lord Jesus Christ. As the Psalmist declares, \r\n    “Sing to the Lord a new song; sing to the Lord, all the earth” (Psalm 96:1), \r\n    we are committed to lifting our voices in praise, spreading the gospel through music, \r\n    and nurturing spiritual growth among our members and community. Guided by Colossians 3:16, \r\n    which reminds us to let the message of Christ dwell richly among us through psalms, hymns, and songs \r\n    from the Spirit, our mission is to glorify God, inspire hearts, and build a fellowship where faith and music unite. \r\n    May this platform be a place of encouragement, joy, \r\n    and a reminder that “Let everything that has breath praise the Lord” (Psalm 150:6).', 'media/IMG-20240411-WA0004.jpg');
+(1, 'kwizera', 'Welcome to the Bethel Choir family, \r\n    a ministry rooted in worship and service to our Lord Jesus Christ. As the Psalmist declares, \r\n    "Sing to the Lord a new song; sing to the Lord, all the earth" (Psalm 96:1), \r\n    we are committed to lifting our voices in praise, spreading the gospel through music, \r\n    and nurturing spiritual growth among our members and community. Guided by Colossians 3:16, \r\n    which reminds us to let the message of Christ dwell richly among us through psalms, hymns, and songs \r\n    from the Spirit, our mission is to glorify God, inspire hearts, and build a fellowship where faith and music unite. \r\n    May this platform be a place of encouragement, joy, \r\n    and a reminder that "Let everything that has breath praise the Lord" (Psalm 150:6).', 'media/IMG-20240411-WA0004.jpg');
 
 -- --------------------------------------------------------
 
@@ -214,7 +218,7 @@ CREATE TABLE IF NOT EXISTS `scriptureofday` (
   `title` varchar(250) NOT NULL,
   `content` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `scriptureofday`
@@ -235,7 +239,7 @@ CREATE TABLE IF NOT EXISTS `songs` (
   `title` varchar(250) NOT NULL,
   `link` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `songs`
@@ -258,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(250) NOT NULL,
   `passkey` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`

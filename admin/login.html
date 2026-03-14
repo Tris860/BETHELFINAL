@@ -1,88 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/icon" href="../media/icons/IMG-20240712-WA0019.jpg">
-  <title>Bethel Login page</title>
-  <!-- Font Awesome for eye icon -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="login.css">
-</head>
-<body>
-
-  <div class="wrapper">
-
-    <!-- Brand Header -->
-    <div class="login_head">
-      <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="Bethel Logo">
-      <div class="title">
-        <h1>Bethel-Studio</h1>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/icon"
+      href="../media/icons/IMG-20240712-WA0019.jpg"
+    />
+    <title>Bethel Login page</title>
+    <!-- Font Awesome for eye icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Brand Header -->
+      <div class="login_head">
+        <img src="../media/icons/IMG-20240712-WA0019.jpg" alt="Bethel Logo" />
+        <div class="title">
+          <h1>Bethel-Studio</h1>
+        </div>
       </div>
+
+      <!-- Login Form -->
+      <section class="form signup">
+        <header>Log in</header>
+
+        <form id="adminLoginForm" autocomplete="off" novalidate>
+          <div class="error-text"></div>
+
+          <!-- Email -->
+          <div class="field input">
+            <label for="modalEmail">Email Address</label>
+            <input
+              type="email"
+              name="email"
+              id="modalEmail"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <!-- Password -->
+          <div class="field">
+            <div class="password-field">
+              <label for="modalPassword">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="modalPassword"
+                placeholder="Enter your password"
+                required
+              />
+              <i
+                id="toggler"
+                class="fas fa-eye"
+                aria-label="Toggle password visibility"
+              ></i>
+            </div>
+          </div>
+
+          <!-- Server error message -->
+          <div id="error" role="alert">
+            <p id="errMsg">Unable to login</p>
+          </div>
+
+          <!-- Submit -->
+          <div class="field button">
+            <input type="submit" value="Log In" />
+          </div>
+        </form>
+
+        <!-- Copyrights -->
+        <div class="copyrights">
+          <p class="copy">
+            &copy; Copyrighted by
+            <a href="../index.html">
+              <span class="title3">Bethel Family Choir</span>
+            </a>
+            &mdash; Indatwa n&rsquo; Inkesha &copy; <span id="copy-year"></span>
+          </p>
+          <p>
+            Developed by
+            <a href="https://tristechhub.org.rw" class="company" target="_blank"
+              ><i>Tri Tech Hub</i></a
+            >
+          </p>
+        </div>
+      </section>
     </div>
 
-    <!-- Login Form -->
-    <section class="form signup">
-      <header>Log in</header>
-
-      <form id="adminLoginForm" autocomplete="off" novalidate>
-
-        <div class="error-text"></div>
-
-        <!-- Email -->
-        <div class="field input">
-          <label for="modalEmail">Email Address</label>
-          <input
-            type="email"
-            name="email"
-            id="modalEmail"
-            placeholder="Enter your email"
-            required
-          >
-        </div>
-
-        <!-- Password -->
-        <div class="field">
-          <div class="password-field">
-            <label for="modalPassword">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="modalPassword"
-              placeholder="Enter your password"
-              required
-            >
-            <i id="toggler" class="fas fa-eye" aria-label="Toggle password visibility"></i>
-          </div>
-        </div>
-
-        <!-- Server error message -->
-        <div id="error" role="alert">
-          <p id="errMsg">Unable to login</p>
-        </div>
-
-        <!-- Submit -->
-        <div class="field button">
-          <input type="submit" value="Log In">
-        </div>
-
-      </form>
-
-      <!-- Copyrights -->
-      <div class="copyrights">
-        <p class="copy">
-          &copy; Copyrighted by
-          <a href="../index.html">
-            <span class="title3">Bethel Family Choir</span>
-          </a>
-          &mdash; Indatwa n&rsquo; Inkesha &copy; 2024
-        </p>
-        <p>Developed by <span class="company">Tris</span> Tech Hub</p>
-      </div>
-
-    </section>
-  </div>
-
-  <script src="javascript/login.js"></script>
-</body>
+    <script src="javascript/login.js"></script>
+    <script>
+      document.getElementById("copy-year").textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
 </html>
