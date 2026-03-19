@@ -335,8 +335,9 @@
       );
       if (!ok) return;
       const fd = new FormData();
-      if (uploadPic?.files.length)
-        fd.append("featured_image", uploadPic.files[0]);
+      if (uploadPic?.files.length) {
+         fd.append("featured_image", uploadPic.files[0]);
+      } 
       fd.append("presidentName", presidentName.value);
       fd.append("message", messageTA.value);
       const data = await postData("PresidentWord", fd);
@@ -807,6 +808,7 @@
         document.getElementById("status-btn")?.getAttribute("data-status") ||
           "0",
       );
+      console.log("Submitting flyer form with status:", fd.get("status"));
       const data = await postData("flyer", fd);
       console.log("Flyer save result:", data);
       if (data.success) {

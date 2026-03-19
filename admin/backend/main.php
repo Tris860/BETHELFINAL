@@ -341,6 +341,7 @@ try {
              if($_SERVER["REQUEST_METHOD"] === "POST"){
                 $data =[];
                 $data["status"]=intval($_POST["status"]) ?? "";
+                $data["status"] = $data["status"] === 1 ? 0 : 1; // Ensure it's either 1 or 0
                     if(hasUploadedFile('featured_image')) {
                         // Handle image upload
                         $uploadResult = uploadImage($_FILES);

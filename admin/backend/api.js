@@ -74,7 +74,7 @@ function showMessageBox(title, message, isConfirm = false) {
                 method: 'POST',
                 body: payload,
             });
-            /* const rawText = await response.text();
+            const rawText = await response.text();
             let data;
             console.log('Raw response text:', rawText);
         try {
@@ -83,13 +83,13 @@ function showMessageBox(title, message, isConfirm = false) {
            console.error('Raw response (not JSON):', rawText); 
             showMessageBox('Error', 'Server returned invalid JSON. Check the console for details.', true);
           return  data;
-        }  */
-            const data = await response.json();
+        } 
+            /* const data = await response.json();
             if (!response.ok || data.status === 'error') {
                 throw new Error(data.message || `HTTP error! status: ${response.status}`);
             }
             showMessageBox('Success', data.message || `${resource} added successfully!`);
-            return data; // Returns { status: 'success', message: ..., id: ... }
+            return data; */ // Returns { status: 'success', message: ..., id: ... }
         } catch (error) {
             console.error(`Error adding ${resource}:`, error);
             showMessageBox('Error', `Failed to add ${resource}: ${error.message}`);
